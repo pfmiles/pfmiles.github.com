@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: performance - Meta-Interpretation</title>
+  <title>跟踪递归函数路径的方法 - Meta-Interpretation</title>
   <meta name="author" content="pf_miles">
 
   
-  <meta name="description" content="Category: performance">
+  <meta name="description" content="有些时候，需要追踪递归函数的路径；比如：递归地遍历一棵树，当找到符合要求的节点时，打印出从根节点到此节点的路径。 这种时候，若子节点不持有到父节点的指针，则需要对路径进行随时地记录，以便需要时能够获取； 一种方式就是建立“栈”结构，在每次递归时将当前节点压栈，并且记得在递归调用过后立刻出栈； &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://pfmiles.github.comblog/category/performance">
+  <link rel="canonical" href="http://pfmiles.github.com/blog/trace-the-path-of-recursive-function">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -75,35 +75,156 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: Performance</h1>
+    
+      <h1 class="entry-title">跟踪递归函数路径的方法</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-02-29T00:04:00+08:00" pubdate data-updated="true">Feb 29<span>th</span>, 2012</time>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><p>有些时候，需要追踪递归函数的路径；比如：递归地遍历一棵树，当找到符合要求的节点时，打印出从根节点到此节点的路径。</p>
 
-  
-  <h2>2012</h2>
+<p>这种时候，若子节点不持有到父节点的指针，则需要对路径进行随时地记录，以便需要时能够获取；</p>
 
-<article>
-  
-<h1><a href="/blog/python-speed-performance-tips">[翻译]Python性能诀窍</a></h1>
-<time datetime="2012-02-05T18:45:00+08:00" pubdate><span class='month'>Feb</span> <span class='day'>05</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/category/performance/'>performance</a>, <a class='category' href='/blog/category/python/'>python</a>, <a class='category' href='/blog/category/性能/'>性能</a></span>
-</footer>
+<ul>
+<li>一种方式就是建立“栈”结构，在每次递归时将当前节点压栈，并且记得在递归调用过后立刻<strong><em>出栈</em></strong>；</li>
+<li>另一种方式就是直接利用函数递归调用的“调用栈”(也就是传参)了。</li>
+</ul>
 
 
-</article>
+<p><em>例如有一个题目：输入一个整数和一棵二元树。
+从树的根结点开始往下访问一直到叶结点所经过的所有结点形成一条路径。
+打印出和与输入整数相等的所有路径。</em></p>
 
+<p>程序较简单，就是递归遍历，查找节点相加数值等于预期数值的情况：</p>
+
+<pre><code># define the data-structure first
+class Node(object):
+    def __init__(self, left=None, value=None, right=None):
+    self.value = value
+    self.left = left
+    self.right = right
+
+root = Node(Node(Node(None, 4, None), 5, None), 10 , Node(None, 12, Node(None, 7, None)))
+
+found = []
+def findPath(tree, value, sm=0, paths=[]):
+    if tree.value + sm &gt; value:
+    return
+    elif tree.value + sm == value:
+    paths.append(tree.value)
+    found.append(paths[:])
+    return
+    else:
+    paths.append(tree.value)
+    if tree.left != None:
+        findPath(tree.left, value, tree.value + sm, paths)
+    if tree.right !=None:
+        findPath(tree.right, value, tree.value + sm, paths)
+    paths.pop()
+
+findPath(root, 22)
+print found
+</code></pre>
+
+<p>其中值得注意的是：</p>
+
+<pre><code>paths.append(tree.value)
+</code></pre>
+
+<p>和：</p>
+
+<pre><code>paths.pop()
+</code></pre>
+
+<p>这两行；
+在递归方法前后进行对应地push和pop是正确记录路径必不可少的步骤。</p>
+
+<p>其实，像上述这种每次递归调用之前都push，每次调用之后都pop的情况，其栈的层次、深度、变化规律跟函数调用栈是完全一致的，那么其实就完全可以考虑直接把父节点扔给下一层递归函数：</p>
+
+<pre><code>findPath(tree.left, value, tree.value + sm, tree)
+</code></pre>
+
+<p>其实，findPath的函数签名现在就变成了：</p>
+
+<pre><code>findPath(树, 预期值, 当前和, 父节点)
+</code></pre>
+
+<p>这样一来，其实路径上的每一步，都是记录在调用栈上的(就算子节点没有父节点的指针，函数参数也直接把父节点带过来了，也就是在调用栈中)，当程序想要输出路径时，也完全能够将路径还原。</p>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">pf_miles</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-02-29T00:04:00+08:00" pubdate data-updated="true">Feb 29<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/category/algorithm/'>algorithm</a>, <a class='category' href='/blog/category/programming/'>programming</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pfmiles.github.com/blog/trace-the-path-of-recursive-function" data-via="pf_miles" data-counturl="http://pfmiles.github.com/blog/trace-the-path-of-recursive-function" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/algorithms-in-job-interview-max-sum-sub-list" title="Previous Post: [面试中的算法]求子数组的最大和">&laquo; [面试中的算法]求子数组的最大和</a>
+      
+      
+    </p>
+  </footer>
 </article>
 
 </div>
