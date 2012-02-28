@@ -9,7 +9,10 @@
   <meta name="author" content="pf_miles">
 
   
-  <meta name="description" content="此问题由v_JULY_v整理发布并发表于blog上, 版权归原作者所有。 问题描述：定义栈的数据结构,要求添加一个 min 函数,能够得到栈的最小元素, 要求函数 min、push 以及 pop 的时间复杂度都是 O(1) 分析： 主要是抓住栈的“还原现场”的能力 —— 由于随着元素的加入与弹出 &hellip;">
+  <meta name="description" content="此问题由v_JULY_v整理发布并发表于blog上, 版权归原作者所有。 输入一个整形数组,数组里有正数也有负数。
+数组中连续的一个或多个整数组成一个子数组,每个子数组都有一个和。
+求所有子数组的和的最大值。要求时间复杂度为 O(n)。
+例如输入的数组为 1, -2, 3, 10, -4, 7, &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -76,6 +79,56 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/algorithms-in-job-interview-max-sum-sub-list">[面试中的算法]求字数组的最大和</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-02-28T22:48:00+08:00" pubdate data-updated="true">Feb 28<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>此问题由<a href="http://blog.csdn.net/v_JULY_v/article/details/6050133">v_JULY_v</a>整理发布并发表于<a href="http://blog.csdn.net/v_JULY_v">blog</a>上, 版权归原作者所有。</p>
+
+<p><strong>输入一个整形数组,数组里有正数也有负数。
+数组中连续的一个或多个整数组成一个子数组,每个子数组都有一个和。
+求所有子数组的和的最大值。要求时间复杂度为 O(n)。
+例如输入的数组为 1, -2, 3, 10, -4, 7, 2, -5,和最大的子数组为 3, 10, -4, 7, 2, 因此输出为该子数组的和 18</strong></p>
+
+<h3>分析：</h3>
+
+<p>贪心算法能在此问题的任意一个子问题上找到最优解(最优子结构)，所以可以用贪心算法解决。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/algorithms-in-job-interview-max-sum-sub-list">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -327,6 +380,10 @@ P(A|B) = P(B|A)P(A) / P(B)    // 这就是“正规”的贝叶斯公式
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/algorithms-in-job-interview-max-sum-sub-list">[面试中的算法]求字数组的最大和</a>
+      </li>
     
       <li class="post">
         <a href="/blog/algorithms-in-job-interview-design-a-stack-with-min-function">[面试中的算法]设计包含min函数的栈</a>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: algorithm | Meta-Interpretation]]></title>
   <link href="http://pfmiles.github.com/blog/category/algorithm/atom.xml" rel="self"/>
   <link href="http://pfmiles.github.com/"/>
-  <updated>2012-02-28T10:20:18+08:00</updated>
+  <updated>2012-02-28T22:58:32+08:00</updated>
   <id>http://pfmiles.github.com/</id>
   <author>
     <name><![CDATA[pf_miles]]></name>
@@ -12,6 +12,47 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[[面试中的算法]求字数组的最大和]]></title>
+    <link href="http://pfmiles.github.com/blog/algorithms-in-job-interview-max-sum-sub-list"/>
+    <updated>2012-02-28T22:48:00+08:00</updated>
+    <id>http://pfmiles.github.com/blog/algorithms-in-job-interview-max-sum-sub-list</id>
+    <content type="html"><![CDATA[<p>此问题由<a href="http://blog.csdn.net/v_JULY_v/article/details/6050133">v_JULY_v</a>整理发布并发表于<a href="http://blog.csdn.net/v_JULY_v">blog</a>上, 版权归原作者所有。</p>
+
+<p><strong>输入一个整形数组,数组里有正数也有负数。
+数组中连续的一个或多个整数组成一个子数组,每个子数组都有一个和。
+求所有子数组的和的最大值。要求时间复杂度为 O(n)。
+例如输入的数组为 1, -2, 3, 10, -4, 7, 2, -5,和最大的子数组为 3, 10, -4, 7, 2, 因此输出为该子数组的和 18</strong></p>
+
+<h3>分析：</h3>
+
+<p>贪心算法能在此问题的任意一个子问题上找到最优解(最优子结构)，所以可以用贪心算法解决。</p>
+
+<!-- more -->
+
+
+<h3>程序：</h3>
+
+<pre><code># 1, -2, 3, 10, -4, 7, 2, -5, output the maximum summarized sub-list
+# greedy algorithm
+def greatestSumSubList(al):
+    mx = 0
+    sm = 0
+    for i in al:
+    sm += i
+    if sm &lt; 0:
+        sm = 0
+    if sm &gt; mx:
+        mx = sm
+    return mx
+
+print greatestSumSubList([1, -2, 3, 10, -4, 7, 2, -5])
+</code></pre>
+
+<p>输出： 18</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[[面试中的算法]设计包含min函数的栈]]></title>
