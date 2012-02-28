@@ -2,23 +2,24 @@
 #      Main Configs       #
 # ----------------------- #
 
-url: http://pfmiles.github.com
-title: Meta-Interpretation
-subtitle: Code, better explained.
-author: pf_miles
+url: http://yoursite.com
+title: My Octopress Blog
+subtitle: A blogging framework for hackers.
+author: Your Name
 simple_search: http://google.com/search
-description: pf_miles' technical blog.
+description:
 
 # Default date format is "ordinal" (resulting in "July 22nd 2007")
 # You can customize the format as defined in
 # http://www.ruby-doc.org/core-1.9.2/Time.html#method-i-strftime
+# Additionally, %o will give you the ordinal representation of the day
 date_format: "ordinal"
 
 # RSS / Email (optional) subscription links (change if using something like Feedburner)
-subscribe_rss: /rss
+subscribe_rss: /atom.xml
 subscribe_email:
 # RSS feeds can list your email address if you like
-email: miles.wy.1@gmail.com
+email:
 
 # ----------------------- #
 #    Jekyll & Plugins     #
@@ -26,12 +27,12 @@ email: miles.wy.1@gmail.com
 
 # If publishing to a subdirectory as in http://site.com/project set 'root: /project'
 root: /
-permalink: /blog/:title
+permalink: /blog/:year/:month/:day/:title/
 source: source
 destination: public
 plugins: plugins
 code_dir: downloads/code
-category_dir: blog/category
+category_dir: blog/categories
 markdown: rdiscount
 pygments: false # default python pygments have been replaced by pygments.rb
 
@@ -40,7 +41,7 @@ pagination_dir: blog  # Directory base for pagination URLs eg. /blog/page/2/
 recent_posts: 5       # Posts in the sidebar Recent Posts section
 excerpt_link: "Read on &rarr;"  # "Continue reading" link text at the bottom of excerpted articles
 
-titlecase: true       # Converts page and post titles to tilecase
+titlecase: true       # Converts page and post titles to titlecase
 
 # list each of the sidebar modules you want to include, in the order you want them to appear.
 # To add custom asides, create files in /source/_includes/custom/asides/ and add them to the list like 'custom/asides/custom_aside_name.html'
@@ -57,13 +58,13 @@ default_asides: [asides/recent_posts.html, asides/github.html, asides/twitter.ht
 # ----------------------- #
 
 # Github repositories
-github_user: pfmiles
-github_repo_count: 2
+github_user:
+github_repo_count: 0
 github_show_profile_link: true
 github_skip_forks: true
 
 # Twitter
-twitter_user: pf_miles
+twitter_user:
 twitter_tweet_count: 4
 twitter_show_replies: false
 twitter_follow_button: true
@@ -71,12 +72,12 @@ twitter_show_follower_count: false
 twitter_tweet_button: true
 
 # Google +1
-google_plus_one: true
+google_plus_one: false
 google_plus_one_size: medium
 
 # Google Plus Profile
 # Hidden: No visible button, just add author information to search results
-googleplus_user: miles.wy.1@gmail.com
+googleplus_user:
 googleplus_hidden: false
 
 # Pinboard
@@ -92,7 +93,7 @@ disqus_short_name:
 disqus_show_comment_count: false
 
 # Google Analytics
-google_analytics_tracking_id: UA-4513284-8
-   
+google_analytics_tracking_id:
+
 # Facebook Like
-facebook_like: true   
+facebook_like: false

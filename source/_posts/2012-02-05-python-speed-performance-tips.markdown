@@ -1,0 +1,456 @@
+---
+layout: post
+title: "[翻译]Python性能诀窍"
+date: 2012-02-05 18:45
+comments: true
+categories: [python, 性能, performance]
+---
+**以下文字译自<http://wiki.python.org/moin/PythonSpeed/PerformanceTips>**  
+
+这个页面提供了一些帮助改善你的python程序性能的一些点子或小技巧。  
+自从我在大约1996年编写了第一个"fast python"页面以来，Python在许多关键的方面有了改变，这意味着一部分内容必须要调整。我将其整合到Python wiki中从而希望其他人能帮助维护它。  
+>你应该始终针对你的应用和你打算使用的、特定的[python实现](http://wiki.python.org/moin/PythonImplementations)来尝试这些小技巧而不是盲目地相信一种方法比另一种更高效。更多的细节请参考[profiling](#Profiling)一节。
+
+另外自从这个页面最初编写以来，新出现的包例如[Cython](http://cython.org/), [Pyrex](http://www.cosc.canterbury.ac.nz/~greg/python/Pyrex/), [Psyco](http://psyco.sourceforge.net/), [Weave](http://www.scipy.org/Weave)和[PyInline](http://pyinline.sourceforge.net/), 都能通过更容易地将性能要求较高的代码推到C或机器码上去实现从而大幅地改进你的程序的性能。
+### 概览：优化那些需要优化的地方
+你只能在程序首先给出正确的结果之后才能知道哪里致使你的程序慢了，所以先保证程序正确，再跑程序看是否慢。
+当发现慢了，性能监控能发现程序的哪部份消耗了大部分的时间。一套全面、方便运行的测试能保证后面的优化没有改变你的程序的正确性。  
+简而言之：  
+
+1. 把程序调正确。
+1. 测试程序的正确性。
+1. 如果发现慢，分析它的性能。
+1. 优化。
+1. 从第'2'步开始重复。
+
+某些优化方法刚好就是一个好的编程风格，所以你应该在学习这门语言的时候就学习它们。其中一个例子就是移动那些在循环内或循环外都不会改变的值计算。
+<!--more-->
+### 选择正确的数据结构
+TBD.
+### 排序
+对list中的基本python对象进行排序一般来讲还是很高效的。list的sort方法接受一个可选的比较方法用来控制排序行为。虽然由于这比较方法会被调用多次，这会显著地减慢你的排序，但是这很方便。在Python 2.4中，你应该使用内置sort函数的'key'参数，这是实现排序的最便捷的方式。
+
+仅当你在使用老版本的Python(2.4以前)的时候需要遵照'Guido van Rossum'的建议：
+
+加速排序的一个变通的方式就是构造一个tuple的列表，每个tuple的第一个元素是一个会被默认的排序方式正确排序的排序key，tuple的第二个元素是原本的被排序对象。这种方法被称为“Schwartzian变换”，也被称为“Decorate SortUndecorate (DSU)”。
+
+假设，例如，你拥有一个list的tuple，你想依据每个tuple的第n个元素对整个list进行排序。下面的方法能够实现。
+    def sortby(somelist, n):
+        nlist = [(x[n], x) for x in somelist]
+        nlist.sort()
+        return [val for (key, val) in nlist]
+
+改变当前list进行排序也很容易被实现：
+    def sortby_inplace(somelist, n):
+        somelist[:] = [(x[n], x) for x in somelist]
+        somelist.sort()
+        somelist[:] = [val for (key, val) in somelist]
+        return
+
+这里有一个例子：
+    >>> somelist = [(1, 2, 'def'), (2, -4, 'ghi'), (3, 6, 'abc')]
+    >>> somelist.sort()
+    >>> somelist
+    [(1, 2, 'def'), (2, -4, 'ghi'), (3, 6, 'abc')]
+    >>> nlist = sortby(somelist, 2)
+    >>> sortby_inplace(somelist, 2)
+    >>> nlist == somelist
+    True
+    >>> nlist = sortby(somelist, 1)
+    >>> sortby_inplace(somelist, 1)
+    >>> nlist == somelist
+    True
+
+来自Tim Delaney
+
+从Python2.3开始sort都是稳定的。(译者注：即相等元素不会被随意调整先后次序)
+
+(确切地说, sort在CPython2.3中是稳定的, 在Python 2.4中被保证是稳定的)
+
+Python2.4新增了一个可选的key参数使得这个变换容易多了：(译者注：key参数要求传入一个函数)
+    # E.g. n = 1
+    n = 1
+    import operator
+    nlist.sort(key=operator.itemgetter(n))
+    # use sorted() if you don't want to sort in-place:
+    # sortedlist = sorted(nlist, key=operator.itemgetter(n))
+
+请注意原本的元素并没有被用作排序，用作排序的仅仅是返回的key —— 这相当于下面这样做：
+    # E.g. n = 1
+    n = 1
+    nlist = [(x[n], i, x) for (i, x) in enumerate(nlist)]
+    nlist.sort()
+    nlist = [val for (key, index, val) in nlist]
+
+### 字符串拼接：
+>在新一些的版本的python中，这一小节的内容的准确性存在争议。在CPython 2.5中，字符串拼接已经相当地快，但并不能说其它python实现也是这样。具体请参考[ConcatenationTestCode](http://wiki.python.org/moin/ConcatenationTestCode)中的讨论。
+
+字符串在python中是不可变的。这一潜在的事实经常咬住那些python初学者的屁股。不可变的特性带来一些优点和缺点。优点就是，字符串可以被用作dict的key，并且可以在多个变量间安全地共享同一个实例。(Python自动共享只含1个或2个字符的字符串。)缺点就是，在任何字符串中你不能办到这样的事情：“将所有的'a'换成'b'”。取而代之的实现方式是你必须重新新建一个字符串来达到目的。这种连续不断的字符串拷贝给python程序带来了不可忽视的性能问题。
+
+避免这样做：
+    s = ""
+    for substring in list:
+        s += substring
+
+Use s = "".join(list) instead. The former is a very common and catastrophic mistake when building large strings. Similarly, if you are generating bits of a string sequentially instead of: 
+应该用s = "".join(list)来实现。上面的代码是一种在构造大字符串时很常见的、灾难性的错误。相似地，当你处理字符串中的每一个字符时，不要使用：
+    s = ""
+    for x in list:
+        s += some_function(x)
+
+而是用：
+    slist = [some_function(elt) for elt in somelist]
+    s = "".join(slist)
+
+还有，避免这样做：
+    out = "<html>" + head + prologue + query + tail + "</html>"
+
+取而代之要这样做：
+    out = "<html>%s%s%s%s</html>" % (head, prologue, query, tail)
+
+更好的做法，为了可读性(效率没有进一步提升，只是可读性更好)，使用字典替换：
+    out = "<html>%(head)s%(prologue)s%(query)s%(tail)s</html>" % locals()
+
+后两段代码会快很多，特别是在CGI脚本扩展运行很多次的时候，且更容易被更改、启动。而且，较慢的方式在python2.0中会变得更慢。它使得python虚拟机花更多的时间搞清楚如何拼接2个字符串。(别忘了python是在运行时查找所有的方法)
+### 循环
+Python支持好几种循环结构。for语句是最常用的。它遍历一个序列的每个元素，将每个元素赋值给循环变量。如果你的循环体很简单，for循环本身的解释成本将占据大部分的开销。这个时候[map](http://www.python.org/doc/lib/built-in-funcs.html)函数就能派上用场了。你可以将map函数看作是for循环采用C代码来实现。唯一的约束是“循环体”必须是一个函数调用。list comprehension除了语法上的便利性之外，他们常常和等价的map调用一样快甚至更快。
+
+这里有一个很直接的例子。取代循环遍历的方式将列表中所有单词变成大写：
+    newlist = []
+    for word in oldlist:
+        newlist.append(word.upper())
+
+你可以使用map函数将这个循环由解释执行推到编译好的C代码中去执行：
+    newlist = map(str.upper, oldlist)
+
+List comprehension在python 2.0的时候被加入。它们提供了一种更紧凑的语法和更高效的方式来表达上面的for循环：
+    newlist = [s.upper() for s in oldlist]
+
+generator表达式在python 2.4中被加入。它们功能上跟list comprehension或者map函数差不多不过避免了立刻生成整个列表的开销。相应的，它们返回一个generator对象，能够一个一个元素地被遍历：
+    iterator = (s.upper() for s in oldlist)
+
+哪种方式更合适取决于你使用的python版本以及你处理的数据的特性。
+
+Guido van Rossum写过一份更详细的(很简洁的)关于[循环优化的分析](http://www.python.org/doc/essays/list2str.html)很值得一读。
+
+### 避免过多的'.'
+假如你不能使用map函数或list comprehension呢？你很可能就被这for循环卡住了。for循环还有另外一个坏处。newList.append和word.upper都是函数引用并且在每次循环都被解释执行。原循环可被变成这样：
+    upper = str.upper
+    newlist = []
+    append = newlist.append
+    for word in oldlist:
+        append(upper(word))
+
+这个技巧使用时应谨慎。如果循环体很大，代码将会很难维护。除非你非常熟悉这块代码并且很容易找到append和upper的定义。
+### 局部变量
+对于非map版本的循环，最后一种优化手段就是尽可能地使用局部变量。如果上述循环被封装成一个函数，append和upper就成了局部变量。Python访问局部变量比全局变量高效得多。
+    def func():
+        upper = str.upper
+        newlist = []
+        append = newlist.append
+        for word in oldlist:
+            append(upper(word))
+        return newlist
+
+当我写这篇文章时我正在使用100MHz的奔腾处理器，跑着BSDI系统。将/usr/share/dict/words中的单词列表转换成大写，时间开销如下：
+    Version Time (seconds)
+    Basic loop 3.47
+    Eliminate dots 2.45
+    Local variable & no dots 1.79
+    Using map function 0.54
+
+### 初始化字典元素
+假设你正在使用dict来记录单词出现频率，且你已经将要处理的文本整理成了单词列表。很可能你会像下面这样做：
+    wdict = {}
+    for word in words:
+        if word not in wdict:
+            wdict[word] = 0
+        wdict[word] += 1
+
+除了第一次执行以外，每次一个新词被发现后if条件就会是false。如果你处理很大一个单词集合，很多单词很可能出现多次。像这种一个值只初始化一次但是会被更改多次的情况，使用try语句会划算一些：
+    wdict = {}
+    for word in words:
+        try:
+            wdict[word] += 1
+        except KeyError:
+            wdict[word] = 1
+
+关键是要catch [KeyError](http://wiki.python.org/moin/KeyError)这个异常，且不包含一个默认的except语句来试图从任何未预期的错误中恢复。
+
+在python 2.x发布后还有第三种选择。dict拥有了一个get()方法，当找不到指定的key的时候会返回一个默认值。这能够简化循环：
+    wdict = {}
+    get = wdict.get
+    for word in words:
+        wdict[word] = get(word, 0) + 1
+
+当我最初写这一小节的时候，有一些显然的场景使得前两种方式更快。不过现在貌似3种方式的性能是差不多的(互相之间差距在10%以内)，跟列表的属性或里面的单词无关。
+
+而且，如果存在dict里面的东西是object或一些可变的列表对象，你也可以使用dict.setdefault方法，比如：
+    wdict.setdefault(key, []).append(new_element)
+
+你可能想这样做避免了两次查找key。实际上不是的(就算是在python 3.0里面)，不过至少这2次查找是在C代码中完成的。
+
+另一种选择是使用[defaultdict](http://docs.python.org/py3k/library/collections.html#collections.defaultdict)类：
+    from collections import defaultdict
+
+    wdict = defaultdict(int)
+
+    for word in words:
+        wdict[word] += 1
+### import语句的开销
+import语句能够在任何地方被执行。它们常常被放在函数内部以便于限制它们的作用范围且/或节省启动初始化时间。虽然python的解释器被优化得不会重复import同一个模块，重复地执行import语句在一些情况下仍然能显著地影响性能。
+
+考虑下面这两块代码(出自[Greg McFarlane](http://wiki.python.org/moin/McFarlane)，我相信——我发现这代码在comp.lang.python python-list@python.org帖子里没有被署名成他但后来我在另外一个地方看到这块代码被署名成他)
+    def doit1():
+        import string ###### import statement inside function
+        string.lower('Python')
+
+    for num in range(100000):
+        doit1()
+或者：
+    import string ###### import statement outside function
+    def doit2():
+        string.lower('Python')
+
+    for num in range(100000):
+        doit2()
+虽然string模块的引用在doit2中是全局的，doit2仍会比doit1跑得快得多。这里有一段比较程序使用python2.3和最新的timeit模块，来看看第二个到底比第一个快多少：
+    >>> def doit1():
+    ... import string
+    ... string.lower('Python')
+    ...
+    >>> import string
+    >>> def doit2():
+    ... string.lower('Python')
+    ...
+    >>> import timeit
+    >>> t = timeit.Timer(setup='from __main__ import doit1', stmt='doit1()')
+    >>> t.timeit()
+    11.479144930839539
+    >>> t = timeit.Timer(setup='from __main__ import doit2', stmt='doit2()')
+    >>> t.timeit()
+    4.6661689281463623
+String相关方法在python2.0时被引入。这带来了一种完全避免import语句的方式并且运行得更加快：
+    def doit3():
+        'Python'.lower()
+
+    for num in range(100000):
+        doit3()
+这是来自timeit的证明：
+    >>> def doit3():
+    ... 'Python'.lower()
+    ...
+    >>> t = timeit.Timer(setup='from __main__ import doit3', stmt='doit3()')
+    >>> t.timeit()
+    2.5606080293655396
+上面这例子显然有点做作，但内在的道理是正确的。
+
+注意，将import放在函数内部能加速模块的初始化加载，特别是在被引用的模块不一定会被用到的时候。这通常就是一个“懒”加载的情形 —— 在你真正需要它(引入一个模块是开销很大的)之前避免引入它。
+
+这种好处仅仅出现在这个被引入模块还未被加载之前（在任何地方） —— 如果模块已经被加载了(许多标准库常常会出现这种情况，比如string或re)，这时再避免import它不会给你带来任何节省。可以通过sys.modules查看哪些模块被引入了。
+
+做到懒加载的一种较好的方式是：
+    email = None
+
+    def parse_email():
+        global email
+        if email is None:
+            import email
+        ...
+这样一来email模块仅会被引入一次，在parse_email()被第一次调用的时候。
+### 数据集合
+函数调用的成本在python中相对较高，特别是跟那些内置函数的执行速度比起来。强烈建议在所有可能的时候，函数应该处理数据集合。这里有一个故意写出的例子：
+    import time
+    x = 0
+    def doit1(i):
+        global x
+        x = x + i
+
+    list = range(100000)
+    t = time.time()
+    for i in list:
+        doit1(i)
+
+    print "%.3f" % (time.time()-t)
+vs.
+    import time
+    x = 0
+    def doit2(list):
+        global x
+        for i in list:
+            x = x + i
+
+    list = range(100000)
+    t = time.time()
+    doit2(list)
+    print "%.3f" % (time.time()-t)
+这里有一个亲自体验的交互式的例子：
+    >>> t = time.time()
+    >>> for i in list:
+    ... doit1(i)
+    ...
+    >>> print "%.3f" % (time.time()-t)
+    0.758
+    >>> t = time.time()
+    >>> doit2(list)
+    >>> print "%.3f" % (time.time()-t)
+    0.204
+就算使用python写的，第二个例子也比第一个例子运行得快约4倍。若doit是用C写的，这区别应该会更大（将python的for loop换成C的for loop同时也去掉了大多数的函数调用）。
+### 做更少的后台动作
+Python的解释器会做一些周期性的检查。比如，它要确定是否让另一个线程开始工作或者是否应该执行一个等待中的调用(一般来说是一个由信号处理器建立的调用)。由于大多数时候实际上不需要做这些事情，所以在每个解释器周期都执行这些检查会让事情变慢。在sys模块中有一个函数，setcheckinterval，可以让你设置解释器执行这些周期性检查的频率。在python2.3之前默认值是10。2.3之后提高为100。如果你没有执行多线程操作且你不需要接收许多信号量，把它设置成一个更大些的值可以提升解释器的性能，有时候还很显著。
+### Python不是C
+它也不是Perl, Java, C++或者Haskell。当你把其它语言的使用经验用在python上时要当心。一个简单的例子可以说明：
+    % timeit.py -s 'x = 47' 'x * 2'
+    1000000 loops, best of 3: 0.574 usec per loop
+    % timeit.py -s 'x = 47' 'x << 1'
+    1000000 loops, best of 3: 0.524 usec per loop
+    % timeit.py -s 'x = 47' 'x + x'
+    1000000 loops, best of 3: 0.382 usec per loop
+接下来考虑这段相同的C代码(仅仅“相加”的版本列在下面)：
+    #include <stdio.h>
+
+    int main (int argc, char *argv[]) {
+        int i = 47;
+        int loop;
+        for (loop=0; loop<500000000; loop++)
+            i + i;
+        return 0;
+    }
+执行时间：
+    % for prog in mult add shift ; do
+    < for i in 1 2 3 ; do
+    < echo -n "$prog: "
+    < /usr/bin/time ./$prog
+    < done
+    < echo
+    < done
+    mult: 6.12 real 5.64 user 0.01 sys
+    mult: 6.08 real 5.50 user 0.04 sys
+    mult: 6.10 real 5.45 user 0.03 sys
+
+    add: 6.07 real 5.54 user 0.00 sys
+    add: 6.08 real 5.60 user 0.00 sys
+    add: 6.07 real 5.58 user 0.01 sys
+
+    shift: 6.09 real 5.55 user 0.01 sys
+    shift: 6.10 real 5.62 user 0.01 sys
+    shift: 6.06 real 5.50 user 0.01 sys
+请注意在python中，把一个数自己加到自己身上比乘以2或是左移2位要快得多。但在所有的现代计算机体系结构的C语言中，上述3种算术操作都被翻译为了一个可以在一个时钟周期内执行的机器指令，所以你用哪种方式根本无所谓。
+
+有一个python新手经常做的“测试”就是翻译这个Perl idiom：
+    while (<>) {
+        print;
+    }
+在python中这就像是：
+    import fileinput
+
+    for line in fileinput.input():
+        print line,
+然后以此来总结出python比perl慢许多的结论。哪怕其他人指出过许多次，python在一些事情上比perl慢但其它事情较快。相对的性能也常常取决于你对这两种语言的经验。
+### 用xrange代替range
+>如果你使用python3，这小节的内容就不再适用，因为python3里面range提供一个可以遍历任意长度的范围的iterator，而xrange不再存在。
+python有2种方式取得一个数字范围：range和xrange。大多数人知道range，因为它提示性很强的名字。而xrange，以字母表排序排在很后面，所以知名度小得多。
+
+xrange是一个generator对象，基本上等同于下面这段python2.3代码：
+    def xrange(start, stop=None, step=1):
+        if stop is None:
+            stop = start
+            start = 0
+        else:
+            stop = int(stop)
+        start = int(start)
+        step = int(step)
+
+        while start < stop:
+            yield start
+            start += step
+只不过它是纯C代码实现的。
+
+xrange确实有一些限制。特别是，它只能和整型一起工作；你不能使用long或者float（它们会被转换成整型，就像上面展示的那样）。
+
+不过它又确实，节省很多内存，并且除非你把产生的对象存在别的什么地方，否则在任何时候只会有一个被产生的对象存在。不同的地方是这样的：当你使用range时，它创建了一个包含整个范围的数字（int, long或者float）对象。所有这些对象在同一时间被创建，所有的对象都同时存在。这在数字的数量很大时是痛苦的事情。
+
+另一方面，xrange不会马上创建任何数字 —— 仅仅创建range对象本身。仅当你拉动generator的时候才创建数字对象，例如，循环遍历它。比如：
+    xrange(sys.maxint) # 没有循环，没有调用.next，所以没有任何数字被创建
+因为这个原因，这段代码顺畅地运行。如果你用range来替换它，python就会卡住；要创建sys.maxint个数字对象（在典型的PC平台上大约21亿个）实在是忙得不能做其它事情。最终，它会耗尽内存并退出。
+
+在python2.2以前的版本，xrange对象也支持一些优化，比如快速地是否成员判定(i in xrange(n))。这些特性由于很少使用而在2.2版本后被去掉。
+### 在运行时重新映射函数
+假如你有一个函数：
+    class Test:
+        def check(self,a,b,c):
+            if a == 0:
+                self.str = b*100
+            else:
+                self.str = c*100
+
+    a = Test()
+    def example():
+        for i in xrange(0,100000):
+            a.check(i,"b","c")
+
+    import profile
+    profile.run("example()")
+
+而且假设这个函数被别的地方调用了很多次。
+
+好了，除了第一次运行以外，你的check方法在后面的每次运行都会有一个if语句来拖慢你，所以你可以这样做：
+    class Test2:
+        def check(self,a,b,c):
+            self.str = b*100
+            self.check = self.check_post
+        def check_post(self,a,b,c):
+            self.str = c*100
+
+    a = Test2()
+    def example2():
+        for i in xrange(0,100000):
+            a.check(i,"b","c")
+
+    import profile
+    profile.run("example2()")
+当然，这个例子还很不充分，不过当这个'if'语句是一个相当复杂的表达式(或包含许多'.')，你就能尽量避免执行它们，如果你事先知道仅仅只有第一次为true的话。
+
+### 性能优化
+优化你的代码的第一步是查出哪里是瓶颈。对从来不会运行的代码或本来就很快的代码做优化是没有道理的。我使用2个模块来帮助找出我代码中的热点，profile和trace。在后面的例子里我还会使用timeit模块，这是python2.3新加入的。
+
+>请参考单独的[profiling文档](http://wiki.python.org/moin/PythonSpeed/Profiling)来查看除下文中的使用方式以外的其它使用方式。
+
+#### Profiling
+
+在python的发行版中包含有好几个[profiling模块](http://docs.python.org/library/profile.html)。用它们其中的一个来监控一些函数的性能是很容易的。假设你的主函数叫做'main'，不接受任何参数而且你现在想用profile模块来监控并执行它。最简单的方式就是你直接执行
+    import profile
+    profile.run('main()')
+当main()返回时，profile模块会打印出一个函数调用和对应执行时间的表格。输出结果能够被这个模块里面包含的一个叫Stats的类处理。从python2.4开始profile允许python内置方法和扩展模块的方法被监控性能。
+
+另一个稍微长一些的关于使用profile和pstats模块进行性能监控的描述在这里（归档的版本）：
+
+[http://web.archive.org/web/20060506162444/http://wingware.com/doc/howtos/performance-profiling-python-code](http://web.archive.org/web/20060506162444/http://wingware.com/doc/howtos/performance-profiling-python-code)
+
+#### cProfile和Hotshot模块
+从python2.2开始，[hotshot包](http://www.python.org/doc/current/lib/module-hotshot.html)就作为profile模块的替代品出现，虽然目前cProfile模块是比hotshot更加被推荐的选择。这些模块都是用C写的，所以使用hotshot(或cProfile)造成的性能影响应该很小，从而性能监控得更精确。在发行版的Tools/scripts文件夹下还有一个hotshotmain.py程序来方便你在命令行使用hotshot来监控你的程序。
+
+#### Trace模块
+[trace模块](http://www.python.org/doc/current/lib/module-trace.html)这一小节是从我原本写的profile模块那一小节里面拆分出来的，用作一些原始的语句级别的测试覆盖的内容。它自从我最初写它的时候开始以来已经被好几个人改了很多次。在python2.0里面你应该能在Tools/scripts里面找到trace.py。从python2.3开始它就被放到了标准库里面(Lib文件夹)。你可以把它拷到本地的bin文件夹里面并且设置好执行权限，然后直接运行它。这样从命令行直接监控整个脚本很方便：
+    % trace.py -t spam.py eggs
+在python2.4里甚至更简单。直接运行 python -m trace。
+
+没有单独存在的文档，但你可以运行"pydoc trace"来查看内置的文档。
+#### 让性能监控结果可视化
+[RunSnakeRun](http://www.vrplumber.com/programming/runsnakerun/)是一个由Mike Fletcher创造的图形化工具，能使cProfile输出的profile dump可视化。函数/方法调用可根据多种条件排序，源代码能在图形旁边展示，并带有调用统计。
+
+一个示例：
+    runsnake some_profile_dump.prof
+
+[Gprof2Dot](http://code.google.com/p/jrfonseca/wiki/Gprof2Dot)是一个基于python的工具，能够将性能监控结果输出转换成图片，之后能够被转换成PNG图片或SVG。
+
+在python2.5下一个典型的性能诊断过程看起来像下面这样（在老一些的平台上需要使用真正的脚本来替代 -m 选项）：
+    python -m cProfile -o stat.prof MYSCRIPY.PY [ARGS...]
+    python -m pbp.scripts.gprof2dot -f pstats -o stat.dot stat.prof
+    dot -ostat.png -Tpng stat.dot
+
+[PyCallGraph](http://pycallgraph.slowchop.com/) pycallgraph是一个能够为python程序创建调用图python模块。它生成一个展示一个模块的函数调用以及他们对其它函数的调用的PNG图片文件，还包含函数被调用的次数和消耗的时间。
+
+典型的使用：
+
+    pycallgraph scriptname.py
