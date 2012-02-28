@@ -4,7 +4,7 @@
   <title><![CDATA[Category: interview | Meta-Interpretation]]></title>
   <link href="http://pfmiles.github.com/blog/category/interview/atom.xml" rel="self"/>
   <link href="http://pfmiles.github.com/"/>
-  <updated>2012-02-28T22:58:32+08:00</updated>
+  <updated>2012-02-28T23:01:16+08:00</updated>
   <id>http://pfmiles.github.com/</id>
   <author>
     <name><![CDATA[pf_miles]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[[面试中的算法]求字数组的最大和]]></title>
+    <title type="html"><![CDATA[[面试中的算法]求子数组的最大和]]></title>
     <link href="http://pfmiles.github.com/blog/algorithms-in-job-interview-max-sum-sub-list"/>
     <updated>2012-02-28T22:48:00+08:00</updated>
     <id>http://pfmiles.github.com/blog/algorithms-in-job-interview-max-sum-sub-list</id>
