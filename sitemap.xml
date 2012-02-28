@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
+    <url>
+        <loc>http://pfmiles.github.com/blog/theory-of-probability-required-in-ai-class</loc>
+        <lastmod>2012-02-28T10:10:01+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://pfmiles.github.com/blog/python-speed-performance-tips</loc>
+        <lastmod>2012-02-28T09:52:14+08:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://pfmiles.github.com/blog/algorithms-in-job-interview-turn-binary-search-tree-to-doubly-linked-list
+        </loc>
+        <lastmod>2012-02-28T10:10:19+08:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://pfmiles.github.com/blog/algorithms-in-job-interview-design-a-stack-with-min-function
+        </loc>
+        <lastmod>2012-02-28T10:10:37+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://pfmiles.github.com/</loc>
+        <lastmod>2012-02-28T10:10:37+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://pfmiles.github.com/blog/archives/</loc>
+        <lastmod>2012-02-28T10:10:37+08:00</lastmod>
+    </url>
+</urlset>

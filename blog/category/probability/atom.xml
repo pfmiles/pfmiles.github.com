@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: probability | Meta-Interpretation]]></title>
+  <link href="http://pfmiles.github.com/blog/category/probability/atom.xml" rel="self"/>
+  <link href="http://pfmiles.github.com/"/>
+  <updated>2012-02-28T10:20:18+08:00</updated>
+  <id>http://pfmiles.github.com/</id>
+  <author>
+    <name><![CDATA[pf_miles]]></name>
+    <email><![CDATA[miles.wy.1@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[[翻译]"AI-class"中的概率论必备知识]]></title>
+    <link href="http://pfmiles.github.com/blog/theory-of-probability-required-in-ai-class"/>
+    <updated>2011-11-01T13:35:00+08:00</updated>
+    <id>http://pfmiles.github.com/blog/theory-of-probability-required-in-ai-class</id>
+    <content type="html"><![CDATA[<p><strong>在2011年末的ai-class中出现许多关于概率论的问题，其实这里有一篇神帖非常精彩：<a href="http://www.reddit.com/r/aiclass/comments/lpw21/a_challenge_to_the_over_achievers_who_really/">A challenge to the Over achievers who really understand Probability</a> 精华在于评论</strong></p>
+
+<p>总结起来，ai-class中所用到的概率论，可以总结为下面几条：</p>
+
+<ol>
+<li>P(A,B) = P(A|B)P(B)              // bayes theorem ie; conditional probability</li>
+<li>P(A) = P(A,B') + P(A,B)          // total probability : let B' = not B</li>
+<li>P(A) = P(A|B)P(B) + P(A|B')P(B') // total probability</li>
+<li>P(A1,A2,A3,A4) = P(A1|A2,A3,A4)P(A2|A3,A4)P(A3|A4)P(A4) // chain rule - can be extended to n variables</li>
+</ol>
+
+
+<p>第一个，说是贝叶斯公式，可能一眼看不出来，但这正是其神奇之处，只要稍加变化:</p>
+
+<pre><code>P(A, B) = P(A|B)P(B) --&gt; 
+P(B|A)P(A) = P(A|B)P(B) --&gt; 
+P(A|B) = P(B|A)P(A) / P(B)    // 这就是“正规”的贝叶斯公式
+</code></pre>
+
+<p>个人认为，比起“正规”的贝叶斯公式，第一个这种变种会好记得多，并且和“条件概率”结合起来，加深理解了贝叶斯公式的本质(本质上它就是条件概率的巧妙关系)；</p>
+
+<p>第二、三个，都是“全概率公式”，只不过第三个比第二个多变化了一次而已(用条件概率公式变化了一下)；</p>
+
+<p>第四个，是“链条法则”，其实一步一步自己慢慢利用上述的其它公式也能变幻出这个结果，但每次都这么做过于繁复，所以直接当作一个深刻的结论记下来会有很大好处。</p>
+
+<p>OK，上面这些总结足够——秒杀ai-class里面的任何一个概率论问题，主要用在贝叶斯网络里面；包括后面开课的<a href="http://www.udacity.com/overview/Course/cs373">CS 373: PROGRAMMING A ROBOTIC CAR</a>，所有的概率论相关计算都能通过上述总结来导出；
+一般过程就是：将原公式通过上述总结进行变换，向已知条件“靠拢”，最后求值；</p>
+
+<p>当然, 还有一小部分内容叫做<strong>“D-Separation”</strong>，懂得了它之后，才敢说“秒杀”贝叶斯网络，这是后面需要介绍的一点点内容: (待续...)</p>
+
+<!--more-->
+
+]]></content>
+  </entry>
+  
+</feed>

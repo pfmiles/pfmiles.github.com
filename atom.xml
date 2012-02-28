@@ -1,0 +1,798 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Meta-Interpretation]]></title>
+  <link href="http://pfmiles.github.com/atom.xml" rel="self"/>
+  <link href="http://pfmiles.github.com/"/>
+  <updated>2012-02-28T10:20:18+08:00</updated>
+  <id>http://pfmiles.github.com/</id>
+  <author>
+    <name><![CDATA[pf_miles]]></name>
+    <email><![CDATA[miles.wy.1@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[[面试中的算法]设计包含min函数的栈]]></title>
+    <link href="http://pfmiles.github.com/blog/algorithms-in-job-interview-design-a-stack-with-min-function"/>
+    <updated>2012-02-28T00:14:00+08:00</updated>
+    <id>http://pfmiles.github.com/blog/algorithms-in-job-interview-design-a-stack-with-min-function</id>
+    <content type="html"><![CDATA[<p>此问题由<a href="http://blog.csdn.net/v_JULY_v/article/details/6050133">v_JULY_v</a>整理发布并发表于<a href="http://blog.csdn.net/v_JULY_v">blog</a>上, 版权归原作者所有。</p>
+
+<p><strong>问题描述：定义栈的数据结构,要求添加一个 min 函数,能够得到栈的最小元素, 要求函数 min、push 以及 pop 的时间复杂度都是 O(1)</strong></p>
+
+<h3>分析：</h3>
+
+<p>主要是抓住栈的<strong>“还原现场”</strong>的能力 —— 由于随着元素的加入与弹出，“最小元素”随时可能变化；在栈的每一个状态，都要维护一个当前最小元素的记录;随着push或pop，“最小元素”也跟着更新或还原到上一次的状态；所以，“最小元素”应该随着栈元素被记录在栈的每一层。</p>
+
+<!--more-->
+
+
+<h3>程序：</h3>
+
+<pre><code>class MinStack(object):
+    def __init__(self):
+    self.arr = []
+
+    def push(self, ele):
+    if len(self.arr) == 0:
+        # no elements yet
+        self.arr.append((ele, ele));# pushes (ele, minEle)
+    else:
+        self.arr.append((ele, ele if ele &lt; self.arr[-1][1] else self.arr[-1][1]))
+
+    def pop(self):
+    return self.arr.pop()[0]
+
+    # using name 'myMin' instead of 'min' because 'min' is a built-in method
+    def myMin(self):
+    return self.arr[-1][1]
+
+stack = MinStack()
+stack.push(5)
+print stack.myMin() # 5 expected
+stack.push(-1)
+stack.push(10)
+stack.push(9)
+
+print stack.myMin() # -1 expected
+print stack.pop() # 9 expected
+</code></pre>
+
+<p>要点：利用栈的“还原上一次记录”的能力, 随时维护当前最小元素</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[[面试中的算法]把二元查找树转变成排序的双向链表]]></title>
+    <link href="http://pfmiles.github.com/blog/algorithms-in-job-interview-turn-binary-search-tree-to-doubly-linked-list"/>
+    <updated>2012-02-27T23:26:00+08:00</updated>
+    <id>http://pfmiles.github.com/blog/algorithms-in-job-interview-turn-binary-search-tree-to-doubly-linked-list</id>
+    <content type="html"><![CDATA[<p>此问题由<a href="http://blog.csdn.net/v_JULY_v/article/details/6050133">v_JULY_v</a>整理发布并发表于<a href="http://blog.csdn.net/v_JULY_v">blog</a>上, 版权归原作者所有。</p>
+
+<p><strong>问题描述：输入一棵二元查找树,将该二元查找树转换成一个排序的双向链表。要求不能创建任何新的结点,只调整指针的指向</strong></p>
+
+<p>比如二叉搜索树：</p>
+
+<pre><code>       10
+      /   \
+    4      12
+   / \    /  \
+  3   5 11    13
+</code></pre>
+
+<p>输出应为： 3, 4, 5, 10, 11, 12, 13</p>
+
+<h3>分析：</h3>
+
+<p>处理树状结构很容易想到递归，而二叉搜索树其实恰好是已经排序好的一个结构，而要把它变成数组，只需“中序遍历”即可: 3,4,5,10,11,12,13</p>
+
+<!--more-->
+
+
+<h3>程序：</h3>
+
+<pre><code># define the data-structure first
+class Node(object):
+    def __init__(self, left=None, value=None, right=None):
+        self.value = value
+        self.left = left
+        self.right = right
+
+# construct the bin-search tree 
+root = Node(None, 10, None)
+
+left = Node(Node(None, 3, None), 4, Node(None, 5, None))
+
+right = Node(Node(None, 11, None), 12, Node(None, 13, None))
+
+root.left = left
+root.right = right
+
+def show(node):
+    rst = [node.value]
+    leftCur, rightCur = node, node
+    while leftCur.left != None:
+        rst.insert(0, leftCur.left.value)
+        leftCur = leftCur.left
+    while rightCur.right != None:
+        rst.append(rightCur.right.value)
+        rightCur = rightCur.right
+    print rst
+
+# 3,4,5,10,11,12,13 expected
+
+# the recursive mid-order traverse function
+def traverse(node, leftOrRight = None):
+    l, r = None, None
+    if node.left != None:
+        l = traverse(node.left, "left")
+        node.left = l
+        l.right = node
+    if node.right != None:
+        r = traverse(node.right, "right")
+        node.right = r
+        r.left = node
+    if leftOrRight == "left" and r != None:
+        return r
+    elif leftOrRight == "right" and l != None:
+        return l
+    else:
+        return node
+
+n = traverse(root)
+
+show(n)
+</code></pre>
+
+<p>结果输出： [3, 4, 5, 10, 11, 12, 13]</p>
+
+<p>要点除了搞清楚二叉搜索树的特性以及中序遍历的规律外，要注意traverse方法中对于该返回&#8217;l&#8217; 还是 &#8216;r&#8217; 或者是node的判断</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[[翻译]Python性能诀窍]]></title>
+    <link href="http://pfmiles.github.com/blog/python-speed-performance-tips"/>
+    <updated>2012-02-05T18:45:00+08:00</updated>
+    <id>http://pfmiles.github.com/blog/python-speed-performance-tips</id>
+    <content type="html"><![CDATA[<p><strong>以下文字译自<a href="http://wiki.python.org/moin/PythonSpeed/PerformanceTips">http://wiki.python.org/moin/PythonSpeed/PerformanceTips</a></strong></p>
+
+<p>这个页面提供了一些帮助改善你的python程序性能的一些点子或小技巧。<br/>
+自从我在大约1996年编写了第一个&#8221;fast python&#8221;页面以来，Python在许多关键的方面有了改变，这意味着一部分内容必须要调整。我将其整合到Python wiki中从而希望其他人能帮助维护它。</p>
+
+<blockquote><p>你应该始终针对你的应用和你打算使用的、特定的<a href="http://wiki.python.org/moin/PythonImplementations">python实现</a>来尝试这些小技巧而不是盲目地相信一种方法比另一种更高效。更多的细节请参考<a href="#Profiling">profiling</a>一节。</p></blockquote>
+
+<p>另外自从这个页面最初编写以来，新出现的包例如<a href="http://cython.org/">Cython</a>, <a href="http://www.cosc.canterbury.ac.nz/~greg/python/Pyrex/">Pyrex</a>, <a href="http://psyco.sourceforge.net/">Psyco</a>, <a href="http://www.scipy.org/Weave">Weave</a>和<a href="http://pyinline.sourceforge.net/">PyInline</a>, 都能通过更容易地将性能要求较高的代码推到C或机器码上去实现从而大幅地改进你的程序的性能。</p>
+
+<h3>概览：优化那些需要优化的地方</h3>
+
+<p>你只能在程序首先给出正确的结果之后才能知道哪里致使你的程序慢了，所以先保证程序正确，再跑程序看是否慢。
+当发现慢了，性能监控能发现程序的哪部份消耗了大部分的时间。一套全面、方便运行的测试能保证后面的优化没有改变你的程序的正确性。<br/>
+简而言之：</p>
+
+<ol>
+<li>把程序调正确。</li>
+<li>测试程序的正确性。</li>
+<li>如果发现慢，分析它的性能。</li>
+<li>优化。</li>
+<li>从第&#8217;2&#8217;步开始重复。</li>
+</ol>
+
+
+<p>某些优化方法刚好就是一个好的编程风格，所以你应该在学习这门语言的时候就学习它们。其中一个例子就是移动那些在循环内或循环外都不会改变的值计算。</p>
+
+<!--more-->
+
+
+<h3>选择正确的数据结构</h3>
+
+<p>TBD.</p>
+
+<h3>排序</h3>
+
+<p>对list中的基本python对象进行排序一般来讲还是很高效的。list的sort方法接受一个可选的比较方法用来控制排序行为。虽然由于这比较方法会被调用多次，这会显著地减慢你的排序，但是这很方便。在Python 2.4中，你应该使用内置sort函数的&#8217;key&#8217;参数，这是实现排序的最便捷的方式。</p>
+
+<p>仅当你在使用老版本的Python(2.4以前)的时候需要遵照&#8217;Guido van Rossum&#8217;的建议：</p>
+
+<p>加速排序的一个变通的方式就是构造一个tuple的列表，每个tuple的第一个元素是一个会被默认的排序方式正确排序的排序key，tuple的第二个元素是原本的被排序对象。这种方法被称为“Schwartzian变换”，也被称为“Decorate SortUndecorate (DSU)”。</p>
+
+<p>假设，例如，你拥有一个list的tuple，你想依据每个tuple的第n个元素对整个list进行排序。下面的方法能够实现。</p>
+
+<pre><code>def sortby(somelist, n):
+    nlist = [(x[n], x) for x in somelist]
+    nlist.sort()
+    return [val for (key, val) in nlist]
+</code></pre>
+
+<p>改变当前list进行排序也很容易被实现：</p>
+
+<pre><code>def sortby_inplace(somelist, n):
+    somelist[:] = [(x[n], x) for x in somelist]
+    somelist.sort()
+    somelist[:] = [val for (key, val) in somelist]
+    return
+</code></pre>
+
+<p>这里有一个例子：</p>
+
+<pre><code>&gt;&gt;&gt; somelist = [(1, 2, 'def'), (2, -4, 'ghi'), (3, 6, 'abc')]
+&gt;&gt;&gt; somelist.sort()
+&gt;&gt;&gt; somelist
+[(1, 2, 'def'), (2, -4, 'ghi'), (3, 6, 'abc')]
+&gt;&gt;&gt; nlist = sortby(somelist, 2)
+&gt;&gt;&gt; sortby_inplace(somelist, 2)
+&gt;&gt;&gt; nlist == somelist
+True
+&gt;&gt;&gt; nlist = sortby(somelist, 1)
+&gt;&gt;&gt; sortby_inplace(somelist, 1)
+&gt;&gt;&gt; nlist == somelist
+True
+</code></pre>
+
+<p>来自Tim Delaney</p>
+
+<p>从Python2.3开始sort都是稳定的。(译者注：即相等元素不会被随意调整先后次序)</p>
+
+<p>(确切地说, sort在CPython2.3中是稳定的, 在Python 2.4中被保证是稳定的)</p>
+
+<p>Python2.4新增了一个可选的key参数使得这个变换容易多了：(译者注：key参数要求传入一个函数)</p>
+
+<pre><code># E.g. n = 1
+n = 1
+import operator
+nlist.sort(key=operator.itemgetter(n))
+# use sorted() if you don't want to sort in-place:
+# sortedlist = sorted(nlist, key=operator.itemgetter(n))
+</code></pre>
+
+<p>请注意原本的元素并没有被用作排序，用作排序的仅仅是返回的key —— 这相当于下面这样做：</p>
+
+<pre><code># E.g. n = 1
+n = 1
+nlist = [(x[n], i, x) for (i, x) in enumerate(nlist)]
+nlist.sort()
+nlist = [val for (key, index, val) in nlist]
+</code></pre>
+
+<h3>字符串拼接：</h3>
+
+<blockquote><p>在新一些的版本的python中，这一小节的内容的准确性存在争议。在CPython 2.5中，字符串拼接已经相当地快，但并不能说其它python实现也是这样。具体请参考<a href="http://wiki.python.org/moin/ConcatenationTestCode">ConcatenationTestCode</a>中的讨论。</p></blockquote>
+
+<p>字符串在python中是不可变的。这一潜在的事实经常咬住那些python初学者的屁股。不可变的特性带来一些优点和缺点。优点就是，字符串可以被用作dict的key，并且可以在多个变量间安全地共享同一个实例。(Python自动共享只含1个或2个字符的字符串。)缺点就是，在任何字符串中你不能办到这样的事情：“将所有的&#8217;a&#8217;换成&#8217;b&#8217;”。取而代之的实现方式是你必须重新新建一个字符串来达到目的。这种连续不断的字符串拷贝给python程序带来了不可忽视的性能问题。</p>
+
+<p>避免这样做：</p>
+
+<pre><code>s = ""
+for substring in list:
+    s += substring
+</code></pre>
+
+<p>Use s = &#8220;&#8221;.join(list) instead. The former is a very common and catastrophic mistake when building large strings. Similarly, if you are generating bits of a string sequentially instead of:
+应该用s = &#8220;&#8221;.join(list)来实现。上面的代码是一种在构造大字符串时很常见的、灾难性的错误。相似地，当你处理字符串中的每一个字符时，不要使用：</p>
+
+<pre><code>s = ""
+for x in list:
+    s += some_function(x)
+</code></pre>
+
+<p>而是用：</p>
+
+<pre><code>slist = [some_function(elt) for elt in somelist]
+s = "".join(slist)
+</code></pre>
+
+<p>还有，避免这样做：</p>
+
+<pre><code>out = "&lt;html&gt;" + head + prologue + query + tail + "&lt;/html&gt;"
+</code></pre>
+
+<p>取而代之要这样做：</p>
+
+<pre><code>out = "&lt;html&gt;%s%s%s%s&lt;/html&gt;" % (head, prologue, query, tail)
+</code></pre>
+
+<p>更好的做法，为了可读性(效率没有进一步提升，只是可读性更好)，使用字典替换：</p>
+
+<pre><code>out = "&lt;html&gt;%(head)s%(prologue)s%(query)s%(tail)s&lt;/html&gt;" % locals()
+</code></pre>
+
+<p>后两段代码会快很多，特别是在CGI脚本扩展运行很多次的时候，且更容易被更改、启动。而且，较慢的方式在python2.0中会变得更慢。它使得python虚拟机花更多的时间搞清楚如何拼接2个字符串。(别忘了python是在运行时查找所有的方法)</p>
+
+<h3>循环</h3>
+
+<p>Python支持好几种循环结构。for语句是最常用的。它遍历一个序列的每个元素，将每个元素赋值给循环变量。如果你的循环体很简单，for循环本身的解释成本将占据大部分的开销。这个时候<a href="http://www.python.org/doc/lib/built-in-funcs.html">map</a>函数就能派上用场了。你可以将map函数看作是for循环采用C代码来实现。唯一的约束是“循环体”必须是一个函数调用。list comprehension除了语法上的便利性之外，他们常常和等价的map调用一样快甚至更快。</p>
+
+<p>这里有一个很直接的例子。取代循环遍历的方式将列表中所有单词变成大写：</p>
+
+<pre><code>newlist = []
+for word in oldlist:
+    newlist.append(word.upper())
+</code></pre>
+
+<p>你可以使用map函数将这个循环由解释执行推到编译好的C代码中去执行：</p>
+
+<pre><code>newlist = map(str.upper, oldlist)
+</code></pre>
+
+<p>List comprehension在python 2.0的时候被加入。它们提供了一种更紧凑的语法和更高效的方式来表达上面的for循环：</p>
+
+<pre><code>newlist = [s.upper() for s in oldlist]
+</code></pre>
+
+<p>generator表达式在python 2.4中被加入。它们功能上跟list comprehension或者map函数差不多不过避免了立刻生成整个列表的开销。相应的，它们返回一个generator对象，能够一个一个元素地被遍历：</p>
+
+<pre><code>iterator = (s.upper() for s in oldlist)
+</code></pre>
+
+<p>哪种方式更合适取决于你使用的python版本以及你处理的数据的特性。</p>
+
+<p>Guido van Rossum写过一份更详细的(很简洁的)关于<a href="http://www.python.org/doc/essays/list2str.html">循环优化的分析</a>很值得一读。</p>
+
+<h3>避免过多的&#8217;.&#8217;</h3>
+
+<p>假如你不能使用map函数或list comprehension呢？你很可能就被这for循环卡住了。for循环还有另外一个坏处。newList.append和word.upper都是函数引用并且在每次循环都被解释执行。原循环可被变成这样：</p>
+
+<pre><code>upper = str.upper
+newlist = []
+append = newlist.append
+for word in oldlist:
+    append(upper(word))
+</code></pre>
+
+<p>这个技巧使用时应谨慎。如果循环体很大，代码将会很难维护。除非你非常熟悉这块代码并且很容易找到append和upper的定义。</p>
+
+<h3>局部变量</h3>
+
+<p>对于非map版本的循环，最后一种优化手段就是尽可能地使用局部变量。如果上述循环被封装成一个函数，append和upper就成了局部变量。Python访问局部变量比全局变量高效得多。</p>
+
+<pre><code>def func():
+    upper = str.upper
+    newlist = []
+    append = newlist.append
+    for word in oldlist:
+        append(upper(word))
+    return newlist
+</code></pre>
+
+<p>当我写这篇文章时我正在使用100MHz的奔腾处理器，跑着BSDI系统。将/usr/share/dict/words中的单词列表转换成大写，时间开销如下：</p>
+
+<pre><code>Version Time (seconds)
+Basic loop 3.47
+Eliminate dots 2.45
+Local variable &amp; no dots 1.79
+Using map function 0.54
+</code></pre>
+
+<h3>初始化字典元素</h3>
+
+<p>假设你正在使用dict来记录单词出现频率，且你已经将要处理的文本整理成了单词列表。很可能你会像下面这样做：</p>
+
+<pre><code>wdict = {}
+for word in words:
+    if word not in wdict:
+        wdict[word] = 0
+    wdict[word] += 1
+</code></pre>
+
+<p>除了第一次执行以外，每次一个新词被发现后if条件就会是false。如果你处理很大一个单词集合，很多单词很可能出现多次。像这种一个值只初始化一次但是会被更改多次的情况，使用try语句会划算一些：</p>
+
+<pre><code>wdict = {}
+for word in words:
+    try:
+        wdict[word] += 1
+    except KeyError:
+        wdict[word] = 1
+</code></pre>
+
+<p>关键是要catch <a href="http://wiki.python.org/moin/KeyError">KeyError</a>这个异常，且不包含一个默认的except语句来试图从任何未预期的错误中恢复。</p>
+
+<p>在python 2.x发布后还有第三种选择。dict拥有了一个get()方法，当找不到指定的key的时候会返回一个默认值。这能够简化循环：</p>
+
+<pre><code>wdict = {}
+get = wdict.get
+for word in words:
+    wdict[word] = get(word, 0) + 1
+</code></pre>
+
+<p>当我最初写这一小节的时候，有一些显然的场景使得前两种方式更快。不过现在貌似3种方式的性能是差不多的(互相之间差距在10%以内)，跟列表的属性或里面的单词无关。</p>
+
+<p>而且，如果存在dict里面的东西是object或一些可变的列表对象，你也可以使用dict.setdefault方法，比如：</p>
+
+<pre><code>wdict.setdefault(key, []).append(new_element)
+</code></pre>
+
+<p>你可能想这样做避免了两次查找key。实际上不是的(就算是在python 3.0里面)，不过至少这2次查找是在C代码中完成的。</p>
+
+<p>另一种选择是使用<a href="http://docs.python.org/py3k/library/collections.html#collections.defaultdict">defaultdict</a>类：</p>
+
+<pre><code>from collections import defaultdict
+
+wdict = defaultdict(int)
+
+for word in words:
+    wdict[word] += 1
+</code></pre>
+
+<h3>import语句的开销</h3>
+
+<p>import语句能够在任何地方被执行。它们常常被放在函数内部以便于限制它们的作用范围且/或节省启动初始化时间。虽然python的解释器被优化得不会重复import同一个模块，重复地执行import语句在一些情况下仍然能显著地影响性能。</p>
+
+<p>考虑下面这两块代码(出自<a href="http://wiki.python.org/moin/McFarlane">Greg McFarlane</a>，我相信——我发现这代码在comp.lang.python python-list@python.org帖子里没有被署名成他但后来我在另外一个地方看到这块代码被署名成他)</p>
+
+<pre><code>def doit1():
+    import string ###### import statement inside function
+    string.lower('Python')
+
+for num in range(100000):
+    doit1()
+</code></pre>
+
+<p>或者：</p>
+
+<pre><code>import string ###### import statement outside function
+def doit2():
+    string.lower('Python')
+
+for num in range(100000):
+    doit2()
+</code></pre>
+
+<p>虽然string模块的引用在doit2中是全局的，doit2仍会比doit1跑得快得多。这里有一段比较程序使用python2.3和最新的timeit模块，来看看第二个到底比第一个快多少：</p>
+
+<pre><code>&gt;&gt;&gt; def doit1():
+... import string
+... string.lower('Python')
+...
+&gt;&gt;&gt; import string
+&gt;&gt;&gt; def doit2():
+... string.lower('Python')
+...
+&gt;&gt;&gt; import timeit
+&gt;&gt;&gt; t = timeit.Timer(setup='from __main__ import doit1', stmt='doit1()')
+&gt;&gt;&gt; t.timeit()
+11.479144930839539
+&gt;&gt;&gt; t = timeit.Timer(setup='from __main__ import doit2', stmt='doit2()')
+&gt;&gt;&gt; t.timeit()
+4.6661689281463623
+</code></pre>
+
+<p>String相关方法在python2.0时被引入。这带来了一种完全避免import语句的方式并且运行得更加快：</p>
+
+<pre><code>def doit3():
+    'Python'.lower()
+
+for num in range(100000):
+    doit3()
+</code></pre>
+
+<p>这是来自timeit的证明：</p>
+
+<pre><code>&gt;&gt;&gt; def doit3():
+... 'Python'.lower()
+...
+&gt;&gt;&gt; t = timeit.Timer(setup='from __main__ import doit3', stmt='doit3()')
+&gt;&gt;&gt; t.timeit()
+2.5606080293655396
+</code></pre>
+
+<p>上面这例子显然有点做作，但内在的道理是正确的。</p>
+
+<p>注意，将import放在函数内部能加速模块的初始化加载，特别是在被引用的模块不一定会被用到的时候。这通常就是一个“懒”加载的情形 —— 在你真正需要它(引入一个模块是开销很大的)之前避免引入它。</p>
+
+<p>这种好处仅仅出现在这个被引入模块还未被加载之前（在任何地方） —— 如果模块已经被加载了(许多标准库常常会出现这种情况，比如string或re)，这时再避免import它不会给你带来任何节省。可以通过sys.modules查看哪些模块被引入了。</p>
+
+<p>做到懒加载的一种较好的方式是：</p>
+
+<pre><code>email = None
+
+def parse_email():
+    global email
+    if email is None:
+        import email
+    ...
+</code></pre>
+
+<p>这样一来email模块仅会被引入一次，在parse_email()被第一次调用的时候。</p>
+
+<h3>数据集合</h3>
+
+<p>函数调用的成本在python中相对较高，特别是跟那些内置函数的执行速度比起来。强烈建议在所有可能的时候，函数应该处理数据集合。这里有一个故意写出的例子：</p>
+
+<pre><code>import time
+x = 0
+def doit1(i):
+    global x
+    x = x + i
+
+list = range(100000)
+t = time.time()
+for i in list:
+    doit1(i)
+
+print "%.3f" % (time.time()-t)
+</code></pre>
+
+<p>vs.</p>
+
+<pre><code>import time
+x = 0
+def doit2(list):
+    global x
+    for i in list:
+        x = x + i
+
+list = range(100000)
+t = time.time()
+doit2(list)
+print "%.3f" % (time.time()-t)
+</code></pre>
+
+<p>这里有一个亲自体验的交互式的例子：</p>
+
+<pre><code>&gt;&gt;&gt; t = time.time()
+&gt;&gt;&gt; for i in list:
+... doit1(i)
+...
+&gt;&gt;&gt; print "%.3f" % (time.time()-t)
+0.758
+&gt;&gt;&gt; t = time.time()
+&gt;&gt;&gt; doit2(list)
+&gt;&gt;&gt; print "%.3f" % (time.time()-t)
+0.204
+</code></pre>
+
+<p>就算使用python写的，第二个例子也比第一个例子运行得快约4倍。若doit是用C写的，这区别应该会更大（将python的for loop换成C的for loop同时也去掉了大多数的函数调用）。</p>
+
+<h3>做更少的后台动作</h3>
+
+<p>Python的解释器会做一些周期性的检查。比如，它要确定是否让另一个线程开始工作或者是否应该执行一个等待中的调用(一般来说是一个由信号处理器建立的调用)。由于大多数时候实际上不需要做这些事情，所以在每个解释器周期都执行这些检查会让事情变慢。在sys模块中有一个函数，setcheckinterval，可以让你设置解释器执行这些周期性检查的频率。在python2.3之前默认值是10。2.3之后提高为100。如果你没有执行多线程操作且你不需要接收许多信号量，把它设置成一个更大些的值可以提升解释器的性能，有时候还很显著。</p>
+
+<h3>Python不是C</h3>
+
+<p>它也不是Perl, Java, C++或者Haskell。当你把其它语言的使用经验用在python上时要当心。一个简单的例子可以说明：</p>
+
+<pre><code>% timeit.py -s 'x = 47' 'x * 2'
+1000000 loops, best of 3: 0.574 usec per loop
+% timeit.py -s 'x = 47' 'x &lt;&lt; 1'
+1000000 loops, best of 3: 0.524 usec per loop
+% timeit.py -s 'x = 47' 'x + x'
+1000000 loops, best of 3: 0.382 usec per loop
+</code></pre>
+
+<p>接下来考虑这段相同的C代码(仅仅“相加”的版本列在下面)：</p>
+
+<pre><code>#include &lt;stdio.h&gt;
+
+int main (int argc, char *argv[]) {
+    int i = 47;
+    int loop;
+    for (loop=0; loop&lt;500000000; loop++)
+        i + i;
+    return 0;
+}
+</code></pre>
+
+<p>执行时间：</p>
+
+<pre><code>% for prog in mult add shift ; do
+&lt; for i in 1 2 3 ; do
+&lt; echo -n "$prog: "
+&lt; /usr/bin/time ./$prog
+&lt; done
+&lt; echo
+&lt; done
+mult: 6.12 real 5.64 user 0.01 sys
+mult: 6.08 real 5.50 user 0.04 sys
+mult: 6.10 real 5.45 user 0.03 sys
+
+add: 6.07 real 5.54 user 0.00 sys
+add: 6.08 real 5.60 user 0.00 sys
+add: 6.07 real 5.58 user 0.01 sys
+
+shift: 6.09 real 5.55 user 0.01 sys
+shift: 6.10 real 5.62 user 0.01 sys
+shift: 6.06 real 5.50 user 0.01 sys
+</code></pre>
+
+<p>请注意在python中，把一个数自己加到自己身上比乘以2或是左移2位要快得多。但在所有的现代计算机体系结构的C语言中，上述3种算术操作都被翻译为了一个可以在一个时钟周期内执行的机器指令，所以你用哪种方式根本无所谓。</p>
+
+<p>有一个python新手经常做的“测试”就是翻译这个Perl idiom：</p>
+
+<pre><code>while (&lt;&gt;) {
+    print;
+}
+</code></pre>
+
+<p>在python中这就像是：</p>
+
+<pre><code>import fileinput
+
+for line in fileinput.input():
+    print line,
+</code></pre>
+
+<p>然后以此来总结出python比perl慢许多的结论。哪怕其他人指出过许多次，python在一些事情上比perl慢但其它事情较快。相对的性能也常常取决于你对这两种语言的经验。</p>
+
+<h3>用xrange代替range</h3>
+
+<blockquote><p>如果你使用python3，这小节的内容就不再适用，因为python3里面range提供一个可以遍历任意长度的范围的iterator，而xrange不再存在。
+python有2种方式取得一个数字范围：range和xrange。大多数人知道range，因为它提示性很强的名字。而xrange，以字母表排序排在很后面，所以知名度小得多。</p></blockquote>
+
+<p>xrange是一个generator对象，基本上等同于下面这段python2.3代码：</p>
+
+<pre><code>def xrange(start, stop=None, step=1):
+    if stop is None:
+        stop = start
+        start = 0
+    else:
+        stop = int(stop)
+    start = int(start)
+    step = int(step)
+
+    while start &lt; stop:
+        yield start
+        start += step
+</code></pre>
+
+<p>只不过它是纯C代码实现的。</p>
+
+<p>xrange确实有一些限制。特别是，它只能和整型一起工作；你不能使用long或者float（它们会被转换成整型，就像上面展示的那样）。</p>
+
+<p>不过它又确实，节省很多内存，并且除非你把产生的对象存在别的什么地方，否则在任何时候只会有一个被产生的对象存在。不同的地方是这样的：当你使用range时，它创建了一个包含整个范围的数字（int, long或者float）对象。所有这些对象在同一时间被创建，所有的对象都同时存在。这在数字的数量很大时是痛苦的事情。</p>
+
+<p>另一方面，xrange不会马上创建任何数字 —— 仅仅创建range对象本身。仅当你拉动generator的时候才创建数字对象，例如，循环遍历它。比如：</p>
+
+<pre><code>xrange(sys.maxint) # 没有循环，没有调用.next，所以没有任何数字被创建
+</code></pre>
+
+<p>因为这个原因，这段代码顺畅地运行。如果你用range来替换它，python就会卡住；要创建sys.maxint个数字对象（在典型的PC平台上大约21亿个）实在是忙得不能做其它事情。最终，它会耗尽内存并退出。</p>
+
+<p>在python2.2以前的版本，xrange对象也支持一些优化，比如快速地是否成员判定(i in xrange(n))。这些特性由于很少使用而在2.2版本后被去掉。</p>
+
+<h3>在运行时重新映射函数</h3>
+
+<p>假如你有一个函数：</p>
+
+<pre><code>class Test:
+    def check(self,a,b,c):
+        if a == 0:
+            self.str = b*100
+        else:
+            self.str = c*100
+
+a = Test()
+def example():
+    for i in xrange(0,100000):
+        a.check(i,"b","c")
+
+import profile
+profile.run("example()")
+</code></pre>
+
+<p>而且假设这个函数被别的地方调用了很多次。</p>
+
+<p>好了，除了第一次运行以外，你的check方法在后面的每次运行都会有一个if语句来拖慢你，所以你可以这样做：</p>
+
+<pre><code>class Test2:
+    def check(self,a,b,c):
+        self.str = b*100
+        self.check = self.check_post
+    def check_post(self,a,b,c):
+        self.str = c*100
+
+a = Test2()
+def example2():
+    for i in xrange(0,100000):
+        a.check(i,"b","c")
+
+import profile
+profile.run("example2()")
+</code></pre>
+
+<p>当然，这个例子还很不充分，不过当这个&#8217;if&#8217;语句是一个相当复杂的表达式(或包含许多&#8217;.&#8217;)，你就能尽量避免执行它们，如果你事先知道仅仅只有第一次为true的话。</p>
+
+<h3>性能优化</h3>
+
+<p>优化你的代码的第一步是查出哪里是瓶颈。对从来不会运行的代码或本来就很快的代码做优化是没有道理的。我使用2个模块来帮助找出我代码中的热点，profile和trace。在后面的例子里我还会使用timeit模块，这是python2.3新加入的。</p>
+
+<blockquote><p>请参考单独的<a href="http://wiki.python.org/moin/PythonSpeed/Profiling">profiling文档</a>来查看除下文中的使用方式以外的其它使用方式。</p></blockquote>
+
+<h4>Profiling</h4>
+
+<p>在python的发行版中包含有好几个<a href="http://docs.python.org/library/profile.html">profiling模块</a>。用它们其中的一个来监控一些函数的性能是很容易的。假设你的主函数叫做&#8217;main&#8217;，不接受任何参数而且你现在想用profile模块来监控并执行它。最简单的方式就是你直接执行</p>
+
+<pre><code>import profile
+profile.run('main()')
+</code></pre>
+
+<p>当main()返回时，profile模块会打印出一个函数调用和对应执行时间的表格。输出结果能够被这个模块里面包含的一个叫Stats的类处理。从python2.4开始profile允许python内置方法和扩展模块的方法被监控性能。</p>
+
+<p>另一个稍微长一些的关于使用profile和pstats模块进行性能监控的描述在这里（归档的版本）：</p>
+
+<p><a href="http://web.archive.org/web/20060506162444/http://wingware.com/doc/howtos/performance-profiling-python-code">http://web.archive.org/web/20060506162444/http://wingware.com/doc/howtos/performance-profiling-python-code</a></p>
+
+<h4>cProfile和Hotshot模块</h4>
+
+<p>从python2.2开始，<a href="http://www.python.org/doc/current/lib/module-hotshot.html">hotshot包</a>就作为profile模块的替代品出现，虽然目前cProfile模块是比hotshot更加被推荐的选择。这些模块都是用C写的，所以使用hotshot(或cProfile)造成的性能影响应该很小，从而性能监控得更精确。在发行版的Tools/scripts文件夹下还有一个hotshotmain.py程序来方便你在命令行使用hotshot来监控你的程序。</p>
+
+<h4>Trace模块</h4>
+
+<p><a href="http://www.python.org/doc/current/lib/module-trace.html">trace模块</a>这一小节是从我原本写的profile模块那一小节里面拆分出来的，用作一些原始的语句级别的测试覆盖的内容。它自从我最初写它的时候开始以来已经被好几个人改了很多次。在python2.0里面你应该能在Tools/scripts里面找到trace.py。从python2.3开始它就被放到了标准库里面(Lib文件夹)。你可以把它拷到本地的bin文件夹里面并且设置好执行权限，然后直接运行它。这样从命令行直接监控整个脚本很方便：</p>
+
+<pre><code>% trace.py -t spam.py eggs
+</code></pre>
+
+<p>在python2.4里甚至更简单。直接运行 python -m trace。</p>
+
+<p>没有单独存在的文档，但你可以运行&#8221;pydoc trace&#8221;来查看内置的文档。</p>
+
+<h4>让性能监控结果可视化</h4>
+
+<p><a href="http://www.vrplumber.com/programming/runsnakerun/">RunSnakeRun</a>是一个由Mike Fletcher创造的图形化工具，能使cProfile输出的profile dump可视化。函数/方法调用可根据多种条件排序，源代码能在图形旁边展示，并带有调用统计。</p>
+
+<p>一个示例：</p>
+
+<pre><code>runsnake some_profile_dump.prof
+</code></pre>
+
+<p><a href="http://code.google.com/p/jrfonseca/wiki/Gprof2Dot">Gprof2Dot</a>是一个基于python的工具，能够将性能监控结果输出转换成图片，之后能够被转换成PNG图片或SVG。</p>
+
+<p>在python2.5下一个典型的性能诊断过程看起来像下面这样（在老一些的平台上需要使用真正的脚本来替代 -m 选项）：</p>
+
+<pre><code>python -m cProfile -o stat.prof MYSCRIPY.PY [ARGS...]
+python -m pbp.scripts.gprof2dot -f pstats -o stat.dot stat.prof
+dot -ostat.png -Tpng stat.dot
+</code></pre>
+
+<p><a href="http://pycallgraph.slowchop.com/">PyCallGraph</a> pycallgraph是一个能够为python程序创建调用图python模块。它生成一个展示一个模块的函数调用以及他们对其它函数的调用的PNG图片文件，还包含函数被调用的次数和消耗的时间。</p>
+
+<p>典型的使用：</p>
+
+<pre><code>pycallgraph scriptname.py
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[[翻译]"AI-class"中的概率论必备知识]]></title>
+    <link href="http://pfmiles.github.com/blog/theory-of-probability-required-in-ai-class"/>
+    <updated>2011-11-01T13:35:00+08:00</updated>
+    <id>http://pfmiles.github.com/blog/theory-of-probability-required-in-ai-class</id>
+    <content type="html"><![CDATA[<p><strong>在2011年末的ai-class中出现许多关于概率论的问题，其实这里有一篇神帖非常精彩：<a href="http://www.reddit.com/r/aiclass/comments/lpw21/a_challenge_to_the_over_achievers_who_really/">A challenge to the Over achievers who really understand Probability</a> 精华在于评论</strong></p>
+
+<p>总结起来，ai-class中所用到的概率论，可以总结为下面几条：</p>
+
+<ol>
+<li>P(A,B) = P(A|B)P(B)              // bayes theorem ie; conditional probability</li>
+<li>P(A) = P(A,B&#8217;) + P(A,B)          // total probability : let B&#8217; = not B</li>
+<li>P(A) = P(A|B)P(B) + P(A|B&#8217;)P(B&#8217;) // total probability</li>
+<li>P(A1,A2,A3,A4) = P(A1|A2,A3,A4)P(A2|A3,A4)P(A3|A4)P(A4) // chain rule - can be extended to n variables</li>
+</ol>
+
+
+<p>第一个，说是贝叶斯公式，可能一眼看不出来，但这正是其神奇之处，只要稍加变化:</p>
+
+<pre><code>P(A, B) = P(A|B)P(B) --&gt; 
+P(B|A)P(A) = P(A|B)P(B) --&gt; 
+P(A|B) = P(B|A)P(A) / P(B)    // 这就是“正规”的贝叶斯公式
+</code></pre>
+
+<p>个人认为，比起“正规”的贝叶斯公式，第一个这种变种会好记得多，并且和“条件概率”结合起来，加深理解了贝叶斯公式的本质(本质上它就是条件概率的巧妙关系)；</p>
+
+<p>第二、三个，都是“全概率公式”，只不过第三个比第二个多变化了一次而已(用条件概率公式变化了一下)；</p>
+
+<p>第四个，是“链条法则”，其实一步一步自己慢慢利用上述的其它公式也能变幻出这个结果，但每次都这么做过于繁复，所以直接当作一个深刻的结论记下来会有很大好处。</p>
+
+<p>OK，上面这些总结足够——秒杀ai-class里面的任何一个概率论问题，主要用在贝叶斯网络里面；包括后面开课的<a href="http://www.udacity.com/overview/Course/cs373">CS 373: PROGRAMMING A ROBOTIC CAR</a>，所有的概率论相关计算都能通过上述总结来导出；
+一般过程就是：将原公式通过上述总结进行变换，向已知条件“靠拢”，最后求值；</p>
+
+<p>当然, 还有一小部分内容叫做<strong>“D-Separation”</strong>，懂得了它之后，才敢说“秒杀”贝叶斯网络，这是后面需要介绍的一点点内容: (待续&#8230;)</p>
+
+<!--more-->
+
+]]></content>
+  </entry>
+  
+</feed>
