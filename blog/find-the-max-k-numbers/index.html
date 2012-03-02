@@ -5,11 +5,14 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>跟踪递归函数路径的方法 - Meta-Interpretation</title>
+  <title>[编程之美]寻找最大的k个数 - Meta-Interpretation</title>
   <meta name="author" content="pf_miles">
 
   
-  <meta name="description" content="有些时候，需要追踪递归函数的路径；比如：递归地遍历一棵树，当找到符合要求的节点时，打印出从根节点到此节点的路径。 这种时候，若子节点不持有到父节点的指针，则需要对路径进行随时地记录，以便需要时能够获取； 一种方式就是建立“栈”结构，在每次递归时将当前节点压栈，并且记得在递归调用过后立刻出栈； &hellip;">
+  <meta name="description" content="《编程之美》上的一道题： wiki链接;
+其实在July的文章里有更加深刻的分析，我这里只是用最小堆的方式实现一遍，体会和总结一下。 分析 这个问题，只要找到“最大的K个数”，但并不要求这K个数之间排序；
+而且如果K很小的话，完全可以采用选择排序的方式，达到O(nk)的复杂度；
+若K不小， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +21,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://pfmiles.github.com/blog/trace-the-path-of-recursive-function">
+  <link rel="canonical" href="http://pfmiles.github.com/blog/find-the-max-k-numbers">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -79,7 +82,7 @@
   
   <header>
     
-      <h1 class="entry-title">跟踪递归函数路径的方法</h1>
+      <h1 class="entry-title">[编程之美]寻找最大的k个数</h1>
     
     
       <p class="meta">
@@ -95,82 +98,115 @@
   
 
 
-<time datetime="2012-02-29T00:04:00+08:00" pubdate data-updated="true">Feb 29<span>th</span>, 2012</time>
+<time datetime="2012-03-02T13:37:00+08:00" pubdate data-updated="true">Mar 2<span>nd</span>, 2012</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>有些时候，需要追踪递归函数的路径；比如：递归地遍历一棵树，当找到符合要求的节点时，打印出从根节点到此节点的路径。</p>
+<div class="entry-content"><p>《编程之美》上的一道题： <a href="http://bop1.wikispaces.com/%E7%AC%AC%E4%BA%8C%E7%AB%A0+%E6%95%B0%E5%AD%97%E4%B9%8B%E9%AD%85#x-2.5%20%E5%AF%BB%E6%89%BE%E6%9C%80%E5%A4%A7%E7%9A%84K%E4%B8%AA%E6%95%B0%20%E2%98%85%E2%98%85%E2%98%85">wiki链接</a>;
+其实在<a href="http://blog.csdn.net/v_JULY_v/article/details/6370650">July的文章里有更加深刻的分析</a>，我这里只是用最小堆的方式实现一遍，体会和总结一下。</p>
 
-<p>这种时候，若子节点不持有到父节点的指针，则需要对路径进行随时地记录，以便需要时能够获取；</p>
+<h3>分析</h3>
 
 <ul>
-<li>一种方式就是建立“栈”结构，在每次递归时将当前节点压栈，并且记得在递归调用过后立刻<strong><em>出栈</em></strong>；</li>
-<li>另一种方式就是直接利用函数递归调用的“调用栈”(也就是传参)了。</li>
+<li>这个问题，只要找到“最大的K个数”，但并不要求这K个数之间排序；</li>
+<li>而且如果K很小的话，完全可以采用选择排序的方式，达到O(nk)的复杂度；</li>
+<li>若K不小，则可利用这“只能容纳K个数的最小堆”的方法来做；时间复杂度是O(nlogk);用“堆”这种结构来解决此问题，很好地理解和利用了堆的特性:
+
+<ol>
+<li>找最大的K个数要使用最小堆，是因为最小堆总能最方便地剔除“最小的元素”，那么最后剩在堆中的都是最大的K个元素了；反之，若要找“最小的K个元素”则应该使用最大堆</li>
+<li>二叉堆的同层节点之间是没有顺序的，这恰好符合我们的题目“不要求K个数之间排序”的需求，少了K个数之间的排序则能够减少不必要计算</li>
+</ol>
+</li>
 </ul>
 
 
-<p><em>例如有一个题目：输入一个整数和一棵二元树。
-从树的根结点开始往下访问一直到叶结点所经过的所有结点形成一条路径。
-打印出和与输入整数相等的所有路径。</em></p>
+<h3>程序</h3>
 
-<p>程序较简单，就是递归遍历，查找节点相加数值等于预期数值的情况：</p>
+<pre><code>#include &lt;stdio.h&gt;
 
-<pre><code># define the data-structure first
-class Node(object):
-    def __init__(self, left=None, value=None, right=None):
-    self.value = value
-    self.left = left
-    self.right = right
+// defines the heap structure
+typedef struct {
+    int size, last_pos;
+    int* data;
+} Heap;
 
-root = Node(Node(Node(None, 4, None), 5, None), 10 , Node(None, 12, Node(None, 7, None)))
+void into_min_heap(int node, Heap* heap);
+void adjust_min_heap(Heap* heap, int cur_index);
 
-found = []
-def findPath(tree, value, sm=0, paths=[]):
-    if tree.value + sm &gt; value:
-    return
-    elif tree.value + sm == value:
-    paths.append(tree.value)
-    found.append(paths[:])
-    return
-    else:
-    paths.append(tree.value)
-    if tree.left != None:
-        findPath(tree.left, value, tree.value + sm, paths)
-    if tree.right !=None:
-        findPath(tree.right, value, tree.value + sm, paths)
-    paths.pop()
+// find the max k digits
+void max_k(int len, int array[], int k, int rst[]) {
+    // build min-heap on rst while iterating array:
+    // worst time complexity: n * log k
+    int i;
+    Heap heap = { k, -1, rst };
+    for (i = 0; i &lt; len; i++) {
+        into_min_heap(array[i], &amp;heap);
+    }
+}
 
-findPath(root, 22)
-print found
+void into_min_heap(int node, Heap* heap) {
+    if (heap-&gt;last_pos == -1) {
+        heap-&gt;data[0] = node;
+        heap-&gt;last_pos = 0;
+    } else {
+        if (node &lt; heap-&gt;data[0]) {
+            return;
+        } else {
+            if (heap-&gt;last_pos + 1 &lt; heap-&gt;size) {
+                heap-&gt;data[heap-&gt;last_pos + 1] = node;
+                heap-&gt;last_pos++;
+            } else {
+                heap-&gt;data[0] = node;
+                adjust_min_heap(heap, 0); // log k
+            }
+        }
+    }
+}
+
+void adjust_min_heap(Heap* heap, int cur_index) {
+    int c1_index = (cur_index + 1) * 2;
+    int c2_index = (cur_index + 1) * 2 + 1;
+    if (c1_index &lt; heap-&gt;size) {
+        if (heap-&gt;data[cur_index] &lt;= heap-&gt;data[c1_index]) {
+            if (c2_index &lt; heap-&gt;size) {
+                if (heap-&gt;data[cur_index] &lt;= heap-&gt;data[c2_index]) {
+                    return;
+                } else {
+                    int tmp = heap-&gt;data[cur_index];
+                    heap-&gt;data[cur_index] = heap-&gt;data[c2_index];
+                    heap-&gt;data[c2_index] = tmp;
+                    adjust_min_heap(heap, c2_index);
+                }
+            }
+        } else {
+            int tmp = heap-&gt;data[cur_index];
+            heap-&gt;data[cur_index] = heap-&gt;data[c1_index];
+            heap-&gt;data[c1_index] = tmp;
+            adjust_min_heap(heap, c1_index);
+        }
+    }
+}
+
+int main(int args, char** argv) {
+    int k = 3;
+    int rst[k];
+    int arr[10] = { 1, 20, -35, 4, 7, 11, 19, -5, 0, 18 };
+    max_k(10, arr, k, rst);
+    printf("The max k numbers are: ");
+    int i;
+    for (i = 0; i &lt; k; i++) {
+        printf("%d ", rst[i]);
+    }
+    return 0;
+}
 </code></pre>
 
-<p>其中值得注意的是：</p>
+<h3>总结</h3>
 
-<pre><code>paths.append(tree.value)
-</code></pre>
-
-<p>和：</p>
-
-<pre><code>paths.pop()
-</code></pre>
-
-<p>这两行；
-在递归方法前后进行对应地push和pop是正确记录路径必不可少的步骤。</p>
-
-<p>其实，像上述这种每次递归调用之前都push，每次调用之后都pop的情况，其栈的层次、深度、变化规律跟函数调用栈是完全一致的，那么其实就完全可以考虑直接把父节点扔给下一层递归函数：</p>
-
-<pre><code>findPath(tree.left, value, tree.value + sm, tree)
-</code></pre>
-
-<p>其实，findPath的函数签名现在就变成了：</p>
-
-<pre><code>findPath(树, 预期值, 当前和, 父节点)
-</code></pre>
-
-<p>这样一来，其实路径上的每一步，都是记录在调用栈上的(就算子节点没有父节点的指针，函数参数也直接把父节点带过来了，也就是在调用栈中)，当程序想要输出路径时，也完全能够将路径还原。</p>
+<p>还是要理解各种常用数据结构的特性及其意义，遇到特定的问题时才好能够正确地选择出最能适合需求的这种结构。</p>
 </div>
 
 
@@ -193,7 +229,7 @@ print found
   
 
 
-<time datetime="2012-02-29T00:04:00+08:00" pubdate data-updated="true">Feb 29<span>th</span>, 2012</time>
+<time datetime="2012-03-02T13:37:00+08:00" pubdate data-updated="true">Mar 2<span>nd</span>, 2012</time>
       
 
 <span class="categories">
@@ -207,7 +243,7 @@ print found
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pfmiles.github.com/blog/trace-the-path-of-recursive-function" data-via="pf_miles" data-counturl="http://pfmiles.github.com/blog/trace-the-path-of-recursive-function" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pfmiles.github.com/blog/find-the-max-k-numbers" data-via="pf_miles" data-counturl="http://pfmiles.github.com/blog/find-the-max-k-numbers" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -220,10 +256,8 @@ print found
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/algorithms-in-job-interview-max-sum-sub-list" title="Previous Post: [面试中的算法]求子数组的最大和">&laquo; [面试中的算法]求子数组的最大和</a>
+        <a class="basic-alignment left" href="/blog/trace-the-path-of-recursive-function" title="Previous Post: 跟踪递归函数路径的方法">&laquo; 跟踪递归函数路径的方法</a>
       
-      
-        <a class="basic-alignment right" href="/blog/find-the-max-k-numbers" title="Next Post: [编程之美]寻找最大的k个数">[编程之美]寻找最大的k个数 &raquo;</a>
       
     </p>
   </footer>
