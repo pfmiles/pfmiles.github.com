@@ -4,6 +4,8 @@ title: "[翻译]Python性能诀窍"
 date: 2012-02-05 18:45
 comments: true
 categories: [python, 性能, performance]
+description: "Python性能诀窍, Python speed, performance tips."
+keywords: "python, performance, 性能"
 ---
 **以下文字译自<http://wiki.python.org/moin/PythonSpeed/PerformanceTips>**  
 

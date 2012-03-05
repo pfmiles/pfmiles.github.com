@@ -4,6 +4,8 @@ title: "跟踪递归函数路径的方法"
 date: 2012-02-29 00:04
 comments: true
 categories: [programming, algorithm]
+description: "跟踪递归函数路径的方法"
+keywords: "recursion, path, trace, algorithm, 递归函数, 路径, 跟踪"
 ---
 
 有些时候，需要追踪递归函数的路径；比如：递归地遍历一棵树，当找到符合要求的节点时，打印出从根节点到此节点的路径。

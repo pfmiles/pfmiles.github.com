@@ -4,6 +4,8 @@ title: "[翻译]\"AI-class\"中的概率论必备知识"
 date: 2011-11-01 13:35
 comments: true
 categories: [probability, ai-class]
+description: "ai-class中的概率论必备知识"
+keywords: "ai-class, 概率论, probability, 贝叶斯网络"
 ---
 **在2011年末的ai-class中出现许多关于概率论的问题，其实这里有一篇神帖非常精彩：[A challenge to the Over achievers who really understand Probability](http://www.reddit.com/r/aiclass/comments/lpw21/a_challenge_to_the_over_achievers_who_really/) 精华在于评论**
 

@@ -4,6 +4,8 @@ title: "[面试中的算法]把二元查找树转变成排序的双向链表"
 date: 2012-02-27 23:26
 comments: true
 categories: [algorithm, interview]
+description: "把二元查找树转变成排序的双向链表"
+keywords: "algorithm, interview, 面试题, 算法"
 ---
 此问题由[v\_JULY\_v](http://blog.csdn.net/v_JULY_v/article/details/6050133)整理发布并发表于[blog](http://blog.csdn.net/v_JULY_v)上, 版权归原作者所有。
 

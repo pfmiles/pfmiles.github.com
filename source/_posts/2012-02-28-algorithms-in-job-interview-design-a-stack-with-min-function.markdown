@@ -4,6 +4,8 @@ title: "[面试中的算法]设计包含min函数的栈"
 date: 2012-02-28 00:14
 comments: true
 categories: [algorithm, interview] 
+description: "设计包含min函数的栈"
+keywords: "algorithm, stack, min, 算法, 面试, interview"
 ---
 此问题由[v\_JULY\_v](http://blog.csdn.net/v_JULY_v/article/details/6050133)整理发布并发表于[blog](http://blog.csdn.net/v_JULY_v)上, 版权归原作者所有。
 

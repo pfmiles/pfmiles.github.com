@@ -4,6 +4,8 @@ title: "[面试中的算法]求子数组的最大和"
 date: 2012-02-28 22:48
 comments: true
 categories: [algorithm, interview]
+description: "求子数组的最大和"
+keywords: "algorithm, 算法, 子数组, 最大和"
 ---
 此问题由[v\_JULY\_v](http://blog.csdn.net/v_JULY_v/article/details/6050133)整理发布并发表于[blog](http://blog.csdn.net/v_JULY_v)上, 版权归原作者所有。
 

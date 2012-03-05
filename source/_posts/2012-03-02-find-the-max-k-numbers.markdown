@@ -4,6 +4,8 @@ title: "[编程之美]寻找最大的k个数"
 date: 2012-03-02 13:37
 comments: true
 categories: [algorithm, programming]
+description: "[编程之美]寻找最大的k个数"
+keywords: "algorithm, programming, 编程之美, k个数"
 ---
 《编程之美》上的一道题： [wiki链接](http://bop1.wikispaces.com/%E7%AC%AC%E4%BA%8C%E7%AB%A0+%E6%95%B0%E5%AD%97%E4%B9%8B%E9%AD%85#x-2.5 寻找最大的K个数 ★★★);
 其实在[July的文章里有更加深刻的分析](http://blog.csdn.net/v_JULY_v/article/details/6370650)，我这里只是用最小堆的方式实现一遍，体会和总结一下。
