@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>跟踪递归函数路径的方法 - Meta-Interpretation</title>
+  <title>帮表妹和姑姑攒的台式机 - Meta-Interpretation</title>
   <meta name="author" content="pf_miles">
 
   
-  <meta name="description" content="跟踪递归函数路径的方法">
-  <meta name="keywords" content="recursion, path, trace, algorithm, 递归函数, 路径, 跟踪">
+  <meta name="description" content="帮表妹和姑姑攒的台式机，硬盘贵啊">
+  <meta name="keywords" content="pc, computer, desktop">
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://pfmiles.github.com/blog/trace-the-path-of-recursive-function">
+  <link rel="canonical" href="http://pfmiles.github.com/blog/pc-assembled-for-my-cousin-and-aunt">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -79,7 +79,7 @@
   
   <header>
     
-      <h1 class="entry-title">跟踪递归函数路径的方法</h1>
+      <h1 class="entry-title">帮表妹和姑姑攒的台式机</h1>
     
     
       <p class="meta">
@@ -95,82 +95,36 @@
   
 
 
-<time datetime="2012-02-29T00:04:00+08:00" pubdate data-updated="true">Feb 29<span>th</span>, 2012</time>
+<time datetime="2012-03-10T20:18:00+08:00" pubdate data-updated="true">Mar 10<span>th</span>, 2012</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>有些时候，需要追踪递归函数的路径；比如：递归地遍历一棵树，当找到符合要求的节点时，打印出从根节点到此节点的路径。</p>
+<div class="entry-content"><p>其实早就看好的，不过一直没仔细上淘宝询问和调查；<br/>
+现在在网上买电脑其实也还不错的；<br/>
+她们平时也就拿电脑来偷偷菜，看看电影，玩玩小游戏逛逛taobao，这样的电脑跑到“电脑城”一问，人家跟他说要4k+才能拿下&#8230;我说这不坑爹么？行了，网上搞一套吧，拿回来自己装，心理预期价格2k左右 —— 反正不用买显示器。<br/>
+对于这些“平民级”的PC需求，我好像一直对AMD体系情有独钟，包括我自己的台式也是AMD&#8230;话说我对台式机的需求还真是平民中的平民啊，反正我又不玩什么高端的游戏:)</p>
 
-<p>这种时候，若子节点不持有到父节点的指针，则需要对路径进行随时地记录，以便需要时能够获取；</p>
+<h3>好了， 配置列表:</h3>
 
-<ul>
-<li>一种方式就是建立“栈”结构，在每次递归时将当前节点压栈，并且记得在递归调用过后立刻<strong><em>出栈</em></strong>；</li>
-<li>另一种方式就是直接利用函数递归调用的“调用栈”(也就是传参)了。</li>
-</ul>
+<ol>
+<li>AMD a6-3650, 盒装带风扇，648元(小贵哦，不过看在它4核再加上显示核心的份上还行)</li>
+<li>映泰a75 MH，全固态，小板子，主要是拿来配CPU的FM1插口，不管怎么说主板作为最重要的配件可要弄好一点，模拟/数字/HDMI接口都有(445元)</li>
+<li>内存威刚 2G DDR3 1333 * 2 (152元, 2根用来组成双通道的，4g他们装个32位win7应该够了吧&#8230;)</li>
+<li>硬盘WD500G WD5000AAKX 16M蓝盘 SATA3 (539元！好贵啊&#8230;最近硬盘水患涨价，不过总不能不要硬盘吧&#8230;)</li>
+<li>电源航嘉冷钻2.3+, 300w (199元, 这玩意儿只能装进大机箱&#8230;)</li>
+<li>华硕DVDRW DRW-24D1ST, 24x/SATA (135元，姑姑说她“想刻东西”&#8230;好吧&#8230;)<br/>
+<strong><em>总：2118元</em></strong><br/>
+木有键鼠，木有机箱（机箱在运输过程中怕容易坏所以没买），木有显示器（暂时用旧的），OK。哦，还有运费40&#8230;</li>
+</ol>
 
 
-<p><em>例如有一个题目：输入一个整数和一棵二元树。
-从树的根结点开始往下访问一直到叶结点所经过的所有结点形成一条路径。
-打印出和与输入整数相等的所有路径。</em></p>
+<h3>总结</h3>
 
-<p>程序较简单，就是递归遍历，查找节点相加数值等于预期数值的情况：</p>
-
-<pre><code># define the data-structure first
-class Node(object):
-    def __init__(self, left=None, value=None, right=None):
-    self.value = value
-    self.left = left
-    self.right = right
-
-root = Node(Node(Node(None, 4, None), 5, None), 10 , Node(None, 12, Node(None, 7, None)))
-
-found = []
-def findPath(tree, value, sm=0, paths=[]):
-    if tree.value + sm &gt; value:
-    return
-    elif tree.value + sm == value:
-    paths.append(tree.value)
-    found.append(paths[:])
-    return
-    else:
-    paths.append(tree.value)
-    if tree.left != None:
-        findPath(tree.left, value, tree.value + sm, paths)
-    if tree.right !=None:
-        findPath(tree.right, value, tree.value + sm, paths)
-    paths.pop()
-
-findPath(root, 22)
-print found
-</code></pre>
-
-<p>其中值得注意的是：</p>
-
-<pre><code>paths.append(tree.value)
-</code></pre>
-
-<p>和：</p>
-
-<pre><code>paths.pop()
-</code></pre>
-
-<p>这两行；
-在递归方法前后进行对应地push和pop是正确记录路径必不可少的步骤。</p>
-
-<p>其实，像上述这种每次递归调用之前都push，每次调用之后都pop的情况，其栈的层次、深度、变化规律跟函数调用栈是完全一致的，那么其实就完全可以考虑直接把父节点扔给下一层递归函数：</p>
-
-<pre><code>findPath(tree.left, value, tree.value + sm, tree)
-</code></pre>
-
-<p>其实，findPath的函数签名现在就变成了：</p>
-
-<pre><code>findPath(树, 预期值, 当前和, 父节点)
-</code></pre>
-
-<p>这样一来，其实路径上的每一步，都是记录在调用栈上的(就算子节点没有父节点的指针，函数参数也直接把父节点带过来了，也就是在调用栈中)，当程序想要输出路径时，也完全能够将路径还原。</p>
+<p>久了不攒机真是out了啊out，殊不知现在流行显示核心嵌到CPU里面&#8230;而且也没想到硬盘由于工厂发大水涨价涨得厉害&#8230;哎<br/>
+不过电脑这东西，平民级的用途的话，啥时候想用啥时候就买就行了，没有必要等，而且买了之后就没有什么好后悔的，因为这个行业的新产品出得太快了&#8230;当然也有人等着硬盘降价、等着显卡降价的，人家那不一样，人家那是发烧友，那是高玩，人家一个显卡就几千块的&#8230;能不等等么。</p>
 </div>
 
 
@@ -193,12 +147,12 @@ print found
   
 
 
-<time datetime="2012-02-29T00:04:00+08:00" pubdate data-updated="true">Feb 29<span>th</span>, 2012</time>
+<time datetime="2012-03-10T20:18:00+08:00" pubdate data-updated="true">Mar 10<span>th</span>, 2012</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/category/algorithm/'>algorithm</a>, <a class='category' href='/blog/category/programming/'>programming</a>
+    <a class='category' href='/blog/category/computer/'>computer</a>, <a class='category' href='/blog/category/life/'>life</a>
   
 </span>
 
@@ -207,7 +161,7 @@ print found
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pfmiles.github.com/blog/trace-the-path-of-recursive-function" data-via="pf_miles" data-counturl="http://pfmiles.github.com/blog/trace-the-path-of-recursive-function" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pfmiles.github.com/blog/pc-assembled-for-my-cousin-and-aunt" data-via="pf_miles" data-counturl="http://pfmiles.github.com/blog/pc-assembled-for-my-cousin-and-aunt" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -220,10 +174,8 @@ print found
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/algorithms-in-job-interview-max-sum-sub-list" title="Previous Post: [面试中的算法]求子数组的最大和">&laquo; [面试中的算法]求子数组的最大和</a>
+        <a class="basic-alignment left" href="/blog/algorithms-in-job-interview-test-if-two-linked-lists-intersected" title="Previous Post: [面试中的算法]编程判断两个链表是否相交">&laquo; [面试中的算法]编程判断两个链表是否相交</a>
       
-      
-        <a class="basic-alignment right" href="/blog/find-the-max-k-numbers" title="Next Post: [编程之美]寻找最大的k个数">[编程之美]寻找最大的k个数 &raquo;</a>
       
     </p>
   </footer>
