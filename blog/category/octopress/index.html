@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>[面试中的算法]设计包含min函数的栈 - Meta-Interpretation</title>
+  <title>Category: octopress - Meta-Interpretation</title>
   <meta name="author" content="pf_miles">
 
   
-  <meta name="description" content="设计包含min函数的栈">
-  <meta name="keywords" content="algorithm, stack, min, 算法, 面试, interview">
+  <meta name="description" content="Category: octopress">
+  
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://pfmiles.github.com/blog/algorithms-in-job-interview-design-a-stack-with-min-function">
+  <link rel="canonical" href="http://pfmiles.github.comblog/category/octopress">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -75,132 +75,35 @@
   <div id="main">
     <div id="content">
       <div>
-<article class="hentry" role="article">
+<article role="article">
   
   <header>
-    
-      <h1 class="entry-title">[面试中的算法]设计包含min函数的栈</h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-02-28T00:14:00+08:00" pubdate data-updated="true">Feb 28<span>th</span>, 2012</time>
-        
-      </p>
+    <h1 class="entry-title">Category: Octopress</h1>
     
   </header>
+  
+  <div id="blog-archives" class="category">
 
 
-<div class="entry-content"><p>此问题由<a href="http://blog.csdn.net/v_JULY_v/article/details/6050133">v_JULY_v</a>整理发布并发表于<a href="http://blog.csdn.net/v_JULY_v">blog</a>上, 版权归原作者所有。</p>
 
-<p><strong>问题描述：定义栈的数据结构,要求添加一个 min 函数,能够得到栈的最小元素, 要求函数 min、push 以及 pop 的时间复杂度都是 O(1)</strong></p>
+  
+  <h2>2012</h2>
 
-<h3>分析：</h3>
+<article>
+  
+<h1><a href="/blog/liquid-error-about-regexp-match-when-using-octopress-tagcloud">Liquid Error about regexp match when using octopress-tagcloud</a></h1>
+<time datetime="2012-03-14T19:33:00+08:00" pubdate><span class='month'>Mar</span> <span class='day'>14</span> <span class='year'>2012</span></time>
 
-<p>主要是抓住栈的<strong>“还原现场”</strong>的能力 —— 由于随着元素的加入与弹出，“最小元素”随时可能变化；在栈的每一个状态，都要维护一个当前最小元素的记录;随着push或pop，“最小元素”也跟着更新或还原到上一次的状态；所以，“最小元素”应该随着栈元素被记录在栈的每一层。</p>
+<footer>
+  <span class="categories">posted in <a class='category' href='/blog/category/octopress/'>octopress</a></span>
+</footer>
 
-<!--more-->
 
+</article>
 
-<h3>程序：</h3>
-
-<pre><code>class MinStack(object):
-    def __init__(self):
-    self.arr = []
-
-    def push(self, ele):
-    if len(self.arr) == 0:
-        # no elements yet
-        self.arr.append((ele, ele));# pushes (ele, minEle)
-    else:
-        self.arr.append((ele, ele if ele &lt; self.arr[-1][1] else self.arr[-1][1]))
-
-    def pop(self):
-    return self.arr.pop()[0]
-
-    # using name 'myMin' instead of 'min' because 'min' is a built-in method
-    def myMin(self):
-    return self.arr[-1][1]
-
-stack = MinStack()
-stack.push(5)
-print stack.myMin() # 5 expected
-stack.push(-1)
-stack.push(10)
-stack.push(9)
-
-print stack.myMin() # -1 expected
-print stack.pop() # 9 expected
-</code></pre>
-
-<p>要点：利用栈的“还原上一次记录”的能力, 随时维护当前最小元素</p>
 </div>
 
-
-  <footer>
-    <p class="meta">
-      
   
-
-<span class="byline author vcard">Posted by <span class="fn">pf_miles</span></span>
-
-      
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-02-28T00:14:00+08:00" pubdate data-updated="true">Feb 28<span>th</span>, 2012</time>
-      
-
-<span class="categories">
-  
-    <a class='category' href='/blog/category/algorithm/'>algorithm</a>, <a class='category' href='/blog/category/interview/'>interview</a>
-  
-</span>
-
-
-    </p>
-    
-      <div class="sharing">
-  
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pfmiles.github.com/blog/algorithms-in-job-interview-design-a-stack-with-min-function" data-via="pf_miles" data-counturl="http://pfmiles.github.com/blog/algorithms-in-job-interview-design-a-stack-with-min-function" >Tweet</a>
-  
-  
-  <div class="g-plusone" data-size="medium"></div>
-  
-  
-    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
-  
-</div>
-
-    
-    <p class="meta">
-      
-        <a class="basic-alignment left" href="/blog/algorithms-in-job-interview-turn-binary-search-tree-to-doubly-linked-list" title="Previous Post: [面试中的算法]把二元查找树转变成排序的双向链表">&laquo; [面试中的算法]把二元查找树转变成排序的双向链表</a>
-      
-      
-        <a class="basic-alignment right" href="/blog/algorithms-in-job-interview-max-sum-sub-list" title="Next Post: [面试中的算法]求子数组的最大和">[面试中的算法]求子数组的最大和 &raquo;</a>
-      
-    </p>
-  </footer>
 </article>
 
 </div>

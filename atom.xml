@@ -4,7 +4,7 @@
   <title><![CDATA[Meta-Interpretation]]></title>
   <link href="http://pfmiles.github.com/atom.xml" rel="self"/>
   <link href="http://pfmiles.github.com/"/>
-  <updated>2012-03-10T21:00:24+08:00</updated>
+  <updated>2012-03-14T20:12:07+08:00</updated>
   <id>http://pfmiles.github.com/</id>
   <author>
     <name><![CDATA[pf_miles]]></name>
@@ -12,6 +12,157 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Liquid Error about regexp match when using octopress-tagcloud]]></title>
+    <link href="http://pfmiles.github.com/blog/liquid-error-about-regexp-match-when-using-octopress-tagcloud"/>
+    <updated>2012-03-14T19:33:00+08:00</updated>
+    <id>http://pfmiles.github.com/blog/liquid-error-about-regexp-match-when-using-octopress-tagcloud</id>
+    <content type="html"><![CDATA[<p>Octopress插件：<a href="https://github.com/tokkonopapa/octopress-tagcloud">octopress-tagcloud</a>相当nice，不过在使用的时候，若是blog整体采用了非ascii码的编码格式(比如utf-8)就会出现类似这样的错误：</p>
+
+<pre><code>Liquid error: incompatible encoding regexp match (ascii-8bit regexp with utf-8 string)
+</code></pre>
+
+<p>其实是由于octopress-tagcloud的插件文件：<code>plugins/tag_cloud.rb</code>文件本身是ascii编码所致:</p>
+
+<pre><code>$ chardet tag_cloud.rb
+tag_cloud.rb: ascii (confidence: 1.00)
+</code></pre>
+
+<p><code>tag_cloud.rb</code>中很多地方用到了ruby的正则表达式，而ruby的正则表达式在匹配的时候，默认是按照“代码源文件”的编码格式(在这里是ascii)进行匹配的，而若我的blog是utf-8编码的话就会出现上述错误。</p>
+
+<p>解决办法有二：</p>
+
+<ol>
+<li>将<code>tag_cloud.rb</code>转成utf-8&#8230;</li>
+<li>更改<code>tag_cloud.rb</code>中所有的正则表达式声明，加上<code>u</code>选项(根据<a href="http://www.ruby-doc.org/core-1.9.3/Regexp.html">这里</a>的说明，<code>u</code>的意思就是以utf-8编码格式来进行匹配)，即，若原正则式是：<code>/regexp/</code>, 则改成：<code>/regexp/u</code></li>
+</ol>
+
+
+<!-- more -->
+
+
+<p>这里是我改好的<code>tag_cloud.rb</code>：</p>
+
+<div><script src='https://gist.github.com/2036006.js?file='></script>
+<noscript><pre><code># Tag Cloud for Octopress, modified by pf_miles, for use with utf-8 encoded blogs(all regexp added 'u' option).
+# =======================
+# 
+# Description:
+# ------------
+# Easy output tag cloud and category list.
+# 
+# Syntax:
+# -------
+#     {% tag_cloud [counter:true] %}
+#     {% category_list [counter:true] %}
+# 
+# Example:
+# --------
+# In some template files, you can add the following markups.
+# 
+# ### source/_includes/custom/asides/tag_cloud.html ###
+# 
+#     &lt;section&gt;
+#       &lt;h1&gt;Tag Cloud&lt;/h1&gt;
+#         &lt;span id=&quot;tag-cloud&quot;&gt;{% tag_cloud %}&lt;/span&gt;
+#     &lt;/section&gt;
+# 
+# ### source/_includes/custom/asides/category_list.html ###
+# 
+#     &lt;section&gt;
+#       &lt;h1&gt;Categories&lt;/h1&gt;
+#         &lt;ul id=&quot;category-list&quot;&gt;{% category_list counter:true %}&lt;/ul&gt;
+#     &lt;/section&gt;
+# 
+# Notes:
+# ------
+# Be sure to insert above template files into `default_asides` array in `_config.yml`.
+# And also you can define styles for 'tag-cloud' or 'category-list' in a `.scss` file.
+# (ex: `sass/custom/_styles.scss`)
+# 
+# Licence:
+# --------
+# Distributed under the [MIT License][MIT].
+# 
+# [MIT]: http://www.opensource.org/licenses/mit-license.php
+# 
+module Jekyll
+
+  class TagCloud &lt; Liquid::Tag
+
+    def initialize(tag_name, markup, tokens)
+      @opts = {}
+      if markup.strip =~ /\s*counter:(\w+)/iu
+        @opts['counter'] = $1
+        markup = markup.strip.sub(/counter:\w+/iu,'')
+      end
+      super
+    end
+
+    def render(context)
+      lists = {}
+      max, min = 1, 1
+      config = context.registers[:site].config
+      category_dir = config['root'] + config['category_dir'] + '/'
+      categories = context.registers[:site].categories
+      categories.keys.sort_by{ |str| str.downcase }.each do |category|
+        count = categories[category].count
+        lists[category] = count
+        max = count if count &gt; max
+      end
+
+      html = ''
+      lists.each do | category, counter |
+        url = category_dir + category.gsub(/_|\P{Word}/u, '-').gsub(/-{2,}/u, '-').downcase
+        style = &quot;font-size: #{100 + (60 * Float(counter)/max)}%&quot;
+        html &lt;&lt; &quot;&lt;a href='#{url}' style='#{style}'&gt;#{category.capitalize}&quot;
+        if @opts['counter']
+          html &lt;&lt; &quot;(#{categories[category].count})&quot;
+        end
+        html &lt;&lt; &quot;&lt;/a&gt; &quot;
+      end
+      html
+    end
+  end
+
+  class CategoryList &lt; Liquid::Tag
+
+    def initialize(tag_name, markup, tokens)
+      @opts = {}
+      if markup.strip =~ /\s*counter:(\w+)/iu
+        @opts['counter'] = $1
+        markup = markup.strip.sub(/counter:\w+/iu,'')
+      end
+      super
+    end
+
+    def render(context)
+      html = &quot;&quot;
+      config = context.registers[:site].config
+      category_dir = config['root'] + config['category_dir'] + '/'
+      categories = context.registers[:site].categories
+      categories.keys.sort_by{ |str| str.downcase }.each do |category|
+        url = category_dir + category.gsub(/_|\P{Word}/u, '-').gsub(/-{2,}/u, '-').downcase
+        html &lt;&lt; &quot;&lt;li&gt;&lt;a href='#{url}'&gt;#{category.capitalize}&quot;
+        if @opts['counter']
+          html &lt;&lt; &quot; (#{categories[category].count})&quot;
+        end
+        html &lt;&lt; &quot;&lt;/a&gt;&lt;/li&gt;&quot;
+      end
+      html
+    end
+  end
+
+end
+
+Liquid::Template.register_tag('tag_cloud', Jekyll::TagCloud)
+Liquid::Template.register_tag('category_list', Jekyll::CategoryList)</code></pre></noscript></div>
+
+
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[帮表妹和姑姑攒的台式机]]></title>

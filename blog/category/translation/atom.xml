@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: 性能 | Meta-Interpretation]]></title>
-  <link href="http://pfmiles.github.com/blog/category/性能/atom.xml" rel="self"/>
+  <title><![CDATA[Category: translation | Meta-Interpretation]]></title>
+  <link href="http://pfmiles.github.com/blog/category/translation/atom.xml" rel="self"/>
   <link href="http://pfmiles.github.com/"/>
-  <updated>2012-03-10T21:00:24+08:00</updated>
+  <updated>2012-03-14T20:12:07+08:00</updated>
   <id>http://pfmiles.github.com/</id>
   <author>
     <name><![CDATA[pf_miles]]></name>

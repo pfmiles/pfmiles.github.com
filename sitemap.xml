@@ -6,7 +6,7 @@
     </url>
     <url>
         <loc>http://pfmiles.github.com/blog/python-speed-performance-tips</loc>
-        <lastmod>2012-03-05T09:46:55+08:00</lastmod>
+        <lastmod>2012-03-14T19:30:05+08:00</lastmod>
     </url>
     <url>
         <loc>
@@ -43,11 +43,17 @@
         <lastmod>2012-03-10T20:56:55+08:00</lastmod>
     </url>
     <url>
+        <loc>
+            http://pfmiles.github.com/blog/liquid-error-about-regexp-match-when-using-octopress-tagcloud
+        </loc>
+        <lastmod>2012-03-14T20:06:42+08:00</lastmod>
+    </url>
+    <url>
         <loc>http://pfmiles.github.com/</loc>
-        <lastmod>2012-03-10T20:56:55+08:00</lastmod>
+        <lastmod>2012-03-14T20:06:42+08:00</lastmod>
     </url>
     <url>
         <loc>http://pfmiles.github.com/blog/archives/</loc>
-        <lastmod>2012-03-10T20:56:55+08:00</lastmod>
+        <lastmod>2012-03-14T20:06:42+08:00</lastmod>
     </url>
 </urlset>
