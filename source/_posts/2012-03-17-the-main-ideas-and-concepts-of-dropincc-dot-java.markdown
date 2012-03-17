@@ -1,0 +1,90 @@
+---
+layout: post
+title: "Dropincc.java的概念与设计"
+date: 2012-03-17 17:40
+comments: true
+categories: [dropincc, compiler]
+keywords: "dropincc, 概念, 设计, 目标"
+description: "Dropincc.java的概念，设计，实现目标简介"
+---
+### 做这么个小lib的动机？
+其实由于java语言先天缺陷的元编程能力，在java的圈子里很少有人提到“DSL”的概念，就算有也是说说而已。与之相比，一些其它语言ruby, python, lisp等等，得益于其强大的元编程能力，直接利用自身语法特性，取一块语法子集，利用一些对象、类生命周期切入函数或者宏系统两三下就DSL 'on-the-fly'了，这种便利性可能由java的设计目标来看，恐怕永远也无法达到了。  
+那么，在java里面想实现一个DSL，恐怕就得走“外部DSL(详见Fowler的文章: [DomainSpecificLanguage](http://martinfowler.com/bliki/DomainSpecificLanguage.html))”的路子。  
+而“外部DSL”这条路并不好走，说白了也就是自己做词法、语法、语义分析，自己生成目标语言代码去执行真正的逻辑；也就是做一个编译器前端外加一段解释执行逻辑；编译器前端，虽然业界看上去有很多很多工具可以直接采用，但是这些工具，目前看来，我认为还是太“General purpose”了，它们往往要求使用者学习它们自己规定的一套用作表达词法、语法规则的DSL，然后提供一个特殊的编译程序，用作编译你用它的DSL写的这些词法、语法文件，最终生成你想要的、基本不可读的编译器前端代码 —— 放到你的项目中去使用；  
+这种形式的工具在目前的编译器前端生成器中占大多数，使用上绝对称不上是“便利”。除了它用作描述规则的DSL需要使用者学习之外，其使用过程涉及好几个步骤与环境，是很麻烦的一件事情。  
+曾经有一次，一个同学试图使用antlr来做一个类似SQL子集的DSL，他花很多时间与antlr本身的语法文件、IDE “antlrworks”作斗争...频繁地在eclipse, 命令行, antlrWorks之间切换；我就想，做一个这样的DSL，是否真的用得上这么多工具？是否真的用得上号称能parse C++的antlr？这些事情能否全部在一个工作环境内搞定？比如eclipse？
+而来自[rsec](https://github.com/luikore/rsec)的启发让我觉得java似乎更应该有这样一个东西：  
+
+1. 以java的语法来新增词法、语法规则，不需要学习新的语法；  
+1. 不需要依赖外部环境，仅在java开发环境中就能完成新语言的定义与编译器前端程序的生成；  
+1. 虽然java是静态类型编译型语言，但整个新语言构建过程应该看上去是“动态的”、“解释性”的，这样“体验”才会好；  
+1. 这个库要小、要没有其它三方库依赖，仅依靠JDK自带库就能使用；
+1. 在使用过程中尝试推行一些好的实践，确保大多数普通青年不会“自找麻烦”，比如“限制词法规则必须为正规文法(或者说乔姆斯基3型文法)”。
+
+而[Dropincc.java](https://github.com/pfmiles/dropincc.java)正是以上述几点为设计目标的一个小巧(但足够强大)的编译器生成器。
+<!-- more -->
+### 设计与实现思路
+以上第一点，基本上的想法就是，设计一套“串接与组合(cascading & composition)”风格的API，模拟出一套parser combinator，让用户使用这套“貌似带有CC的语义”的java方法API来做词法、语法规则的添加(CC即："compiler-compiler, 就是'编译器生成器'")。  
+比如我想创建一套支持加减乘除的表达式计算器，还能使用括号调整运算优先级，我大概能用下面这样的形式直接在java代码中定义其词法、语法规则：
+    Lang lang = new Lang();
+	Token DIGIT = lang.addToken("\\d+");
+	Token ADD = lang.addToken("\\+");
+	Token SUB = lang.addToken("\\-");
+	Token MUL = lang.addToken("\\*");
+	Token DIV = lang.addToken("/");
+	Token LEFTPAREN = lang.addToken("\\(");
+	Token RIGHTPAREN = lang.addToken("\\)");
+
+	Grule expr = new Grule(); // grammar root
+	Grule term = new Grule();
+		
+	Element mulTail = lang.addGrammarRule(MUL.or(DIV), term);
+	term.addGrammarRule(DIGIT, mulTail)
+			.alt(LEFTPAREN, expr, RIGHTPAREN)
+			.alt(DIGIT);
+	Element addendTail = lang.addGrammarRule(ADD.or(SUB), term);
+	expr.addGrammarRule(term , addendTail, CC.EOF);
+其实想要表达的规则写成类似"BNF"的形式就是：
+    // token rules
+    DIGIT ::= '\d+';
+    ADD ::= '+';
+    SUB ::= '-';
+    MUL ::= '*';
+    DIV ::= '/';
+    LEFTPAREN ::= '(';
+    RIGHTPAREN ::= ')';
+
+    // grammar rules
+    mulTail ::= (MUL | DIV) term;
+    term ::= DIGIT multail
+           | LEFTPAREN expr RIGHTPAREN
+           | DIGIT
+           ;
+    addendTail ::= (ADD | SUB) term;
+    expr ::= term addendTail EOF;
+这简直就是“line to line”的直译，而[Dropincc.java](https://github.com/pfmiles/dropincc.java)的目标也就是要达到这样的效果；  
+这么做的目的并不是实现一套标准意义上的BNF；它使用了正则表达式来描述词法规则(token)，也就是上面提到的“目标”的第5点：“限制词法规则必须为正规文法”，这么做的意思也就是建议用户在“若词法规则中出现正规文法无法解决的意义冲突时”，将冲突“推后”到后面的语法、甚至语义分析阶段去解决；这种推荐的“较好实践”能够保持词法规则足够简单，使用正则表达式就能清晰地描述；如果用户不理解“保持词法规则足够简单”的重要性，只需要让他思考一下“为什么java的标识符不能由数字开头”应该就能想通了。  
+事实上就是：如果你不想自找麻烦，那么就应该保持词法规则足够简单 —— 你不应该在词法解析阶段耗费太多的实现精力 —— 这里用正则表达式就好了 —— 后面还有更麻烦、更有意义的活儿等着你去干呢...你不应该卡在词法分析这里太久...  
+好了，上面的这种约束一方面推行了一种“较好的实践”，另一方面也使得我们的这个工具更加直观、好用、简单，并且并不降低其实现语言的能力。
+
+第二、三点，打算使用JDK1.6的新compiler API来实现；目前业界中的大多数CC工具都是“生成一个源文件”，让用户直接在项目中使用这个源文件；其实我认为这个东西以“源文件”的形式出现在项目中意义并不大，因为它几乎不可读(不可读的源代码有什么意义呢？)。只要有一个可执行的内存表示即可，“源文件”其实就不必了...这样也似乎使得项目代码看上去更“干净”。  
+
+至于第四点，也是很重要的，实现过程中一直保持“不依赖JDK以外的库”即可。
+
+当所有的规则都定义完毕，只要在代码中触发"compile"，立刻就能基于定义的规则在内存中生成一个可执行的编译器前端，没有“源代码”，因为那没有意义，用户需要做的就只是拿它去执行新出生的语言的代码逻辑：
+    lang.compile();
+    lang.exe("1+2+3*4/(5*6*7+8)");
+当然，还有“action代码”的具体组织形式示例，上面没有给出，后面有空再补上～  
+基本上对于这个工具的最终输出形式，计划中应该有两种：
+
+1. AST
+2. 直接执行的action
+
+输出AST其实是灵活度最大的一种形式，有了AST，那么后面是想解释执行？还是做翻译？那就交由用户去考虑了，dropincc.java的工作到这里也就结束了；  
+而“直接执行action”的方式适合像上面这种简单的诸如“四则运算”这样的简单表达式语言，在创建解析树的过程中就把对应的动作代码给执行了，解析结束后直接就能得到结果。  
+
+根据dropincc.java的后续设想，上述2种方式在dropincc.java中实现应该“几乎没有差别”，这两种输出形式虽然目的可能不一样，但在dropincc.java中实现起来应该是高度统一、一致的，这也是为了实现“足够简单”的目标，尽量不要让用户过多地去学习一些概念，增加上手成本。
+
+至于dropincc.java能够用来识别哪种级别的语法？我的设想中dropincc.java是一个LL解析器生成器，最终要能识别LL(\*)的语法，也就是跟antlr具有同等能力；不过初期的实现可能还识别不了那种程度的不确定性，这个可以一步一步随着版本推进慢慢来改进。其它一些诸如解决左递归的一些算法改进都可以排在计划中...
+
+OK，前期的设想也就暂时介绍到这里，希望dropincc.java的努力能够将java圈子里的DSL应用甚至[LOP](http://en.wikipedia.org/wiki/Language-oriented_programming)编程往前推进一步，这是相当令人振奋的事情。
