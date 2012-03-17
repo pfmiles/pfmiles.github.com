@@ -9,7 +9,7 @@
   <meta name="author" content="pf_miles">
 
   
-  <meta name="description" content="Octopress插件：octopress-tagcloud相当nice，不过在使用的时候，若是blog整体采用了非ascii码的编码格式(比如utf-8)就会出现类似这样的错误： Liquid error: incompatible encoding regexp match (ascii- &hellip;">
+  <meta name="description" content="做这么个小lib的动机？ 其实由于java语言先天缺陷的元编程能力，在java的圈子里很少有人提到“DSL”的概念，就算有也是说说而已。与之相比，一些其它语言ruby, python, lisp等等，得益于其强大的元编程能力，直接利用自身语法特性，取一块语法子集，利用一些对象、 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -76,6 +76,65 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/the-main-ideas-and-concepts-of-dropincc-dot-java">Dropincc.java的概念与设计</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-03-17T17:40:00+08:00" pubdate data-updated="true">Mar 17<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>做这么个小lib的动机？</h3>
+
+<p>其实由于java语言先天缺陷的元编程能力，在java的圈子里很少有人提到“DSL”的概念，就算有也是说说而已。与之相比，一些其它语言ruby, python, lisp等等，得益于其强大的元编程能力，直接利用自身语法特性，取一块语法子集，利用一些对象、类生命周期切入函数或者宏系统两三下就DSL &#8216;on-the-fly&#8217;了，这种便利性可能由java的设计目标来看，恐怕永远也无法达到了。<br/>
+那么，在java里面想实现一个DSL，恐怕就得走“外部DSL(详见Fowler的文章: <a href="http://martinfowler.com/bliki/DomainSpecificLanguage.html">DomainSpecificLanguage</a>)”的路子。<br/>
+而“外部DSL”这条路并不好走，说白了也就是自己做词法、语法、语义分析，自己生成目标语言代码去执行真正的逻辑；也就是做一个编译器前端外加一段解释执行逻辑；编译器前端，虽然业界看上去有很多很多工具可以直接采用，但是这些工具，目前看来，我认为还是太“General purpose”了，它们往往要求使用者学习它们自己规定的一套用作表达词法、语法规则的DSL，然后提供一个特殊的编译程序，用作编译你用它的DSL写的这些词法、语法文件，最终生成你想要的、基本不可读的编译器前端代码 —— 放到你的项目中去使用；<br/>
+这种形式的工具在目前的编译器前端生成器中占大多数，使用上绝对称不上是“便利”。除了它用作描述规则的DSL需要使用者学习之外，其使用过程涉及好几个步骤与环境，是很麻烦的一件事情。<br/>
+曾经有一次，一个同学试图使用antlr来做一个类似SQL子集的DSL，他花很多时间与antlr本身的语法文件、IDE “antlrworks”作斗争&#8230;频繁地在eclipse, 命令行, antlrWorks之间切换；我就想，做一个这样的DSL，是否真的用得上这么多工具？是否真的用得上号称能parse C++的antlr？这些事情能否全部在一个工作环境内搞定？比如eclipse？
+而来自<a href="https://github.com/luikore/rsec">rsec</a>的启发让我觉得java似乎更应该有这样一个东西：</p>
+
+<ol>
+<li>以java的语法来新增词法、语法规则，不需要学习新的语法；</li>
+<li>不需要依赖外部环境，仅在java开发环境中就能完成新语言的定义与编译器前端程序的生成；</li>
+<li>虽然java是静态类型编译型语言，但整个新语言构建过程应该看上去是“动态的”、“解释性”的，这样“体验”才会好；</li>
+<li>这个库要小、要没有其它三方库依赖，仅依靠JDK自带库就能使用；</li>
+<li>在使用过程中尝试推行一些好的实践，确保大多数普通青年不会“自找麻烦”，比如“限制词法规则必须为正规文法(或者说乔姆斯基3型文法)”。</li>
+</ol>
+
+
+<p>而<a href="https://github.com/pfmiles/dropincc.java">Dropincc.java</a>正是以上述几点为设计目标的一个小巧(但足够强大)的编译器生成器。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/the-main-ideas-and-concepts-of-dropincc-dot-java">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -712,76 +771,9 @@ print found
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/theory-of-probability-required-in-ai-class">[翻译]&#8221;AI-class&#8221;中的概率论必备知识</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-11-01T13:35:00+08:00" pubdate data-updated="true">Nov 1<span>st</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><strong>在2011年末的ai-class中出现许多关于概率论的问题，其实这里有一篇神帖非常精彩：<a href="http://www.reddit.com/r/aiclass/comments/lpw21/a_challenge_to_the_over_achievers_who_really/">A challenge to the Over achievers who really understand Probability</a> 精华在于评论</strong></p>
-
-<p>总结起来，ai-class中所用到的概率论，可以总结为下面几条：</p>
-
-<ol>
-<li>P(A,B) = P(A|B)P(B)              // bayes theorem ie; conditional probability</li>
-<li>P(A) = P(A,B&#8217;) + P(A,B)          // total probability : let B&#8217; = not B</li>
-<li>P(A) = P(A|B)P(B) + P(A|B&#8217;)P(B&#8217;) // total probability</li>
-<li>P(A1,A2,A3,A4) = P(A1|A2,A3,A4)P(A2|A3,A4)P(A3|A4)P(A4) // chain rule - can be extended to n variables</li>
-</ol>
-
-
-<p>第一个，说是贝叶斯公式，可能一眼看不出来，但这正是其神奇之处，只要稍加变化:</p>
-
-<pre><code>P(A, B) = P(A|B)P(B) --&gt; 
-P(B|A)P(A) = P(A|B)P(B) --&gt; 
-P(A|B) = P(B|A)P(A) / P(B)    // 这就是“正规”的贝叶斯公式
-</code></pre>
-
-<p>个人认为，比起“正规”的贝叶斯公式，第一个这种变种会好记得多，并且和“条件概率”结合起来，加深理解了贝叶斯公式的本质(本质上它就是条件概率的巧妙关系)；</p>
-
-<p>第二、三个，都是“全概率公式”，只不过第三个比第二个多变化了一次而已(用条件概率公式变化了一下)；</p>
-
-<p>第四个，是“链条法则”，其实一步一步自己慢慢利用上述的其它公式也能变幻出这个结果，但每次都这么做过于繁复，所以直接当作一个深刻的结论记下来会有很大好处。</p>
-
-<p>OK，上面这些总结足够——秒杀ai-class里面的任何一个概率论问题，主要用在贝叶斯网络里面；包括后面开课的<a href="http://www.udacity.com/overview/Course/cs373">CS 373: PROGRAMMING A ROBOTIC CAR</a>，所有的概率论相关计算都能通过上述总结来导出；
-一般过程就是：将原公式通过上述总结进行变换，向已知条件“靠拢”，最后求值；</p>
-
-<p>当然, 还有一小部分内容叫做<strong>“D-Separation”</strong>，懂得了它之后，才敢说“秒杀”贝叶斯网络，这是后面需要介绍的一点点内容: (待续&#8230;)</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/theory-of-probability-required-in-ai-class">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
+    
+      <a class="prev" href="/blog/page/2/">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     
@@ -792,6 +784,10 @@ P(A|B) = P(B|A)P(A) / P(B)    // 这就是“正规”的贝叶斯公式
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/the-main-ideas-and-concepts-of-dropincc-dot-java">Dropincc.java的概念与设计</a>
+      </li>
     
       <li class="post">
         <a href="/blog/liquid-error-about-regexp-match-when-using-octopress-tagcloud">Liquid Error about regexp match when using octopress-tagcloud</a>
@@ -809,19 +805,15 @@ P(A|B) = P(B|A)P(A) / P(B)    // 这就是“正规”的贝叶斯公式
         <a href="/blog/find-the-max-k-numbers">[编程之美]寻找最大的k个数</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/trace-the-path-of-recursive-function">跟踪递归函数路径的方法</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Tag Cloud</h1>
-  <span id="tag-cloud"><a href='/blog/category/ai-class' style='font-size: 110.0%'>Ai-class(1)</a> <a href='/blog/category/algorithm' style='font-size: 160.0%'>Algorithm(6)</a> <a href='/blog/category/computer' style='font-size: 110.0%'>Computer(1)</a> <a href='/blog/category/interview' style='font-size: 140.0%'>Interview(4)</a> <a href='/blog/category/life' style='font-size: 110.0%'>Life(1)</a> <a href='/blog/category/octopress' style='font-size: 110.0%'>Octopress(1)</a> <a href='/blog/category/performance' style='font-size: 110.0%'>Performance(1)</a> <a href='/blog/category/probability' style='font-size: 110.0%'>Probability(1)</a> <a href='/blog/category/programming' style='font-size: 120.0%'>Programming(2)</a> <a href='/blog/category/python' style='font-size: 110.0%'>Python(1)</a> <a href='/blog/category/translation' style='font-size: 110.0%'>Translation(1)</a> </span>
+  <span id="tag-cloud"><a href='/blog/category/ai-class' style='font-size: 110.0%'>Ai-class(1)</a> <a href='/blog/category/algorithm' style='font-size: 160.0%'>Algorithm(6)</a> <a href='/blog/category/compiler' style='font-size: 110.0%'>Compiler(1)</a> <a href='/blog/category/computer' style='font-size: 110.0%'>Computer(1)</a> <a href='/blog/category/dropincc' style='font-size: 110.0%'>Dropincc(1)</a> <a href='/blog/category/interview' style='font-size: 140.0%'>Interview(4)</a> <a href='/blog/category/life' style='font-size: 110.0%'>Life(1)</a> <a href='/blog/category/octopress' style='font-size: 110.0%'>Octopress(1)</a> <a href='/blog/category/performance' style='font-size: 110.0%'>Performance(1)</a> <a href='/blog/category/probability' style='font-size: 110.0%'>Probability(1)</a> <a href='/blog/category/programming' style='font-size: 120.0%'>Programming(2)</a> <a href='/blog/category/python' style='font-size: 110.0%'>Python(1)</a> <a href='/blog/category/translation' style='font-size: 110.0%'>Translation(1)</a> </span>
 </section>
 <section>
   <h1>Categories</h1>
-    <ul id="category-list"><li><a href='/blog/category/ai-class'>Ai-class (1)</a></li><li><a href='/blog/category/algorithm'>Algorithm (6)</a></li><li><a href='/blog/category/computer'>Computer (1)</a></li><li><a href='/blog/category/interview'>Interview (4)</a></li><li><a href='/blog/category/life'>Life (1)</a></li><li><a href='/blog/category/octopress'>Octopress (1)</a></li><li><a href='/blog/category/performance'>Performance (1)</a></li><li><a href='/blog/category/probability'>Probability (1)</a></li><li><a href='/blog/category/programming'>Programming (2)</a></li><li><a href='/blog/category/python'>Python (1)</a></li><li><a href='/blog/category/translation'>Translation (1)</a></li></ul>
+    <ul id="category-list"><li><a href='/blog/category/ai-class'>Ai-class (1)</a></li><li><a href='/blog/category/algorithm'>Algorithm (6)</a></li><li><a href='/blog/category/compiler'>Compiler (1)</a></li><li><a href='/blog/category/computer'>Computer (1)</a></li><li><a href='/blog/category/dropincc'>Dropincc (1)</a></li><li><a href='/blog/category/interview'>Interview (4)</a></li><li><a href='/blog/category/life'>Life (1)</a></li><li><a href='/blog/category/octopress'>Octopress (1)</a></li><li><a href='/blog/category/performance'>Performance (1)</a></li><li><a href='/blog/category/probability'>Probability (1)</a></li><li><a href='/blog/category/programming'>Programming (2)</a></li><li><a href='/blog/category/python'>Python (1)</a></li><li><a href='/blog/category/translation'>Translation (1)</a></li></ul>
 </section>
 
 <section>
