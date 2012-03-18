@@ -9,7 +9,7 @@
   <meta name="author" content="pf_miles">
 
   
-  <meta name="description" content="做这么个小lib的动机？ 其实由于java语言先天缺陷的元编程能力，在java的圈子里很少有人提到“DSL”的概念，就算有也是说说而已。与之相比，一些其它语言ruby, python, lisp等等，得益于其强大的元编程能力，直接利用自身语法特性，取一块语法子集，利用一些对象、 &hellip;">
+  <meta name="description" content="dropincc.java为了使得用户能够在java语言中直接定义新语言的词法、语法规则，API设计采用了串接与组合(cascading &amp; composition)风格的FluentInterface形式。 这种形式能够使得这一套API看起来更具有“业务语义”， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -76,6 +76,55 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/dropincc-dot-java-api-design">dropincc.java API Design</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-03-18T16:29:00+08:00" pubdate data-updated="true">Mar 18<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="https://github.com/pfmiles/dropincc.java">dropincc.java</a>为了使得用户能够在java语言中直接定义新语言的词法、语法规则，API设计采用了串接与组合(cascading &amp; composition)风格的<a href="http://martinfowler.com/bliki/FluentInterface.html">FluentInterface</a>形式。</p>
+
+<p>这种形式能够使得这一套API看起来更具有“业务语义”，而不需要像antlr等其它工具一样强迫用户去学习全新的另外一种含有业务语义的DSL。<br/>
+新语言的词法、语法规则被用户直接在java语句里书写、执行，其实得到的是dropincc.java这个CC工具的内部概念的AST。这个AST其实与“让用户学习一套DSL，然后编写，然后编译这些DSL得到的AST”是一样的。<br/>
+也就是说 —— dropincc.java里面很重要的一个理念就是：像书写字面量一样书写CC工具的AST(AST literal???)。</p>
+
+<blockquote><p>注意：强调一下这里说的AST并非用户想要实现的新语言的AST，我指的是dropincc.java这个工具其内部表达词法、语法规则的内部形式。</p></blockquote>
+
+<p>经过一些初步的尝试，我认为在java中定义出这样一套API是完全可行的，其中一些值得列出的、具有代表性的点如下：</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/dropincc-dot-java-api-design">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -706,71 +755,6 @@ print found
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/python-speed-performance-tips">[翻译]Python性能诀窍</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-02-05T18:45:00+08:00" pubdate data-updated="true">Feb 5<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><strong>以下文字译自<a href="http://wiki.python.org/moin/PythonSpeed/PerformanceTips">http://wiki.python.org/moin/PythonSpeed/PerformanceTips</a></strong></p>
-
-<p>这个页面提供了一些帮助改善你的python程序性能的一些点子或小技巧。<br/>
-自从我在大约1996年编写了第一个&#8221;fast python&#8221;页面以来，Python在许多关键的方面有了改变，这意味着一部分内容必须要调整。我将其整合到Python wiki中从而希望其他人能帮助维护它。</p>
-
-<blockquote><p>你应该始终针对你的应用和你打算使用的、特定的<a href="http://wiki.python.org/moin/PythonImplementations">python实现</a>来尝试这些小技巧而不是盲目地相信一种方法比另一种更高效。更多的细节请参考<a href="#Profiling">profiling</a>一节。</p></blockquote>
-
-<p>另外自从这个页面最初编写以来，新出现的包例如<a href="http://cython.org/">Cython</a>, <a href="http://www.cosc.canterbury.ac.nz/~greg/python/Pyrex/">Pyrex</a>, <a href="http://psyco.sourceforge.net/">Psyco</a>, <a href="http://www.scipy.org/Weave">Weave</a>和<a href="http://pyinline.sourceforge.net/">PyInline</a>, 都能通过更容易地将性能要求较高的代码推到C或机器码上去实现从而大幅地改进你的程序的性能。</p>
-
-<h3>概览：优化那些需要优化的地方</h3>
-
-<p>你只能在程序首先给出正确的结果之后才能知道哪里致使你的程序慢了，所以先保证程序正确，再跑程序看是否慢。
-当发现慢了，性能监控能发现程序的哪部份消耗了大部分的时间。一套全面、方便运行的测试能保证后面的优化没有改变你的程序的正确性。<br/>
-简而言之：</p>
-
-<ol>
-<li>把程序调正确。</li>
-<li>测试程序的正确性。</li>
-<li>如果发现慢，分析它的性能。</li>
-<li>优化。</li>
-<li>从第&#8217;2&#8217;步开始重复。</li>
-</ol>
-
-
-<p>某些优化方法刚好就是一个好的编程风格，所以你应该在学习这门语言的时候就学习它们。其中一个例子就是移动那些在循环内或循环外都不会改变的值计算。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/python-speed-performance-tips">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -784,6 +768,10 @@ print found
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/dropincc-dot-java-api-design">dropincc.java API design</a>
+      </li>
     
       <li class="post">
         <a href="/blog/the-main-ideas-and-concepts-of-dropincc-dot-java">Dropincc.java的概念与设计</a>
@@ -801,19 +789,15 @@ print found
         <a href="/blog/algorithms-in-job-interview-test-if-two-linked-lists-intersected">[面试中的算法]编程判断两个链表是否相交</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/find-the-max-k-numbers">[编程之美]寻找最大的k个数</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Tag Cloud</h1>
-  <span id="tag-cloud"><a href='/blog/category/ai-class' style='font-size: 110.0%'>Ai-class(1)</a> <a href='/blog/category/algorithm' style='font-size: 160.0%'>Algorithm(6)</a> <a href='/blog/category/compiler' style='font-size: 110.0%'>Compiler(1)</a> <a href='/blog/category/computer' style='font-size: 110.0%'>Computer(1)</a> <a href='/blog/category/dropincc' style='font-size: 110.0%'>Dropincc(1)</a> <a href='/blog/category/interview' style='font-size: 140.0%'>Interview(4)</a> <a href='/blog/category/life' style='font-size: 110.0%'>Life(1)</a> <a href='/blog/category/octopress' style='font-size: 110.0%'>Octopress(1)</a> <a href='/blog/category/performance' style='font-size: 110.0%'>Performance(1)</a> <a href='/blog/category/probability' style='font-size: 110.0%'>Probability(1)</a> <a href='/blog/category/programming' style='font-size: 120.0%'>Programming(2)</a> <a href='/blog/category/python' style='font-size: 110.0%'>Python(1)</a> <a href='/blog/category/translation' style='font-size: 110.0%'>Translation(1)</a> </span>
+  <span id="tag-cloud"><a href='/blog/category/ai-class' style='font-size: 110.0%'>Ai-class(1)</a> <a href='/blog/category/algorithm' style='font-size: 160.0%'>Algorithm(6)</a> <a href='/blog/category/compiler' style='font-size: 110.0%'>Compiler(1)</a> <a href='/blog/category/computer' style='font-size: 110.0%'>Computer(1)</a> <a href='/blog/category/design' style='font-size: 110.0%'>Design(1)</a> <a href='/blog/category/dropincc' style='font-size: 120.0%'>Dropincc(2)</a> <a href='/blog/category/interview' style='font-size: 140.0%'>Interview(4)</a> <a href='/blog/category/life' style='font-size: 110.0%'>Life(1)</a> <a href='/blog/category/octopress' style='font-size: 110.0%'>Octopress(1)</a> <a href='/blog/category/performance' style='font-size: 110.0%'>Performance(1)</a> <a href='/blog/category/probability' style='font-size: 110.0%'>Probability(1)</a> <a href='/blog/category/programming' style='font-size: 120.0%'>Programming(2)</a> <a href='/blog/category/python' style='font-size: 110.0%'>Python(1)</a> <a href='/blog/category/translation' style='font-size: 110.0%'>Translation(1)</a> </span>
 </section>
 <section>
   <h1>Categories</h1>
-    <ul id="category-list"><li><a href='/blog/category/ai-class'>Ai-class (1)</a></li><li><a href='/blog/category/algorithm'>Algorithm (6)</a></li><li><a href='/blog/category/compiler'>Compiler (1)</a></li><li><a href='/blog/category/computer'>Computer (1)</a></li><li><a href='/blog/category/dropincc'>Dropincc (1)</a></li><li><a href='/blog/category/interview'>Interview (4)</a></li><li><a href='/blog/category/life'>Life (1)</a></li><li><a href='/blog/category/octopress'>Octopress (1)</a></li><li><a href='/blog/category/performance'>Performance (1)</a></li><li><a href='/blog/category/probability'>Probability (1)</a></li><li><a href='/blog/category/programming'>Programming (2)</a></li><li><a href='/blog/category/python'>Python (1)</a></li><li><a href='/blog/category/translation'>Translation (1)</a></li></ul>
+    <ul id="category-list"><li><a href='/blog/category/ai-class'>Ai-class (1)</a></li><li><a href='/blog/category/algorithm'>Algorithm (6)</a></li><li><a href='/blog/category/compiler'>Compiler (1)</a></li><li><a href='/blog/category/computer'>Computer (1)</a></li><li><a href='/blog/category/design'>Design (1)</a></li><li><a href='/blog/category/dropincc'>Dropincc (2)</a></li><li><a href='/blog/category/interview'>Interview (4)</a></li><li><a href='/blog/category/life'>Life (1)</a></li><li><a href='/blog/category/octopress'>Octopress (1)</a></li><li><a href='/blog/category/performance'>Performance (1)</a></li><li><a href='/blog/category/probability'>Probability (1)</a></li><li><a href='/blog/category/programming'>Programming (2)</a></li><li><a href='/blog/category/python'>Python (1)</a></li><li><a href='/blog/category/translation'>Translation (1)</a></li></ul>
 </section>
 
 <section>
