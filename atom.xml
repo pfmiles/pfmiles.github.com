@@ -4,7 +4,7 @@
   <title><![CDATA[Meta-Interpretation]]></title>
   <link href="http://pfmiles.github.com/atom.xml" rel="self"/>
   <link href="http://pfmiles.github.com/"/>
-  <updated>2012-03-18T18:52:32+08:00</updated>
+  <updated>2012-03-18T19:11:57+08:00</updated>
   <id>http://pfmiles.github.com/</id>
   <author>
     <name><![CDATA[pf_miles]]></name>
@@ -53,7 +53,8 @@
 
 
 <p>OK, dropincc.java的核心FluentInterface形式的API应该就这些了，我相信这是一种很自然的方式，用户需要掌握的东西很少。<br/>
-当然，还有动作代码呢？待续&#8230;</p>
+当然，还有动作代码呢？待续&#8230;<br/>
+在定义这套富含语义的FluentInterface的时候，有总结什么样的模式与经验？待续&#8230;</p>
 ]]></content>
   </entry>
   
