@@ -4,7 +4,7 @@
   <title><![CDATA[Category: dropincc | Meta-Interpretation]]></title>
   <link href="http://pfmiles.github.com/blog/category/dropincc/atom.xml" rel="self"/>
   <link href="http://pfmiles.github.com/"/>
-  <updated>2012-03-21T00:19:23+08:00</updated>
+  <updated>2012-03-21T13:00:49+08:00</updated>
   <id>http://pfmiles.github.com/</id>
   <author>
     <name><![CDATA[pf_miles]]></name>
@@ -258,7 +258,7 @@ expr ::= term addendTail EOF;
 lang.exe("1+2+3*4/(5*6*7+8)");
 </code></pre>
 
-<p>当然，还有“action代码”的具体组织形式示例，上面没有给出，后面有空再补上～<br/>
+<p>当然，还有“action代码”的具体组织形式示例，上面没有给出，在<a href="dropincc-dot-java-api-design/">dropincc.java API Design</a>里面有详尽的阐述。<br/>
 基本上对于这个工具的最终输出形式，计划中应该有两种：</p>
 
 <ol>
