@@ -5,12 +5,13 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>[翻译]"AI-class"中的概率论必备知识 - Meta-Interpretation</title>
+  <title>[algo-class]第一周作业——Count Inversions - Meta-Interpretation</title>
   <meta name="author" content="pf_miles">
 
   
-  <meta name="description" content="ai-class中的概率论必备知识">
-  <meta name="keywords" content="ai-class, 概率论, probability, 贝叶斯网络">
+  <meta name="description" content="algo-class还是挺有意思的，一上来就讲merge sort；介绍了分治法以及&#8221;piggyback&#8221;的思路&#8230;当作是复习吧： 分治法(divide and conquer) divide into smaller problems
+conquer sub- &hellip;">
+  
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -18,7 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://pfmiles.github.com/blog/theory-of-probability-required-in-ai-class">
+  <link rel="canonical" href="http://pfmiles.github.com/blog/algo-class-week-one-assignment-counting-inversions">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -79,7 +80,7 @@
   
   <header>
     
-      <h1 class="entry-title">[翻译]"AI-class"中的概率论必备知识</h1>
+      <h1 class="entry-title">[algo-class]第一周作业——Count Inversions</h1>
     
     
       <p class="meta">
@@ -95,45 +96,71 @@
   
 
 
-<time datetime="2011-11-01T13:35:00+08:00" pubdate data-updated="true">Nov 1<span>st</span>, 2011</time>
+<time datetime="2012-03-25T15:41:00+08:00" pubdate data-updated="true">Mar 25<span>th</span>, 2012</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p><strong>在2011年末的ai-class中出现许多关于概率论的问题，其实这里有一篇神帖非常精彩：<a href="http://www.reddit.com/r/aiclass/comments/lpw21/a_challenge_to_the_over_achievers_who_really/">A challenge to the Over achievers who really understand Probability</a> 精华在于评论</strong></p>
+<div class="entry-content"><p><a href="http://algo-class.org">algo-class</a>还是挺有意思的，一上来就讲merge sort；介绍了分治法以及&#8221;piggyback&#8221;的思路&#8230;当作是复习吧：</p>
 
-<p>总结起来，ai-class中所用到的概率论，可以总结为下面几条：</p>
+<h3>分治法(divide and conquer)</h3>
 
 <ol>
-<li>P(A,B) = P(A|B)P(B)              // bayes theorem ie; conditional probability</li>
-<li>P(A) = P(A,B&#8217;) + P(A,B)          // total probability : let B&#8217; = not B</li>
-<li>P(A) = P(A|B)P(B) + P(A|B&#8217;)P(B&#8217;) // total probability</li>
-<li>P(A1,A2,A3,A4) = P(A1|A2,A3,A4)P(A2|A3,A4)P(A3|A4)P(A4) // chain rule - can be extended to n variables</li>
+<li>divide into smaller problems</li>
+<li>conquer sub-problems recursively</li>
+<li>combine solutions of problems into one for the original problems</li>
 </ol>
 
 
-<p>第一个，说是贝叶斯公式，可能一眼看不出来，但这正是其神奇之处，只要稍加变化:</p>
+<p>而&#8221;piggyback&#8221;的意思就是：记住一些经典算法的实现，遇到类似问题的时候，可以将要解决的问题“搭载”到那些经典算法上面，一般都具有和那些经典算法相同的平均时间复杂度；相当于是把那些经典算法当作一个个“模式”或者“骨架”了(所以说平时经常听到的经典算法还是要熟悉熟悉的，很多地方能派上用场)。</p>
 
-<pre><code>P(A, B) = P(A|B)P(B) --&gt; 
-P(B|A)P(A) = P(A|B)P(B) --&gt; 
-P(A|B) = P(B|A)P(A) / P(B)    // 这就是“正规”的贝叶斯公式
+<p>这一周围绕merge sort来讲divide and conquer真是再合适不过了；而作业“Count Inversions”就是一个将场景piggyback到merge sort上的一个典型例子；  作业给出了一个包含10W行数据的文本文件，每一行一个随机数字，要求找出这10W个数字中的所有Inversions。我用python实现如下：</p>
+
+<pre><code>def countInversions(arr):
+    length = len(arr)
+    if length == 0 or length == 1:
+    return (0, arr) 
+    mid = int(length / 2)
+    (leftCount, leftSortedArr) = countInversions(arr[0:mid])
+    (rightCount, rightSortedArr) = countInversions(arr[mid:length])
+    (mergedCount, mergedSortedArr) = mergeCount(leftSortedArr, rightSortedArr)
+    return (leftCount + rightCount + mergedCount, mergedSortedArr)
+
+def mergeCount(lArr, rArr):
+    count = 0
+    mergedArr = []
+    i = 0
+    j = 0
+    lenl = len(lArr)
+    lenr = len(rArr)
+    while i &lt; lenl and j &lt; lenr:
+    if lArr[i] &gt; rArr[j]:
+        count += lenl - i # key line
+        mergedArr.append(rArr[j])
+        j += 1
+    else:
+        mergedArr.append(lArr[i])
+        i += 1
+    if i &lt; lenl:
+    mergedArr.extend(lArr[i:lenl])
+
+    if j &lt; lenr:
+    mergedArr.extend(rArr[j:lenr])
+    return (count, mergedArr)
+
+import sys
+if len(sys.argv) &lt; 2:
+    print 'usage: python countInversionInAFile path_to_file'
+    exit(1)
+numbers = [int(line) for line in open(sys.argv[1], 'r')]
+print countInversions(numbers)[0]
 </code></pre>
 
-<p>个人认为，比起“正规”的贝叶斯公式，第一个这种变种会好记得多，并且和“条件概率”结合起来，加深理解了贝叶斯公式的本质(本质上它就是条件概率的巧妙关系)；</p>
+<p>程序或许想起来简单但实际上要正确还是要费点功夫的；有些地方没想到的还非得debug才能看清楚为什么，比如程序中标注为&#8221;key line&#8221;那里，本来我写的是<code>count += 1</code>的但怎么都不对，后来debug才看出来应该写<code>count += lenl - i</code>。</p>
 
-<p>第二、三个，都是“全概率公式”，只不过第三个比第二个多变化了一次而已(用条件概率公式变化了一下)；</p>
-
-<p>第四个，是“链条法则”，其实一步一步自己慢慢利用上述的其它公式也能变幻出这个结果，但每次都这么做过于繁复，所以直接当作一个深刻的结论记下来会有很大好处。</p>
-
-<p>OK，上面这些总结足够——秒杀ai-class里面的任何一个概率论问题，主要用在贝叶斯网络里面；包括后面开课的<a href="http://www.udacity.com/overview/Course/cs373">CS 373: PROGRAMMING A ROBOTIC CAR</a>，所有的概率论相关计算都能通过上述总结来导出；
-一般过程就是：将原公式通过上述总结进行变换，向已知条件“靠拢”，最后求值；</p>
-
-<p>当然, 还有一小部分内容叫做<strong>“D-Separation”</strong>，懂得了它之后，才敢说“秒杀”贝叶斯网络，这是后面需要介绍的一点点内容: (待续&#8230;)</p>
-
-<!--more-->
-
+<p>另外，本来打算跟2门课程的，但现在看来我这忙碌的程序员完全没有时间&#8230;只好放弃“机器人汽车”那门课目前专门跟这一门了，毕竟“算法”的可操作性要强一些&#8230;</p>
 </div>
 
 
@@ -156,12 +183,12 @@ P(A|B) = P(B|A)P(A) / P(B)    // 这就是“正规”的贝叶斯公式
   
 
 
-<time datetime="2011-11-01T13:35:00+08:00" pubdate data-updated="true">Nov 1<span>st</span>, 2011</time>
+<time datetime="2012-03-25T15:41:00+08:00" pubdate data-updated="true">Mar 25<span>th</span>, 2012</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/category/ai-class/'>ai-class</a>, <a class='category' href='/blog/category/probability/'>probability</a>
+    <a class='category' href='/blog/category/algo-class/'>algo-class</a>, <a class='category' href='/blog/category/algorithm/'>algorithm</a>
   
 </span>
 
@@ -170,7 +197,7 @@ P(A|B) = P(B|A)P(A) / P(B)    // 这就是“正规”的贝叶斯公式
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pfmiles.github.com/blog/theory-of-probability-required-in-ai-class" data-via="pf_miles" data-counturl="http://pfmiles.github.com/blog/theory-of-probability-required-in-ai-class" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pfmiles.github.com/blog/algo-class-week-one-assignment-counting-inversions" data-via="pf_miles" data-counturl="http://pfmiles.github.com/blog/algo-class-week-one-assignment-counting-inversions" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -183,8 +210,8 @@ P(A|B) = P(B|A)P(A) / P(B)    // 这就是“正规”的贝叶斯公式
     
     <p class="meta">
       
+        <a class="basic-alignment left" href="/blog/dropincc-dot-java-api-design" title="Previous Post: dropincc.java API design">&laquo; dropincc.java API design</a>
       
-        <a class="basic-alignment right" href="/blog/python-speed-performance-tips" title="Next Post: [翻译]Python性能诀窍">[翻译]Python性能诀窍 &raquo;</a>
       
     </p>
   </footer>

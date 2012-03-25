@@ -9,8 +9,7 @@
   <meta name="author" content="pf_miles">
 
   
-  <meta name="description" content="以下文字译自http://wiki.python.org/moin/PythonSpeed/PerformanceTips 这个页面提供了一些帮助改善你的python程序性能的一些点子或小技巧。
-自从我在大约1996年编写了第一个&#8221;fast python&#8221;页面以来， &hellip;">
+  <meta name="description" content="此问题由v_JULY_v整理发布并发表于blog上, 版权归原作者所有。 问题描述：输入一棵二元查找树,将该二元查找树转换成一个排序的双向链表。要求不能创建任何新的结点,只调整指针的指向 比如二叉搜索树： 10 / \ 4 12 / \ / \ 3 5 11 13 输出应为： 3, 4, 5, &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -77,6 +76,64 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/algorithms-in-job-interview-turn-binary-search-tree-to-doubly-linked-list">[面试中的算法]把二元查找树转变成排序的双向链表</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-02-27T23:26:00+08:00" pubdate data-updated="true">Feb 27<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>此问题由<a href="http://blog.csdn.net/v_JULY_v/article/details/6050133">v_JULY_v</a>整理发布并发表于<a href="http://blog.csdn.net/v_JULY_v">blog</a>上, 版权归原作者所有。</p>
+
+<p><strong>问题描述：输入一棵二元查找树,将该二元查找树转换成一个排序的双向链表。要求不能创建任何新的结点,只调整指针的指向</strong></p>
+
+<p>比如二叉搜索树：</p>
+
+<pre><code>       10
+      /   \
+    4      12
+   / \    /  \
+  3   5 11    13
+</code></pre>
+
+<p>输出应为： 3, 4, 5, 10, 11, 12, 13</p>
+
+<h3>分析：</h3>
+
+<p>处理树状结构很容易想到递归，而二叉搜索树其实恰好是已经排序好的一个结构，而要把它变成数组，只需“中序遍历”即可: 3,4,5,10,11,12,13</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/algorithms-in-job-interview-turn-binary-search-tree-to-doubly-linked-list">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -227,6 +284,10 @@ P(A|B) = P(B|A)P(A) / P(B)    // 这就是“正规”的贝叶斯公式
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/algo-class-week-one-assignment-counting-inversions">[algo-class]第一周作业——Count Inversions</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/dropincc-dot-java-api-design">dropincc.java API design</a>
       </li>
     
@@ -242,19 +303,15 @@ P(A|B) = P(B|A)P(A) / P(B)    // 这就是“正规”的贝叶斯公式
         <a href="/blog/pc-assembled-for-my-cousin-and-aunt">帮表妹和姑姑攒的台式机</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/algorithms-in-job-interview-test-if-two-linked-lists-intersected">[面试中的算法]编程判断两个链表是否相交</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Tag Cloud</h1>
-  <span id="tag-cloud"><a href='/blog/category/ai-class' style='font-size: 110.0%'>Ai-class(1)</a> <a href='/blog/category/algorithm' style='font-size: 160.0%'>Algorithm(6)</a> <a href='/blog/category/compiler' style='font-size: 110.0%'>Compiler(1)</a> <a href='/blog/category/computer' style='font-size: 110.0%'>Computer(1)</a> <a href='/blog/category/design' style='font-size: 110.0%'>Design(1)</a> <a href='/blog/category/dropincc' style='font-size: 120.0%'>Dropincc(2)</a> <a href='/blog/category/interview' style='font-size: 140.0%'>Interview(4)</a> <a href='/blog/category/life' style='font-size: 110.0%'>Life(1)</a> <a href='/blog/category/octopress' style='font-size: 110.0%'>Octopress(1)</a> <a href='/blog/category/performance' style='font-size: 110.0%'>Performance(1)</a> <a href='/blog/category/probability' style='font-size: 110.0%'>Probability(1)</a> <a href='/blog/category/programming' style='font-size: 120.0%'>Programming(2)</a> <a href='/blog/category/python' style='font-size: 110.0%'>Python(1)</a> <a href='/blog/category/translation' style='font-size: 110.0%'>Translation(1)</a> </span>
+  <span id="tag-cloud"><a href='/blog/category/ai-class' style='font-size: 108.57142857142857%'>Ai-class(1)</a> <a href='/blog/category/algo-class' style='font-size: 108.57142857142857%'>Algo-class(1)</a> <a href='/blog/category/algorithm' style='font-size: 160.0%'>Algorithm(7)</a> <a href='/blog/category/compiler' style='font-size: 108.57142857142857%'>Compiler(1)</a> <a href='/blog/category/computer' style='font-size: 108.57142857142857%'>Computer(1)</a> <a href='/blog/category/design' style='font-size: 108.57142857142857%'>Design(1)</a> <a href='/blog/category/dropincc' style='font-size: 117.14285714285714%'>Dropincc(2)</a> <a href='/blog/category/interview' style='font-size: 134.28571428571428%'>Interview(4)</a> <a href='/blog/category/life' style='font-size: 108.57142857142857%'>Life(1)</a> <a href='/blog/category/octopress' style='font-size: 108.57142857142857%'>Octopress(1)</a> <a href='/blog/category/performance' style='font-size: 108.57142857142857%'>Performance(1)</a> <a href='/blog/category/probability' style='font-size: 108.57142857142857%'>Probability(1)</a> <a href='/blog/category/programming' style='font-size: 117.14285714285714%'>Programming(2)</a> <a href='/blog/category/python' style='font-size: 108.57142857142857%'>Python(1)</a> <a href='/blog/category/translation' style='font-size: 108.57142857142857%'>Translation(1)</a> </span>
 </section>
 <section>
   <h1>Categories</h1>
-    <ul id="category-list"><li><a href='/blog/category/ai-class'>Ai-class (1)</a></li><li><a href='/blog/category/algorithm'>Algorithm (6)</a></li><li><a href='/blog/category/compiler'>Compiler (1)</a></li><li><a href='/blog/category/computer'>Computer (1)</a></li><li><a href='/blog/category/design'>Design (1)</a></li><li><a href='/blog/category/dropincc'>Dropincc (2)</a></li><li><a href='/blog/category/interview'>Interview (4)</a></li><li><a href='/blog/category/life'>Life (1)</a></li><li><a href='/blog/category/octopress'>Octopress (1)</a></li><li><a href='/blog/category/performance'>Performance (1)</a></li><li><a href='/blog/category/probability'>Probability (1)</a></li><li><a href='/blog/category/programming'>Programming (2)</a></li><li><a href='/blog/category/python'>Python (1)</a></li><li><a href='/blog/category/translation'>Translation (1)</a></li></ul>
+    <ul id="category-list"><li><a href='/blog/category/ai-class'>Ai-class (1)</a></li><li><a href='/blog/category/algo-class'>Algo-class (1)</a></li><li><a href='/blog/category/algorithm'>Algorithm (7)</a></li><li><a href='/blog/category/compiler'>Compiler (1)</a></li><li><a href='/blog/category/computer'>Computer (1)</a></li><li><a href='/blog/category/design'>Design (1)</a></li><li><a href='/blog/category/dropincc'>Dropincc (2)</a></li><li><a href='/blog/category/interview'>Interview (4)</a></li><li><a href='/blog/category/life'>Life (1)</a></li><li><a href='/blog/category/octopress'>Octopress (1)</a></li><li><a href='/blog/category/performance'>Performance (1)</a></li><li><a href='/blog/category/probability'>Probability (1)</a></li><li><a href='/blog/category/programming'>Programming (2)</a></li><li><a href='/blog/category/python'>Python (1)</a></li><li><a href='/blog/category/translation'>Translation (1)</a></li></ul>
 </section>
 
 <section>
