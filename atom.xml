@@ -4,7 +4,7 @@
   <title><![CDATA[Meta-Interpretation]]></title>
   <link href="http://pfmiles.github.com/atom.xml" rel="self"/>
   <link href="http://pfmiles.github.com/"/>
-  <updated>2012-03-25T16:00:40+08:00</updated>
+  <updated>2012-03-25T23:21:59+08:00</updated>
   <id>http://pfmiles.github.com/</id>
   <author>
     <name><![CDATA[pf_miles]]></name>
@@ -125,7 +125,7 @@ print countInversions(numbers)[0]
 <p>对于这个接口设计，我的经验就是：</p>
 
 <ol>
-<li>传入参数尽量“泛化”、“统一接口化”;</li>
+<li>传入参数尽量“泛化”、“统一接口化”;这个“统一接口”最好不要包含任何方法(也就是说只是一个标记接口)，否则会给FluentInterface带来一些令人困惑的方法选项(当用户敲入&#8217;.&#8217;操作符的时候将会在IDE工具的方法提示里多出很多不必要的方法)。</li>
 <li>每个串接方法的返回结果可以随意“具体化”，因为这个返回结果的具体类名是不必展示给用户看的，所以你打算让用户下一步还能串接出什么样的方法，就尽管去返回一个具体的子类；但要注意返回结果不应该有太深的继承层次，否则“下一步串接”(当用户敲入&#8217;.&#8217;操作符的时候)将会在IDE工具里列出令人困惑的方法列表 —— 一般就一层继承关系 —— 继承自Object —— 一个接口实现 —— 就是1中所述的“泛化接口”，这样做方便你将返回值继续传入另一个方法中 —— 实现为所欲为的cascading &amp; composition&#8230;</li>
 </ol>
 
