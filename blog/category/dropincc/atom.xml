@@ -4,7 +4,7 @@
   <title><![CDATA[Category: dropincc | Meta-Interpretation]]></title>
   <link href="http://pfmiles.github.com/blog/category/dropincc/atom.xml" rel="self"/>
   <link href="http://pfmiles.github.com/"/>
-  <updated>2012-03-25T23:21:59+08:00</updated>
+  <updated>2012-04-01T16:11:29+08:00</updated>
   <id>http://pfmiles.github.com/</id>
   <author>
     <name><![CDATA[pf_miles]]></name>
@@ -12,6 +12,51 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[使用Kleene闭包语法糖消除语法中的左递归]]></title>
+    <link href="http://pfmiles.github.com/blog/left-recursion-removal-using-kleene-closure"/>
+    <updated>2012-03-28T11:18:00+08:00</updated>
+    <id>http://pfmiles.github.com/blog/left-recursion-removal-using-kleene-closure</id>
+    <content type="html"><![CDATA[<p>一般来讲，如果使用的解析器生成器是基于LL分析法来解析文本的话(比如antlr)，我们就需要在编写语法规则的时候避免<a href="http://en.wikipedia.org/wiki/Left_recursion">左递归</a>。<br/>
+虽然有一套成熟的、公式化的方法来去除左递归，但它会影响原有文法的结合顺序、优先级，或者多出一些本不需要的、额外的产生式。<br/>
+例如，有左递归语法规则：</p>
+
+<pre><code>addition ::= addition '+' factor
+           | factor
+</code></pre>
+
+<p>这个式子其实是想要表达一个“一连串+号组成的和”的表达式，例如<code>1+2+3+4</code>；<br/>
+假设目前的输入就是<code>1+2+3+4</code>, 那么超前查看带来的选择应该是<code>addition '+' factor</code>这个产生式；于是在parser的代码中立刻就又直接调用了<code>addition()</code>方法，但注意，整个递归过程没有消耗掉任何token...也就是说，当流程再次递归到<code>addition</code>函数里时，输入<code>1+2+3+4</code>并没有任何改变，这又会进入下一轮递归...很快就会overflow。<br/>
+这个问题，除了机械性地按照公式来消除左递归外，还可以改写语法规则，使其成为右递归语法：</p>
+
+<pre><code>addition ::= factor '+' addition
+           | factor
+</code></pre>
+
+<p>这样就不用stackOverFlow了，但是带来另一个问题：这使得我们的'+'加法成为了一个'右结合'的运算...<br/>
+也就是说，<code>1+2+3+4</code>的计算次序是这样的：<code>1+(2+(3+4))</code><br/>
+还好这里是“加法”，整数集合和加法运算构成“阿贝尔群(可交换群)”，满足交换律，所以就算实现成右结合的也能蒙混过关...但减法呢？除法呢？<br/>
+难道要先生成一个AST，再写个visitor，把节点顺序给rewrite一下，然后再写个visitor求值？这么麻烦就为了实现一个简单的四则运算功能也太坑爹了。</p>
+
+<p>其实，我们在这里使用递归，只是为了表达元素的“重复”这种意思；的确，递归能表示“重复”的概念，但这很容易让人联想到“循环”，因为平时的编程中，我们都通常使用循环来表达“重复”这种东西的。<br/>
+更重要的是，循环与<a href="http://en.wikipedia.org/wiki/Tail_call">尾递归</a>在逻辑上是等价的，这使得我们可以将上述左递归改写成某种表示“循环”的形式，在这里，<a href="http://en.wikipedia.org/wiki/Kleene_star">Kleene Closure(克林闭包)</a>就正是一种表达“循环”的标记形式。<br/>
+熟悉正则表达式的我们都知道，符号<code>*</code>(kleene star)和符号<code>+</code>(kleene cross)分别用来表示前面临接元素的“0个或多个”和“一个或多个”，如果这种标记用在我们的语法规则中那就酷毙了：</p>
+
+<pre><code>addition ::= (factor '+')* factor
+</code></pre>
+
+<p>表达的意义和"左递归版本"的语法规则是一样的，但是，这种记法的重大意义就是：在生成的parser程序中可以直接以一个<code>while</code>语句来解析重复的<code>(factor '+')</code>而不用再递归回<code>addition</code>中！这样就避免了parser中的左递归实现带来的问题！<br/>
+由于kleene闭包所能表达的所有语法规则形式都能被递归所表达，所以引入kleene闭包并没有从形式上增加语法解析器生成器的表达能力，所以说kleene闭包只是一个“语法糖”。<br/>
+但它的实现意义却是重大的：解决了“为了表达‘元素重复’”的这一类左递归问题。
+当然，<a href="https://github.com/pfmiles/dropincc.java">dropincc.java</a>也会支持kleene闭包的表达形式，大致的api形式如下：</p>
+
+<pre><code>addition.fillGrammarRule(addend, CC.ks((ADD.or(SUB)), addend));
+</code></pre>
+
+<p><code>CC.ks</code>方法就是kleene star的意思，当然还有<code>CC.kc</code>，顾名思义。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[dropincc.java API design]]></title>
@@ -75,6 +120,8 @@ dropincc.java既然设计目标是要嵌入到java语言中去使用，自然就
 比如，你的业务代码上下文里面有个<code>OrderService</code>对象，它负责一些"订单"业务逻辑，而当你编写一个闭包作为动作代码的时候，你完全可以"capture"上下文中的这个<code>OrderService</code>对象，从而使得你创造的语言在执行逻辑上与订单业务紧密、无缝地结合 —— 这是一种非常平滑的构建DSL的方式。</p>
 
 <h3>最终的样子</h3>
+
+<blockquote><p>注：此段代码只代表示意的风格、API情况，虽然能编译通过、运行，但不一定是行为完全正确四则运算表达式计算器</p></blockquote>
 
 <pre><code>// 3.define lexical rules
 Lang calculator = new Lang();

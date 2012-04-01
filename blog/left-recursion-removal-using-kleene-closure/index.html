@@ -5,14 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Blog Archive - Meta-Interpretation</title>
+  <title>使用Kleene闭包语法糖消除语法中的左递归 - Meta-Interpretation</title>
   <meta name="author" content="pf_miles">
 
   
-  <meta name="description" content="Blog Archive 2012 使用Kleene闭包语法糖消除语法中的左递归
-Mar 28 2012 posted in compiler, dropincc [algo-class]第一周作业——Count Inversions
-Mar 25 2012 posted in algo- &hellip;">
-  
+  <meta name="description" content="使用Kleene闭包语法糖消除语法中的左递归">
+  <meta name="keywords" content="kleene, 闭包, closure, 左递归, 消除, leftRecursion, removal, LL分析">
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -20,7 +18,7 @@ Mar 25 2012 posted in algo- &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://pfmiles.github.com/blog/archives">
+  <link rel="canonical" href="http://pfmiles.github.com/blog/left-recursion-removal-using-kleene-closure">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -77,220 +75,124 @@ Mar 25 2012 posted in algo- &hellip;">
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Blog Archive</h1>
+    
+      <h1 class="entry-title">使用Kleene闭包语法糖消除语法中的左递归</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-03-28T11:18:00+08:00" pubdate data-updated="true">Mar 28<span>th</span>, 2012</time>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives">
 
 
+<div class="entry-content"><p>一般来讲，如果使用的解析器生成器是基于LL分析法来解析文本的话(比如antlr)，我们就需要在编写语法规则的时候避免<a href="http://en.wikipedia.org/wiki/Left_recursion">左递归</a>。<br/>
+虽然有一套成熟的、公式化的方法来去除左递归，但它会影响原有文法的结合顺序、优先级，或者多出一些本不需要的、额外的产生式。<br/>
+例如，有左递归语法规则：</p>
 
-  
-  <h2>2012</h2>
+<pre><code>addition ::= addition '+' factor
+           | factor
+</code></pre>
 
-<article>
-  
-<h1><a href="/blog/left-recursion-removal-using-kleene-closure">使用Kleene闭包语法糖消除语法中的左递归</a></h1>
-<time datetime="2012-03-28T11:18:00+08:00" pubdate><span class='month'>Mar</span> <span class='day'>28</span> <span class='year'>2012</span></time>
+<p>这个式子其实是想要表达一个“一连串+号组成的和”的表达式，例如<code>1+2+3+4</code>；<br/>
+假设目前的输入就是<code>1+2+3+4</code>, 那么超前查看带来的选择应该是<code>addition '+' factor</code>这个产生式；于是在parser的代码中立刻就又直接调用了<code>addition()</code>方法，但注意，整个递归过程没有消耗掉任何token&#8230;也就是说，当流程再次递归到<code>addition</code>函数里时，输入<code>1+2+3+4</code>并没有任何改变，这又会进入下一轮递归&#8230;很快就会overflow。<br/>
+这个问题，除了机械性地按照公式来消除左递归外，还可以改写语法规则，使其成为右递归语法：</p>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/category/compiler/'>compiler</a>, <a class='category' href='/blog/category/dropincc/'>dropincc</a></span>
-</footer>
+<pre><code>addition ::= factor '+' addition
+           | factor
+</code></pre>
 
+<p>这样就不用stackOverFlow了，但是带来另一个问题：这使得我们的&#8217;+&#8217;加法成为了一个&#8217;右结合&#8217;的运算&#8230;<br/>
+也就是说，<code>1+2+3+4</code>的计算次序是这样的：<code>1+(2+(3+4))</code><br/>
+还好这里是“加法”，整数集合和加法运算构成“阿贝尔群(可交换群)”，满足交换律，所以就算实现成右结合的也能蒙混过关&#8230;但减法呢？除法呢？<br/>
+难道要先生成一个AST，再写个visitor，把节点顺序给rewrite一下，然后再写个visitor求值？这么麻烦就为了实现一个简单的四则运算功能也太坑爹了。</p>
 
-</article>
+<p>其实，我们在这里使用递归，只是为了表达元素的“重复”这种意思；的确，递归能表示“重复”的概念，但这很容易让人联想到“循环”，因为平时的编程中，我们都通常使用循环来表达“重复”这种东西的。<br/>
+更重要的是，循环与<a href="http://en.wikipedia.org/wiki/Tail_call">尾递归</a>在逻辑上是等价的，这使得我们可以将上述左递归改写成某种表示“循环”的形式，在这里，<a href="http://en.wikipedia.org/wiki/Kleene_star">Kleene Closure(克林闭包)</a>就正是一种表达“循环”的标记形式。<br/>
+熟悉正则表达式的我们都知道，符号<code>*</code>(kleene star)和符号<code>+</code>(kleene cross)分别用来表示前面临接元素的“0个或多个”和“一个或多个”，如果这种标记用在我们的语法规则中那就酷毙了：</p>
 
+<pre><code>addition ::= (factor '+')* factor
+</code></pre>
 
+<p>表达的意义和&#8221;左递归版本&#8221;的语法规则是一样的，但是，这种记法的重大意义就是：在生成的parser程序中可以直接以一个<code>while</code>语句来解析重复的<code>(factor '+')</code>而不用再递归回<code>addition</code>中！这样就避免了parser中的左递归实现带来的问题！<br/>
+由于kleene闭包所能表达的所有语法规则形式都能被递归所表达，所以引入kleene闭包并没有从形式上增加语法解析器生成器的表达能力，所以说kleene闭包只是一个“语法糖”。<br/>
+但它的实现意义却是重大的：解决了“为了表达‘元素重复’”的这一类左递归问题。
+当然，<a href="https://github.com/pfmiles/dropincc.java">dropincc.java</a>也会支持kleene闭包的表达形式，大致的api形式如下：</p>
 
-<article>
-  
-<h1><a href="/blog/algo-class-week-one-assignment-counting-inversions">[algo-class]第一周作业——Count Inversions</a></h1>
-<time datetime="2012-03-25T15:41:00+08:00" pubdate><span class='month'>Mar</span> <span class='day'>25</span> <span class='year'>2012</span></time>
+<pre><code>addition.fillGrammarRule(addend, CC.ks((ADD.or(SUB)), addend));
+</code></pre>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/category/algo-class/'>algo-class</a>, <a class='category' href='/blog/category/algorithm/'>algorithm</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/dropincc-dot-java-api-design">dropincc.java API design</a></h1>
-<time datetime="2012-03-18T16:29:00+08:00" pubdate><span class='month'>Mar</span> <span class='day'>18</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/category/design/'>design</a>, <a class='category' href='/blog/category/dropincc/'>dropincc</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/the-main-ideas-and-concepts-of-dropincc-dot-java">Dropincc.java的概念与设计</a></h1>
-<time datetime="2012-03-17T17:40:00+08:00" pubdate><span class='month'>Mar</span> <span class='day'>17</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/category/compiler/'>compiler</a>, <a class='category' href='/blog/category/dropincc/'>dropincc</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/liquid-error-about-regexp-match-when-using-octopress-tagcloud">Liquid Error about regexp match when using octopress-tagcloud</a></h1>
-<time datetime="2012-03-14T19:33:00+08:00" pubdate><span class='month'>Mar</span> <span class='day'>14</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/category/octopress/'>octopress</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/pc-assembled-for-my-cousin-and-aunt">帮表妹和姑姑攒的台式机</a></h1>
-<time datetime="2012-03-10T20:18:00+08:00" pubdate><span class='month'>Mar</span> <span class='day'>10</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/category/computer/'>computer</a>, <a class='category' href='/blog/category/life/'>life</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/algorithms-in-job-interview-test-if-two-linked-lists-intersected">[面试中的算法]编程判断两个链表是否相交</a></h1>
-<time datetime="2012-03-06T23:30:00+08:00" pubdate><span class='month'>Mar</span> <span class='day'>06</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/category/algorithm/'>algorithm</a>, <a class='category' href='/blog/category/interview/'>interview</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/find-the-max-k-numbers">[编程之美]寻找最大的k个数</a></h1>
-<time datetime="2012-03-02T13:37:00+08:00" pubdate><span class='month'>Mar</span> <span class='day'>02</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/category/algorithm/'>algorithm</a>, <a class='category' href='/blog/category/programming/'>programming</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/trace-the-path-of-recursive-function">跟踪递归函数路径的方法</a></h1>
-<time datetime="2012-02-29T00:04:00+08:00" pubdate><span class='month'>Feb</span> <span class='day'>29</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/category/algorithm/'>algorithm</a>, <a class='category' href='/blog/category/programming/'>programming</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/algorithms-in-job-interview-max-sum-sub-list">[面试中的算法]求子数组的最大和</a></h1>
-<time datetime="2012-02-28T22:48:00+08:00" pubdate><span class='month'>Feb</span> <span class='day'>28</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/category/algorithm/'>algorithm</a>, <a class='category' href='/blog/category/interview/'>interview</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/algorithms-in-job-interview-design-a-stack-with-min-function">[面试中的算法]设计包含min函数的栈</a></h1>
-<time datetime="2012-02-28T00:14:00+08:00" pubdate><span class='month'>Feb</span> <span class='day'>28</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/category/algorithm/'>algorithm</a>, <a class='category' href='/blog/category/interview/'>interview</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/algorithms-in-job-interview-turn-binary-search-tree-to-doubly-linked-list">[面试中的算法]把二元查找树转变成排序的双向链表</a></h1>
-<time datetime="2012-02-27T23:26:00+08:00" pubdate><span class='month'>Feb</span> <span class='day'>27</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/category/algorithm/'>algorithm</a>, <a class='category' href='/blog/category/interview/'>interview</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/python-speed-performance-tips">[翻译]Python性能诀窍</a></h1>
-<time datetime="2012-02-05T18:45:00+08:00" pubdate><span class='month'>Feb</span> <span class='day'>05</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/category/performance/'>performance</a>, <a class='category' href='/blog/category/python/'>python</a>, <a class='category' href='/blog/category/translation/'>translation</a></span>
-</footer>
-
-
-</article>
-
-
-
-  
-  <h2>2011</h2>
-
-<article>
-  
-<h1><a href="/blog/theory-of-probability-required-in-ai-class">[翻译]&#8221;AI-class&#8221;中的概率论必备知识</a></h1>
-<time datetime="2011-11-01T13:35:00+08:00" pubdate><span class='month'>Nov</span> <span class='day'>01</span> <span class='year'>2011</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/category/ai-class/'>ai-class</a>, <a class='category' href='/blog/category/probability/'>probability</a></span>
-</footer>
-
-
-</article>
-
+<p><code>CC.ks</code>方法就是kleene star的意思，当然还有<code>CC.kc</code>，顾名思义。</p>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">pf_miles</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-03-28T11:18:00+08:00" pubdate data-updated="true">Mar 28<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/category/compiler/'>compiler</a>, <a class='category' href='/blog/category/dropincc/'>dropincc</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pfmiles.github.com/blog/left-recursion-removal-using-kleene-closure" data-via="pf_miles" data-counturl="http://pfmiles.github.com/blog/left-recursion-removal-using-kleene-closure" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/algo-class-week-one-assignment-counting-inversions" title="Previous Post: [algo-class]第一周作业——Count Inversions">&laquo; [algo-class]第一周作业——Count Inversions</a>
+      
+      
+    </p>
+  </footer>
 </article>
 
 </div>

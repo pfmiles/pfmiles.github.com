@@ -50,11 +50,11 @@
     </url>
     <url>
         <loc>http://pfmiles.github.com/blog/the-main-ideas-and-concepts-of-dropincc-dot-java</loc>
-        <lastmod>2012-03-21T12:59:02+08:00</lastmod>
+        <lastmod>2012-03-28T14:42:02+08:00</lastmod>
     </url>
     <url>
         <loc>http://pfmiles.github.com/blog/dropincc-dot-java-api-design</loc>
-        <lastmod>2012-03-25T23:21:43+08:00</lastmod>
+        <lastmod>2012-03-28T14:48:40+08:00</lastmod>
     </url>
     <url>
         <loc>
@@ -63,11 +63,15 @@
         <lastmod>2012-03-25T15:58:57+08:00</lastmod>
     </url>
     <url>
+        <loc>http://pfmiles.github.com/blog/left-recursion-removal-using-kleene-closure</loc>
+        <lastmod>2012-04-01T16:07:03+08:00</lastmod>
+    </url>
+    <url>
         <loc>http://pfmiles.github.com/</loc>
-        <lastmod>2012-03-25T23:21:43+08:00</lastmod>
+        <lastmod>2012-04-01T16:07:03+08:00</lastmod>
     </url>
     <url>
         <loc>http://pfmiles.github.com/blog/archives/</loc>
-        <lastmod>2012-03-25T23:21:43+08:00</lastmod>
+        <lastmod>2012-04-01T16:07:03+08:00</lastmod>
     </url>
 </urlset>
