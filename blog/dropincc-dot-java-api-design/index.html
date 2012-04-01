@@ -97,6 +97,8 @@
 
 <time datetime="2012-03-18T16:29:00+08:00" pubdate data-updated="true">Mar 18<span>th</span>, 2012</time>
         
+         | <a href="#disqus_thread">Comments</a>
+        
       </p>
     
   </header>
@@ -251,7 +253,7 @@ System.out.println(calculator.exe("1+2+3+(4+5*6*7*(64/8/2/(2/1)/1)*8+9)+10"));
 <p>它的<code>params</code>的长度为3，分别是<code>["(", expr子规则匹配所返回的值, ")"]</code>，而这里我们的“业务(四则运算)”只需要关心<code>expr</code>的返回值，所以动作代码直接将<code>params[1]</code>（expr的返回值）返回给上一级匹配。<br/>
 就是这样，实际上你可以在动作代码里面做任何事情，只要符合java语法的、你能想到的。</p>
 
-<p>第一个版本的API设计基本就是这样了，往后可能还会加入一些语法糖，比如“Kleen闭包”(这个真的不是特别必要，因为递归“真包含”kleen闭包)来进一步方便语法规则的定义，不过会很慎重，因为dropincc.java是以小巧、易用为设计目标的，语法糖太多很可能会帮倒忙。</p>
+<p>第一个版本的API设计基本就是这样了，往后可能还会加入一些语法糖，比如“Kleen闭包”来进一步方便语法规则的定义，不过会很慎重，因为dropincc.java是以小巧、易用为设计目标的，语法糖太多很可能会帮倒忙。</p>
 </div>
 
 
@@ -309,6 +311,12 @@ System.out.println(calculator.exe("1+2+3+(4+5*6*7*(64/8/2/(2/1)/1)*8+9)+10"));
     </p>
   </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 
@@ -369,7 +377,7 @@ System.out.println(calculator.exe("1+2+3+(4+5*6*7*(64/8/2/(2/1)/1)*8+9)+10"));
 
         github.showRepos({
             user: 'pfmiles',
-            count: 2,
+            count: 3,
             skip_forks: true,
             target: '#gh_repos'
         });
@@ -386,7 +394,7 @@ System.out.println(calculator.exe("1+2+3+(4+5*6*7*(64/8/2/(2/1)/1)*8+9)+10"));
   </ul>
   <script type="text/javascript">
     $.domReady(function(){
-      getTwitterFeed("pf_miles", 4, false);
+      getTwitterFeed("pf_miles", 10, false);
     });
   </script>
   <script src="/javascripts/twitter.js" type="text/javascript"> </script>
@@ -421,6 +429,22 @@ System.out.println(calculator.exe("1+2+3+(4+5*6*7*(64/8/2/(2/1)/1)*8+9)+10"));
 
 </footer>
   
+
+<script type="text/javascript">
+      var disqus_shortname = 'meta-interpretation';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://pfmiles.github.com/blog/dropincc-dot-java-api-design';
+        var disqus_url = 'http://pfmiles.github.com/blog/dropincc-dot-java-api-design';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
 
 
 

@@ -4,7 +4,7 @@
   <title><![CDATA[Meta-Interpretation]]></title>
   <link href="http://pfmiles.github.com/atom.xml" rel="self"/>
   <link href="http://pfmiles.github.com/"/>
-  <updated>2012-04-01T16:30:26+08:00</updated>
+  <updated>2012-04-01T17:55:34+08:00</updated>
   <id>http://pfmiles.github.com/</id>
   <author>
     <name><![CDATA[pf_miles]]></name>
@@ -282,7 +282,7 @@ System.out.println(calculator.exe("1+2+3+(4+5*6*7*(64/8/2/(2/1)/1)*8+9)+10"));
 <p>它的<code>params</code>的长度为3，分别是<code>["(", expr子规则匹配所返回的值, ")"]</code>，而这里我们的“业务(四则运算)”只需要关心<code>expr</code>的返回值，所以动作代码直接将<code>params[1]</code>（expr的返回值）返回给上一级匹配。<br/>
 就是这样，实际上你可以在动作代码里面做任何事情，只要符合java语法的、你能想到的。</p>
 
-<p>第一个版本的API设计基本就是这样了，往后可能还会加入一些语法糖，比如“Kleen闭包”(这个真的不是特别必要，因为递归“真包含”kleen闭包)来进一步方便语法规则的定义，不过会很慎重，因为dropincc.java是以小巧、易用为设计目标的，语法糖太多很可能会帮倒忙。</p>
+<p>第一个版本的API设计基本就是这样了，往后可能还会加入一些语法糖，比如“Kleen闭包”来进一步方便语法规则的定义，不过会很慎重，因为dropincc.java是以小巧、易用为设计目标的，语法糖太多很可能会帮倒忙。</p>
 ]]></content>
   </entry>
   
@@ -318,6 +318,8 @@ System.out.println(calculator.exe("1+2+3+(4+5*6*7*(64/8/2/(2/1)/1)*8+9)+10"));
 
 <p>以上第一点，基本上的想法就是，设计一套“串接与组合(cascading &amp; composition)”风格的API，模拟出一套parser combinator，让用户使用这套“貌似带有CC的语义”的java方法API来做词法、语法规则的添加(CC即：&#8221;compiler-compiler, 就是&#8217;编译器生成器&#8217;&#8221;)。<br/>
 比如我想创建一套支持加减乘除的表达式计算器，还能使用括号调整运算优先级，我大概能用下面这样的形式直接在java代码中定义其词法、语法规则：</p>
+
+<blockquote><p>注：下面的代码只是示意说明整体API风格，不一定是最终能运行的代码。</p></blockquote>
 
 <pre><code>Lang lang = new Lang();
 Token DIGIT = lang.addToken("\\d+");
