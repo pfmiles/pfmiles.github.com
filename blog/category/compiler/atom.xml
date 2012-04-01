@@ -4,7 +4,7 @@
   <title><![CDATA[Category: compiler | Meta-Interpretation]]></title>
   <link href="http://pfmiles.github.com/blog/category/compiler/atom.xml" rel="self"/>
   <link href="http://pfmiles.github.com/"/>
-  <updated>2012-04-01T16:11:29+08:00</updated>
+  <updated>2012-04-01T16:30:26+08:00</updated>
   <id>http://pfmiles.github.com/</id>
   <author>
     <name><![CDATA[pf_miles]]></name>
@@ -36,8 +36,12 @@
 
 <p>这样就不用stackOverFlow了，但是带来另一个问题：这使得我们的'+'加法成为了一个'右结合'的运算...<br/>
 也就是说，<code>1+2+3+4</code>的计算次序是这样的：<code>1+(2+(3+4))</code><br/>
-还好这里是“加法”，整数集合和加法运算构成“阿贝尔群(可交换群)”，满足交换律，所以就算实现成右结合的也能蒙混过关...但减法呢？除法呢？<br/>
-难道要先生成一个AST，再写个visitor，把节点顺序给rewrite一下，然后再写个visitor求值？这么麻烦就为了实现一个简单的四则运算功能也太坑爹了。</p>
+还好这里是“加法”，整数集合和加法运算构成“阿贝尔群(可交换群)”，满足交换律，所以就算实现成右结合的也能蒙混过关...但减法呢？除法呢？</p>
+
+<!-- more -->
+
+
+<p>难道要先生成一个AST，再写个visitor，把节点顺序给rewrite一下，然后再写个visitor求值？这么麻烦就为了实现一个简单的四则运算功能也太坑爹了。</p>
 
 <p>其实，我们在这里使用递归，只是为了表达元素的“重复”这种意思；的确，递归能表示“重复”的概念，但这很容易让人联想到“循环”，因为平时的编程中，我们都通常使用循环来表达“重复”这种东西的。<br/>
 更重要的是，循环与<a href="http://en.wikipedia.org/wiki/Tail_call">尾递归</a>在逻辑上是等价的，这使得我们可以将上述左递归改写成某种表示“循环”的形式，在这里，<a href="http://en.wikipedia.org/wiki/Kleene_star">Kleene Closure(克林闭包)</a>就正是一种表达“循环”的标记形式。<br/>
@@ -51,7 +55,7 @@
 但它的实现意义却是重大的：解决了“为了表达‘元素重复’”的这一类左递归问题。
 当然，<a href="https://github.com/pfmiles/dropincc.java">dropincc.java</a>也会支持kleene闭包的表达形式，大致的api形式如下：</p>
 
-<pre><code>addition.fillGrammarRule(addend, CC.ks((ADD.or(SUB)), addend));
+<pre><code>addition.fillGrammarRule(addend, CC.ks(ADD.or(SUB), addend));
 </code></pre>
 
 <p><code>CC.ks</code>方法就是kleene star的意思，当然还有<code>CC.kc</code>，顾名思义。</p>
