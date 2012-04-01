@@ -20,6 +20,7 @@ description: "使用Kleene闭包语法糖消除语法中的左递归"
 这样就不用stackOverFlow了，但是带来另一个问题：这使得我们的'+'加法成为了一个'右结合'的运算...  
 也就是说，`1+2+3+4`的计算次序是这样的：`1+(2+(3+4))`  
 还好这里是“加法”，整数集合和加法运算构成“阿贝尔群(可交换群)”，满足交换律，所以就算实现成右结合的也能蒙混过关...但减法呢？除法呢？  
+<!-- more -->
 难道要先生成一个AST，再写个visitor，把节点顺序给rewrite一下，然后再写个visitor求值？这么麻烦就为了实现一个简单的四则运算功能也太坑爹了。  
 
 其实，我们在这里使用递归，只是为了表达元素的“重复”这种意思；的确，递归能表示“重复”的概念，但这很容易让人联想到“循环”，因为平时的编程中，我们都通常使用循环来表达“重复”这种东西的。  
@@ -30,5 +31,5 @@ description: "使用Kleene闭包语法糖消除语法中的左递归"
 由于kleene闭包所能表达的所有语法规则形式都能被递归所表达，所以引入kleene闭包并没有从形式上增加语法解析器生成器的表达能力，所以说kleene闭包只是一个“语法糖”。  
 但它的实现意义却是重大的：解决了“为了表达‘元素重复’”的这一类左递归问题。
 当然，[dropincc.java](https://github.com/pfmiles/dropincc.java)也会支持kleene闭包的表达形式，大致的api形式如下：
-	addition.fillGrammarRule(addend, CC.ks((ADD.or(SUB)), addend));
+    addition.fillGrammarRule(addend, CC.ks(ADD.or(SUB), addend));
 `CC.ks`方法就是kleene star的意思，当然还有`CC.kc`，顾名思义。
