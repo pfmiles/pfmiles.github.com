@@ -44,6 +44,8 @@ dropincc.java既然设计目标是要嵌入到java语言中去使用，自然就
 比如，你的业务代码上下文里面有个`OrderService`对象，它负责一些"订单"业务逻辑，而当你编写一个闭包作为动作代码的时候，你完全可以"capture"上下文中的这个`OrderService`对象，从而使得你创造的语言在执行逻辑上与订单业务紧密、无缝地结合 —— 这是一种非常平滑的构建DSL的方式。  
 
 ### 最终的样子
+> 注：此段代码只代表示意的风格、API情况，虽然能编译通过、运行，但不一定是行为完全正确四则运算表达式计算器
+
 	// 3.define lexical rules
 	Lang calculator = new Lang();
 	Token DIGIT = calculator.addToken("\\d+");
