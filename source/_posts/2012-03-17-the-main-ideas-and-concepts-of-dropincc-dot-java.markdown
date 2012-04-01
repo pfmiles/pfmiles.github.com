@@ -26,6 +26,8 @@ description: "Dropincc.java的概念，设计，实现目标简介"
 ### 设计与实现思路
 以上第一点，基本上的想法就是，设计一套“串接与组合(cascading & composition)”风格的API，模拟出一套parser combinator，让用户使用这套“貌似带有CC的语义”的java方法API来做词法、语法规则的添加(CC即："compiler-compiler, 就是'编译器生成器'")。  
 比如我想创建一套支持加减乘除的表达式计算器，还能使用括号调整运算优先级，我大概能用下面这样的形式直接在java代码中定义其词法、语法规则：
+>注：下面的代码只是示意说明整体API风格，不一定是最终能运行的代码。
+
     Lang lang = new Lang();
 	Token DIGIT = lang.addToken("\\d+");
 	Token ADD = lang.addToken("\\+");
