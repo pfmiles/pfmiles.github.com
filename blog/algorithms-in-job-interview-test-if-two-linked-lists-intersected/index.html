@@ -28,6 +28,20 @@
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
 
   
   <script type="text/javascript">
@@ -256,7 +270,7 @@ Node* has_circle(Node* head) {
 
 <p>其中，<code>has_circle</code>方法是判断一个单向链表是否带环的，基本原理就是设置2个“速度”不同的链表，快的去追慢的，追上就是带环，直到较快指针遇到null还没追上就是没有环；假设环包含n个节点，指针<code>p2</code>的&#8221;速度&#8221;是2，<code>p1</code>的速度是1，相对速度就是1，从相同一点出发的话，<code>p2</code>追上<code>p1</code>至少要n步；若再假设该链表除了环的部分外还带有一个长度为k的“尾巴”，那么追上的步数最多是n+k;也就是线性时间复杂度内就能完成这个判断。</p>
 
-<p>这提供了一种很好的判断是否&#8221;环状&#8221;的思路；以前我只写过“用一个栈来记录”的方式，弱爆了&#8230;(时间复杂度为O(n<sup>2))</sup></p>
+<p>这提供了一种很好的判断是否&#8221;环状&#8221;的思路；以前我只写过“用一个栈来记录”的方式，弱爆了&#8230;(时间复杂度为O(n<sup>2</sup>))</p>
 
 <p>在<code>has_circle_1</code>和<code>has_circle_2</code>都满足的时候，也就是说2个链表都带环的时候，要分别取2个环上的一点来玩“追逐游戏”来判断是否相交；在这段程序里是<code>pp1</code>和<code>pp2</code>;然后一个速度为2一个速度为1开始玩“追逐游戏”，当慢的那个走完环上所有节点时快的那个还没追上它的话，说明不相交(此时耗费时间n——即环节点数;因为快慢指针的相对速度为1，快指针理应在时间n以内追上慢链表，否则不相交)。</p>
 
@@ -323,8 +337,10 @@ Node* has_circle(Node* head) {
 
   <section>
     <h1>Comments</h1>
-    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <div class="tex2jax_ignore">
+        <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
+    </div>
   </section>
 
 </div>
@@ -334,6 +350,10 @@ Node* has_circle(Node* head) {
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/algo-class-week2-notes-master-method">Algo-class第二周小记: Master Method</a>
+      </li>
     
       <li class="post">
         <a href="/blog/left-recursion-removal-using-kleene-closure">使用Kleene闭包语法糖消除语法中的左递归</a>
@@ -351,19 +371,15 @@ Node* has_circle(Node* head) {
         <a href="/blog/the-main-ideas-and-concepts-of-dropincc-dot-java">Dropincc.java的概念与设计</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/liquid-error-about-regexp-match-when-using-octopress-tagcloud">Liquid Error about regexp match when using octopress-tagcloud</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Tag Cloud</h1>
-  <span id="tag-cloud"><a href='/blog/category/ai-class' style='font-size: 108.57142857142857%'>Ai-class(1)</a> <a href='/blog/category/algo-class' style='font-size: 108.57142857142857%'>Algo-class(1)</a> <a href='/blog/category/algorithm' style='font-size: 160.0%'>Algorithm(7)</a> <a href='/blog/category/compiler' style='font-size: 117.14285714285714%'>Compiler(2)</a> <a href='/blog/category/computer' style='font-size: 108.57142857142857%'>Computer(1)</a> <a href='/blog/category/design' style='font-size: 108.57142857142857%'>Design(1)</a> <a href='/blog/category/dropincc' style='font-size: 125.71428571428572%'>Dropincc(3)</a> <a href='/blog/category/interview' style='font-size: 134.28571428571428%'>Interview(4)</a> <a href='/blog/category/life' style='font-size: 108.57142857142857%'>Life(1)</a> <a href='/blog/category/octopress' style='font-size: 108.57142857142857%'>Octopress(1)</a> <a href='/blog/category/performance' style='font-size: 108.57142857142857%'>Performance(1)</a> <a href='/blog/category/probability' style='font-size: 108.57142857142857%'>Probability(1)</a> <a href='/blog/category/programming' style='font-size: 117.14285714285714%'>Programming(2)</a> <a href='/blog/category/python' style='font-size: 108.57142857142857%'>Python(1)</a> <a href='/blog/category/translation' style='font-size: 108.57142857142857%'>Translation(1)</a> </span>
+  <span id="tag-cloud"><a href='/blog/category/ai-class' style='font-size: 107.5%'>Ai-class(1)</a> <a href='/blog/category/algo-class' style='font-size: 115.0%'>Algo-class(2)</a> <a href='/blog/category/algorithm' style='font-size: 160.0%'>Algorithm(8)</a> <a href='/blog/category/compiler' style='font-size: 115.0%'>Compiler(2)</a> <a href='/blog/category/computer' style='font-size: 107.5%'>Computer(1)</a> <a href='/blog/category/design' style='font-size: 107.5%'>Design(1)</a> <a href='/blog/category/dropincc' style='font-size: 122.5%'>Dropincc(3)</a> <a href='/blog/category/interview' style='font-size: 130.0%'>Interview(4)</a> <a href='/blog/category/life' style='font-size: 107.5%'>Life(1)</a> <a href='/blog/category/octopress' style='font-size: 107.5%'>Octopress(1)</a> <a href='/blog/category/performance' style='font-size: 107.5%'>Performance(1)</a> <a href='/blog/category/probability' style='font-size: 107.5%'>Probability(1)</a> <a href='/blog/category/programming' style='font-size: 115.0%'>Programming(2)</a> <a href='/blog/category/python' style='font-size: 107.5%'>Python(1)</a> <a href='/blog/category/translation' style='font-size: 107.5%'>Translation(1)</a> </span>
 </section>
 <section>
   <h1>Categories</h1>
-    <ul id="category-list"><li><a href='/blog/category/ai-class'>Ai-class (1)</a></li><li><a href='/blog/category/algo-class'>Algo-class (1)</a></li><li><a href='/blog/category/algorithm'>Algorithm (7)</a></li><li><a href='/blog/category/compiler'>Compiler (2)</a></li><li><a href='/blog/category/computer'>Computer (1)</a></li><li><a href='/blog/category/design'>Design (1)</a></li><li><a href='/blog/category/dropincc'>Dropincc (3)</a></li><li><a href='/blog/category/interview'>Interview (4)</a></li><li><a href='/blog/category/life'>Life (1)</a></li><li><a href='/blog/category/octopress'>Octopress (1)</a></li><li><a href='/blog/category/performance'>Performance (1)</a></li><li><a href='/blog/category/probability'>Probability (1)</a></li><li><a href='/blog/category/programming'>Programming (2)</a></li><li><a href='/blog/category/python'>Python (1)</a></li><li><a href='/blog/category/translation'>Translation (1)</a></li></ul>
+    <ul id="category-list"><li><a href='/blog/category/ai-class'>Ai-class (1)</a></li><li><a href='/blog/category/algo-class'>Algo-class (2)</a></li><li><a href='/blog/category/algorithm'>Algorithm (8)</a></li><li><a href='/blog/category/compiler'>Compiler (2)</a></li><li><a href='/blog/category/computer'>Computer (1)</a></li><li><a href='/blog/category/design'>Design (1)</a></li><li><a href='/blog/category/dropincc'>Dropincc (3)</a></li><li><a href='/blog/category/interview'>Interview (4)</a></li><li><a href='/blog/category/life'>Life (1)</a></li><li><a href='/blog/category/octopress'>Octopress (1)</a></li><li><a href='/blog/category/performance'>Performance (1)</a></li><li><a href='/blog/category/probability'>Probability (1)</a></li><li><a href='/blog/category/programming'>Programming (2)</a></li><li><a href='/blog/category/python'>Python (1)</a></li><li><a href='/blog/category/translation'>Translation (1)</a></li></ul>
 </section>
 
 <section>
@@ -412,6 +428,13 @@ Node* has_circle(Node* head) {
   
 </section>
 
+
+<section>
+  <h1>On Delicious</h1>
+  <div id="delicious"></div>
+  <script type="text/javascript" src="http://feeds.delicious.com/v2/json/pf_miles?count=3&amp;sort=date&amp;callback=renderDeliciousLinks"></script>
+  <p><a href="http://delicious.com/pf_miles">My Delicious Bookmarks &raquo;</a></p>
+</section>
 
 
 <section class="googleplus">

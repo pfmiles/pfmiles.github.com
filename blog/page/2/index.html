@@ -9,7 +9,10 @@
   <meta name="author" content="pf_miles">
 
   
-  <meta name="description" content="此问题由v_JULY_v整理发布并发表于blog上, 版权归原作者所有。 问题描述：定义栈的数据结构,要求添加一个 min 函数,能够得到栈的最小元素, 要求函数 min、push 以及 pop 的时间复杂度都是 O(1) 分析： 主要是抓住栈的“还原现场”的能力 —— 由于随着元素的加入与弹出 &hellip;">
+  <meta name="description" content="此问题由v_JULY_v整理发布并发表于blog上, 版权归原作者所有。 输入一个整形数组,数组里有正数也有负数。
+数组中连续的一个或多个整数组成一个子数组,每个子数组都有一个和。
+求所有子数组的和的最大值。要求时间复杂度为 O(n)。
+例如输入的数组为 1, -2, 3, 10, -4, 7, &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -28,6 +31,20 @@
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
 
   
   <script type="text/javascript">
@@ -76,6 +93,58 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/algorithms-in-job-interview-max-sum-sub-list">[面试中的算法]求子数组的最大和</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-02-28T22:48:00+08:00" pubdate data-updated="true">Feb 28<span>th</span>, 2012</time>
+        
+         | <a href="/blog/algorithms-in-job-interview-max-sum-sub-list#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>此问题由<a href="http://blog.csdn.net/v_JULY_v/article/details/6050133">v_JULY_v</a>整理发布并发表于<a href="http://blog.csdn.net/v_JULY_v">blog</a>上, 版权归原作者所有。</p>
+
+<p><strong>输入一个整形数组,数组里有正数也有负数。
+数组中连续的一个或多个整数组成一个子数组,每个子数组都有一个和。
+求所有子数组的和的最大值。要求时间复杂度为 O(n)。
+例如输入的数组为 1, -2, 3, 10, -4, 7, 2, -5,和最大的子数组为 3, 10, -4, 7, 2, 因此输出为该子数组的和 18</strong></p>
+
+<h3>分析：</h3>
+
+<p>贪心算法能在此问题的任意一个子问题上找到最优解(最优子结构)，所以可以用贪心算法解决。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/algorithms-in-job-interview-max-sum-sub-list">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -339,6 +408,10 @@ P(A|B) = P(B|A)P(A) / P(B)    // 这就是“正规”的贝叶斯公式
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/algo-class-week2-notes-master-method">Algo-class第二周小记: Master Method</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/left-recursion-removal-using-kleene-closure">使用Kleene闭包语法糖消除语法中的左递归</a>
       </li>
     
@@ -354,19 +427,15 @@ P(A|B) = P(B|A)P(A) / P(B)    // 这就是“正规”的贝叶斯公式
         <a href="/blog/the-main-ideas-and-concepts-of-dropincc-dot-java">Dropincc.java的概念与设计</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/liquid-error-about-regexp-match-when-using-octopress-tagcloud">Liquid Error about regexp match when using octopress-tagcloud</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Tag Cloud</h1>
-  <span id="tag-cloud"><a href='/blog/category/ai-class' style='font-size: 108.57142857142857%'>Ai-class(1)</a> <a href='/blog/category/algo-class' style='font-size: 108.57142857142857%'>Algo-class(1)</a> <a href='/blog/category/algorithm' style='font-size: 160.0%'>Algorithm(7)</a> <a href='/blog/category/compiler' style='font-size: 117.14285714285714%'>Compiler(2)</a> <a href='/blog/category/computer' style='font-size: 108.57142857142857%'>Computer(1)</a> <a href='/blog/category/design' style='font-size: 108.57142857142857%'>Design(1)</a> <a href='/blog/category/dropincc' style='font-size: 125.71428571428572%'>Dropincc(3)</a> <a href='/blog/category/interview' style='font-size: 134.28571428571428%'>Interview(4)</a> <a href='/blog/category/life' style='font-size: 108.57142857142857%'>Life(1)</a> <a href='/blog/category/octopress' style='font-size: 108.57142857142857%'>Octopress(1)</a> <a href='/blog/category/performance' style='font-size: 108.57142857142857%'>Performance(1)</a> <a href='/blog/category/probability' style='font-size: 108.57142857142857%'>Probability(1)</a> <a href='/blog/category/programming' style='font-size: 117.14285714285714%'>Programming(2)</a> <a href='/blog/category/python' style='font-size: 108.57142857142857%'>Python(1)</a> <a href='/blog/category/translation' style='font-size: 108.57142857142857%'>Translation(1)</a> </span>
+  <span id="tag-cloud"><a href='/blog/category/ai-class' style='font-size: 107.5%'>Ai-class(1)</a> <a href='/blog/category/algo-class' style='font-size: 115.0%'>Algo-class(2)</a> <a href='/blog/category/algorithm' style='font-size: 160.0%'>Algorithm(8)</a> <a href='/blog/category/compiler' style='font-size: 115.0%'>Compiler(2)</a> <a href='/blog/category/computer' style='font-size: 107.5%'>Computer(1)</a> <a href='/blog/category/design' style='font-size: 107.5%'>Design(1)</a> <a href='/blog/category/dropincc' style='font-size: 122.5%'>Dropincc(3)</a> <a href='/blog/category/interview' style='font-size: 130.0%'>Interview(4)</a> <a href='/blog/category/life' style='font-size: 107.5%'>Life(1)</a> <a href='/blog/category/octopress' style='font-size: 107.5%'>Octopress(1)</a> <a href='/blog/category/performance' style='font-size: 107.5%'>Performance(1)</a> <a href='/blog/category/probability' style='font-size: 107.5%'>Probability(1)</a> <a href='/blog/category/programming' style='font-size: 115.0%'>Programming(2)</a> <a href='/blog/category/python' style='font-size: 107.5%'>Python(1)</a> <a href='/blog/category/translation' style='font-size: 107.5%'>Translation(1)</a> </span>
 </section>
 <section>
   <h1>Categories</h1>
-    <ul id="category-list"><li><a href='/blog/category/ai-class'>Ai-class (1)</a></li><li><a href='/blog/category/algo-class'>Algo-class (1)</a></li><li><a href='/blog/category/algorithm'>Algorithm (7)</a></li><li><a href='/blog/category/compiler'>Compiler (2)</a></li><li><a href='/blog/category/computer'>Computer (1)</a></li><li><a href='/blog/category/design'>Design (1)</a></li><li><a href='/blog/category/dropincc'>Dropincc (3)</a></li><li><a href='/blog/category/interview'>Interview (4)</a></li><li><a href='/blog/category/life'>Life (1)</a></li><li><a href='/blog/category/octopress'>Octopress (1)</a></li><li><a href='/blog/category/performance'>Performance (1)</a></li><li><a href='/blog/category/probability'>Probability (1)</a></li><li><a href='/blog/category/programming'>Programming (2)</a></li><li><a href='/blog/category/python'>Python (1)</a></li><li><a href='/blog/category/translation'>Translation (1)</a></li></ul>
+    <ul id="category-list"><li><a href='/blog/category/ai-class'>Ai-class (1)</a></li><li><a href='/blog/category/algo-class'>Algo-class (2)</a></li><li><a href='/blog/category/algorithm'>Algorithm (8)</a></li><li><a href='/blog/category/compiler'>Compiler (2)</a></li><li><a href='/blog/category/computer'>Computer (1)</a></li><li><a href='/blog/category/design'>Design (1)</a></li><li><a href='/blog/category/dropincc'>Dropincc (3)</a></li><li><a href='/blog/category/interview'>Interview (4)</a></li><li><a href='/blog/category/life'>Life (1)</a></li><li><a href='/blog/category/octopress'>Octopress (1)</a></li><li><a href='/blog/category/performance'>Performance (1)</a></li><li><a href='/blog/category/probability'>Probability (1)</a></li><li><a href='/blog/category/programming'>Programming (2)</a></li><li><a href='/blog/category/python'>Python (1)</a></li><li><a href='/blog/category/translation'>Translation (1)</a></li></ul>
 </section>
 
 <section>
@@ -415,6 +484,13 @@ P(A|B) = P(B|A)P(A) / P(B)    // 这就是“正规”的贝叶斯公式
   
 </section>
 
+
+<section>
+  <h1>On Delicious</h1>
+  <div id="delicious"></div>
+  <script type="text/javascript" src="http://feeds.delicious.com/v2/json/pf_miles?count=3&amp;sort=date&amp;callback=renderDeliciousLinks"></script>
+  <p><a href="http://delicious.com/pf_miles">My Delicious Bookmarks &raquo;</a></p>
+</section>
 
 
 <section class="googleplus">

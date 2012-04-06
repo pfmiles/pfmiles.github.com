@@ -2,76 +2,80 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
         <loc>http://pfmiles.github.com/blog/theory-of-probability-required-in-ai-class</loc>
-        <lastmod>2012-03-05T09:36:52+08:00</lastmod>
+        <lastmod>2012-04-06T10:17:46+08:00</lastmod>
     </url>
     <url>
         <loc>http://pfmiles.github.com/blog/python-speed-performance-tips</loc>
-        <lastmod>2012-03-14T19:30:05+08:00</lastmod>
+        <lastmod>2012-04-06T10:17:46+08:00</lastmod>
     </url>
     <url>
         <loc>
             http://pfmiles.github.com/blog/algorithms-in-job-interview-turn-binary-search-tree-to-doubly-linked-list
         </loc>
-        <lastmod>2012-03-05T09:39:42+08:00</lastmod>
+        <lastmod>2012-04-06T10:17:46+08:00</lastmod>
     </url>
     <url>
         <loc>
             http://pfmiles.github.com/blog/algorithms-in-job-interview-design-a-stack-with-min-function
         </loc>
-        <lastmod>2012-03-05T09:40:59+08:00</lastmod>
+        <lastmod>2012-04-06T10:17:46+08:00</lastmod>
     </url>
     <url>
         <loc>http://pfmiles.github.com/blog/algorithms-in-job-interview-max-sum-sub-list</loc>
-        <lastmod>2012-03-05T09:43:56+08:00</lastmod>
+        <lastmod>2012-04-06T10:17:46+08:00</lastmod>
     </url>
     <url>
         <loc>http://pfmiles.github.com/blog/trace-the-path-of-recursive-function</loc>
-        <lastmod>2012-03-05T09:48:45+08:00</lastmod>
+        <lastmod>2012-04-06T10:17:46+08:00</lastmod>
     </url>
     <url>
         <loc>http://pfmiles.github.com/blog/find-the-max-k-numbers</loc>
-        <lastmod>2012-03-05T09:34:05+08:00</lastmod>
+        <lastmod>2012-04-06T10:17:46+08:00</lastmod>
     </url>
     <url>
         <loc>
             http://pfmiles.github.com/blog/algorithms-in-job-interview-test-if-two-linked-lists-intersected
         </loc>
-        <lastmod>2012-03-09T22:16:05+08:00</lastmod>
+        <lastmod>2012-04-06T10:17:46+08:00</lastmod>
     </url>
     <url>
         <loc>http://pfmiles.github.com/blog/pc-assembled-for-my-cousin-and-aunt</loc>
-        <lastmod>2012-03-10T20:56:55+08:00</lastmod>
+        <lastmod>2012-04-06T10:17:46+08:00</lastmod>
     </url>
     <url>
         <loc>
             http://pfmiles.github.com/blog/liquid-error-about-regexp-match-when-using-octopress-tagcloud
         </loc>
-        <lastmod>2012-03-14T20:06:42+08:00</lastmod>
+        <lastmod>2012-04-06T10:17:46+08:00</lastmod>
     </url>
     <url>
         <loc>http://pfmiles.github.com/blog/the-main-ideas-and-concepts-of-dropincc-dot-java</loc>
-        <lastmod>2012-04-01T16:38:12+08:00</lastmod>
+        <lastmod>2012-04-06T10:17:46+08:00</lastmod>
     </url>
     <url>
         <loc>http://pfmiles.github.com/blog/dropincc-dot-java-api-design</loc>
-        <lastmod>2012-04-01T16:35:04+08:00</lastmod>
+        <lastmod>2012-04-06T10:17:46+08:00</lastmod>
     </url>
     <url>
         <loc>
             http://pfmiles.github.com/blog/algo-class-week-one-assignment-counting-inversions
         </loc>
-        <lastmod>2012-03-25T15:58:57+08:00</lastmod>
+        <lastmod>2012-04-06T10:17:46+08:00</lastmod>
     </url>
     <url>
         <loc>http://pfmiles.github.com/blog/left-recursion-removal-using-kleene-closure</loc>
-        <lastmod>2012-04-01T16:30:14+08:00</lastmod>
+        <lastmod>2012-04-06T10:17:46+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://pfmiles.github.com/blog/algo-class-week2-notes-master-method</loc>
+        <lastmod>2012-04-06T22:34:41+08:00</lastmod>
     </url>
     <url>
         <loc>http://pfmiles.github.com/</loc>
-        <lastmod>2012-04-01T16:38:12+08:00</lastmod>
+        <lastmod>2012-04-06T22:34:41+08:00</lastmod>
     </url>
     <url>
         <loc>http://pfmiles.github.com/blog/archives/</loc>
-        <lastmod>2012-04-01T16:38:12+08:00</lastmod>
+        <lastmod>2012-04-06T22:34:41+08:00</lastmod>
     </url>
 </urlset>

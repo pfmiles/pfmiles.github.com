@@ -9,9 +9,8 @@
   <meta name="author" content="pf_miles">
 
   
-  <meta name="description" content="一般来讲，如果使用的解析器生成器是基于LL分析法来解析文本的话(比如antlr)，我们就需要在编写语法规则的时候避免左递归。
-虽然有一套成熟的、公式化的方法来去除左递归，但它会影响原有文法的结合顺序、优先级，或者多出一些本不需要的、额外的产生式。
-例如，有左递归语法规则： addition &hellip;">
+  <meta name="description" content="week2主要讲了master method，感觉从来没有听过如此清晰有条理的介绍master method的讲解，不得不佩服Tim Roughgarden教授的功力。
+从一些随课笔记总结起来，master method是用来预估divide and conquer算法的大O时间复杂度的公式； &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -30,6 +29,20 @@
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
 
   
   <script type="text/javascript">
@@ -78,6 +91,57 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/algo-class-week2-notes-master-method">Algo-class第二周小记: Master Method</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-04-03T11:40:00+08:00" pubdate data-updated="true">Apr 3<span>rd</span>, 2012</time>
+        
+         | <a href="/blog/algo-class-week2-notes-master-method#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>week2主要讲了master method，感觉从来没有听过如此清晰有条理的介绍master method的讲解，不得不佩服<a href="http://theory.stanford.edu/~tim/">Tim Roughgarden</a>教授的功力。<br/>
+从一些随课笔记总结起来，master method是用来预估divide and conquer算法的大O时间复杂度的公式；它要求divide的时候“所有sub-problems的规模都相等”才能适用。<br/>
+要使用master method, 首先要将算法的时间消耗函数写成递推公式形式：
+$$T(n) &lt;= aT(\frac{n}{b}) + O(n^d)$$
+其中T(n)是本层递归所消耗的时间，$T(\frac{n}{b})$自然就是下一层递归所消耗的时间了，b就是每次往“下层”递归调用时问题规模缩小的倍率，a就是代码中递归调用的个数；$O(n^d)$ 是将递归调用之外的其它代码的时间开销写成关于输入规模n的指数形式，d就是这个指数。<br/>
+基础情况： 当n足够小时，T(n) &lt;= 一个常数<br/>
+a,b,d与输入规模无关。<br/>
+那么，根据a,b,d的情况，T(n)可能被表示为三种情况：<br/>
+<img src="/images/masterMethod.png" title="Master Method" alt="Master Method" /></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/algo-class-week2-notes-master-method">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -568,8 +632,8 @@ tag_cloud.rb: ascii (confidence: 1.00)
 <li>若K不小，则可利用这“只能容纳K个数的最小堆”的方法来做；时间复杂度是O(nlogk);用“堆”这种结构来解决此问题，很好地理解和利用了堆的特性:
 
 <ol>
-<li>找最大的K个数要使用最小堆，是因为最小堆总能最方便地剔除“最小的元素”，那么最后剩在堆中的都是最大的K个元素了；反之，若要找“最小的K个元素”则应该使用最大堆</li>
-<li>二叉堆的同层节点之间是没有顺序的，这恰好符合我们的题目“不要求K个数之间排序”的需求，少了K个数之间的排序则能够减少不必要计算</li>
+<li> 找最大的K个数要使用最小堆，是因为最小堆总能最方便地剔除“最小的元素”，那么最后剩在堆中的都是最大的K个元素了；反之，若要找“最小的K个元素”则应该使用最大堆</li>
+<li> 二叉堆的同层节点之间是没有顺序的，这恰好符合我们的题目“不要求K个数之间排序”的需求，少了K个数之间的排序则能够减少不必要计算</li>
 </ol>
 </li>
 </ul>
@@ -772,58 +836,6 @@ print found
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/algorithms-in-job-interview-max-sum-sub-list">[面试中的算法]求子数组的最大和</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-02-28T22:48:00+08:00" pubdate data-updated="true">Feb 28<span>th</span>, 2012</time>
-        
-         | <a href="/blog/algorithms-in-job-interview-max-sum-sub-list#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>此问题由<a href="http://blog.csdn.net/v_JULY_v/article/details/6050133">v_JULY_v</a>整理发布并发表于<a href="http://blog.csdn.net/v_JULY_v">blog</a>上, 版权归原作者所有。</p>
-
-<p><strong>输入一个整形数组,数组里有正数也有负数。
-数组中连续的一个或多个整数组成一个子数组,每个子数组都有一个和。
-求所有子数组的和的最大值。要求时间复杂度为 O(n)。
-例如输入的数组为 1, -2, 3, 10, -4, 7, 2, -5,和最大的子数组为 3, 10, -4, 7, 2, 因此输出为该子数组的和 18</strong></p>
-
-<h3>分析：</h3>
-
-<p>贪心算法能在此问题的任意一个子问题上找到最优解(最优子结构)，所以可以用贪心算法解决。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/algorithms-in-job-interview-max-sum-sub-list">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -837,6 +849,10 @@ print found
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/algo-class-week2-notes-master-method">Algo-class第二周小记: Master Method</a>
+      </li>
     
       <li class="post">
         <a href="/blog/left-recursion-removal-using-kleene-closure">使用Kleene闭包语法糖消除语法中的左递归</a>
@@ -854,19 +870,15 @@ print found
         <a href="/blog/the-main-ideas-and-concepts-of-dropincc-dot-java">Dropincc.java的概念与设计</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/liquid-error-about-regexp-match-when-using-octopress-tagcloud">Liquid Error about regexp match when using octopress-tagcloud</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Tag Cloud</h1>
-  <span id="tag-cloud"><a href='/blog/category/ai-class' style='font-size: 108.57142857142857%'>Ai-class(1)</a> <a href='/blog/category/algo-class' style='font-size: 108.57142857142857%'>Algo-class(1)</a> <a href='/blog/category/algorithm' style='font-size: 160.0%'>Algorithm(7)</a> <a href='/blog/category/compiler' style='font-size: 117.14285714285714%'>Compiler(2)</a> <a href='/blog/category/computer' style='font-size: 108.57142857142857%'>Computer(1)</a> <a href='/blog/category/design' style='font-size: 108.57142857142857%'>Design(1)</a> <a href='/blog/category/dropincc' style='font-size: 125.71428571428572%'>Dropincc(3)</a> <a href='/blog/category/interview' style='font-size: 134.28571428571428%'>Interview(4)</a> <a href='/blog/category/life' style='font-size: 108.57142857142857%'>Life(1)</a> <a href='/blog/category/octopress' style='font-size: 108.57142857142857%'>Octopress(1)</a> <a href='/blog/category/performance' style='font-size: 108.57142857142857%'>Performance(1)</a> <a href='/blog/category/probability' style='font-size: 108.57142857142857%'>Probability(1)</a> <a href='/blog/category/programming' style='font-size: 117.14285714285714%'>Programming(2)</a> <a href='/blog/category/python' style='font-size: 108.57142857142857%'>Python(1)</a> <a href='/blog/category/translation' style='font-size: 108.57142857142857%'>Translation(1)</a> </span>
+  <span id="tag-cloud"><a href='/blog/category/ai-class' style='font-size: 107.5%'>Ai-class(1)</a> <a href='/blog/category/algo-class' style='font-size: 115.0%'>Algo-class(2)</a> <a href='/blog/category/algorithm' style='font-size: 160.0%'>Algorithm(8)</a> <a href='/blog/category/compiler' style='font-size: 115.0%'>Compiler(2)</a> <a href='/blog/category/computer' style='font-size: 107.5%'>Computer(1)</a> <a href='/blog/category/design' style='font-size: 107.5%'>Design(1)</a> <a href='/blog/category/dropincc' style='font-size: 122.5%'>Dropincc(3)</a> <a href='/blog/category/interview' style='font-size: 130.0%'>Interview(4)</a> <a href='/blog/category/life' style='font-size: 107.5%'>Life(1)</a> <a href='/blog/category/octopress' style='font-size: 107.5%'>Octopress(1)</a> <a href='/blog/category/performance' style='font-size: 107.5%'>Performance(1)</a> <a href='/blog/category/probability' style='font-size: 107.5%'>Probability(1)</a> <a href='/blog/category/programming' style='font-size: 115.0%'>Programming(2)</a> <a href='/blog/category/python' style='font-size: 107.5%'>Python(1)</a> <a href='/blog/category/translation' style='font-size: 107.5%'>Translation(1)</a> </span>
 </section>
 <section>
   <h1>Categories</h1>
-    <ul id="category-list"><li><a href='/blog/category/ai-class'>Ai-class (1)</a></li><li><a href='/blog/category/algo-class'>Algo-class (1)</a></li><li><a href='/blog/category/algorithm'>Algorithm (7)</a></li><li><a href='/blog/category/compiler'>Compiler (2)</a></li><li><a href='/blog/category/computer'>Computer (1)</a></li><li><a href='/blog/category/design'>Design (1)</a></li><li><a href='/blog/category/dropincc'>Dropincc (3)</a></li><li><a href='/blog/category/interview'>Interview (4)</a></li><li><a href='/blog/category/life'>Life (1)</a></li><li><a href='/blog/category/octopress'>Octopress (1)</a></li><li><a href='/blog/category/performance'>Performance (1)</a></li><li><a href='/blog/category/probability'>Probability (1)</a></li><li><a href='/blog/category/programming'>Programming (2)</a></li><li><a href='/blog/category/python'>Python (1)</a></li><li><a href='/blog/category/translation'>Translation (1)</a></li></ul>
+    <ul id="category-list"><li><a href='/blog/category/ai-class'>Ai-class (1)</a></li><li><a href='/blog/category/algo-class'>Algo-class (2)</a></li><li><a href='/blog/category/algorithm'>Algorithm (8)</a></li><li><a href='/blog/category/compiler'>Compiler (2)</a></li><li><a href='/blog/category/computer'>Computer (1)</a></li><li><a href='/blog/category/design'>Design (1)</a></li><li><a href='/blog/category/dropincc'>Dropincc (3)</a></li><li><a href='/blog/category/interview'>Interview (4)</a></li><li><a href='/blog/category/life'>Life (1)</a></li><li><a href='/blog/category/octopress'>Octopress (1)</a></li><li><a href='/blog/category/performance'>Performance (1)</a></li><li><a href='/blog/category/probability'>Probability (1)</a></li><li><a href='/blog/category/programming'>Programming (2)</a></li><li><a href='/blog/category/python'>Python (1)</a></li><li><a href='/blog/category/translation'>Translation (1)</a></li></ul>
 </section>
 
 <section>
@@ -915,6 +927,13 @@ print found
   
 </section>
 
+
+<section>
+  <h1>On Delicious</h1>
+  <div id="delicious"></div>
+  <script type="text/javascript" src="http://feeds.delicious.com/v2/json/pf_miles?count=3&amp;sort=date&amp;callback=renderDeliciousLinks"></script>
+  <p><a href="http://delicious.com/pf_miles">My Delicious Bookmarks &raquo;</a></p>
+</section>
 
 
 <section class="googleplus">

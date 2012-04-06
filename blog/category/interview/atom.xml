@@ -4,7 +4,7 @@
   <title><![CDATA[Category: interview | Meta-Interpretation]]></title>
   <link href="http://pfmiles.github.com/blog/category/interview/atom.xml" rel="self"/>
   <link href="http://pfmiles.github.com/"/>
-  <updated>2012-04-01T17:55:34+08:00</updated>
+  <updated>2012-04-06T22:36:05+08:00</updated>
   <id>http://pfmiles.github.com/</id>
   <author>
     <name><![CDATA[pf_miles]]></name>
@@ -170,7 +170,7 @@ Node* has_circle(Node* head) {
 
 <p>其中，<code>has_circle</code>方法是判断一个单向链表是否带环的，基本原理就是设置2个“速度”不同的链表，快的去追慢的，追上就是带环，直到较快指针遇到null还没追上就是没有环；假设环包含n个节点，指针<code>p2</code>的"速度"是2，<code>p1</code>的速度是1，相对速度就是1，从相同一点出发的话，<code>p2</code>追上<code>p1</code>至少要n步；若再假设该链表除了环的部分外还带有一个长度为k的“尾巴”，那么追上的步数最多是n+k;也就是线性时间复杂度内就能完成这个判断。</p>
 
-<p>这提供了一种很好的判断是否"环状"的思路；以前我只写过“用一个栈来记录”的方式，弱爆了...(时间复杂度为O(n<sup>2))</sup></p>
+<p>这提供了一种很好的判断是否"环状"的思路；以前我只写过“用一个栈来记录”的方式，弱爆了...(时间复杂度为O(n<sup>2</sup>))</p>
 
 <p>在<code>has_circle_1</code>和<code>has_circle_2</code>都满足的时候，也就是说2个链表都带环的时候，要分别取2个环上的一点来玩“追逐游戏”来判断是否相交；在这段程序里是<code>pp1</code>和<code>pp2</code>;然后一个速度为2一个速度为1开始玩“追逐游戏”，当慢的那个走完环上所有节点时快的那个还没追上它的话，说明不相交(此时耗费时间n——即环节点数;因为快慢指针的相对速度为1，快指针理应在时间n以内追上慢链表，否则不相交)。</p>
 

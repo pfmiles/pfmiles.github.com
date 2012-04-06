@@ -4,7 +4,7 @@
   <title><![CDATA[Category: algorithm | Meta-Interpretation]]></title>
   <link href="http://pfmiles.github.com/blog/category/algorithm/atom.xml" rel="self"/>
   <link href="http://pfmiles.github.com/"/>
-  <updated>2012-04-01T17:55:34+08:00</updated>
+  <updated>2012-04-06T22:36:05+08:00</updated>
   <id>http://pfmiles.github.com/</id>
   <author>
     <name><![CDATA[pf_miles]]></name>
@@ -12,6 +12,60 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Algo-class第二周小记: Master Method]]></title>
+    <link href="http://pfmiles.github.com/blog/algo-class-week2-notes-master-method"/>
+    <updated>2012-04-03T11:40:00+08:00</updated>
+    <id>http://pfmiles.github.com/blog/algo-class-week2-notes-master-method</id>
+    <content type="html"><![CDATA[<p>week2主要讲了master method，感觉从来没有听过如此清晰有条理的介绍master method的讲解，不得不佩服<a href="http://theory.stanford.edu/~tim/">Tim Roughgarden</a>教授的功力。<br/>
+从一些随课笔记总结起来，master method是用来预估divide and conquer算法的大O时间复杂度的公式；它要求divide的时候“所有sub-problems的规模都相等”才能适用。<br/>
+要使用master method, 首先要将算法的时间消耗函数写成递推公式形式：
+$$T(n) &lt;= aT(\frac{n}{b}) + O(n^d)$$
+其中T(n)是本层递归所消耗的时间，$T(\frac{n}{b})$自然就是下一层递归所消耗的时间了，b就是每次往“下层”递归调用时问题规模缩小的倍率，a就是代码中递归调用的个数；$O(n^d)$ 是将递归调用之外的其它代码的时间开销写成关于输入规模n的指数形式，d就是这个指数。<br/>
+基础情况： 当n足够小时，T(n) &lt;= 一个常数<br/>
+a,b,d与输入规模无关。<br/>
+那么，根据a,b,d的情况，T(n)可能被表示为三种情况：<br/>
+<img src="/images/masterMethod.png" title="Master Method" alt="Master Method" /></p>
+
+<!-- more -->
+
+
+<p>对于这个式子，我个人的、不严格的、直觉的理解就是：</p>
+
+<ol>
+<li>当$a = b^d$时，程序规模被divide之后，合并代价增大的幅度与程序规模缩小的幅度相当，所以复杂度公式中合并代价部分和切分、解决部分的复杂度都要算在里面</li>
+<li>当$a &lt; b^d$时，合并代价增长快于切分、解决缩小幅度，所以复杂度公式中只算合并代价部分</li>
+<li>当$a > b^d$时，切分、解决部分时间代价占主导，忽略递归调用以外的项，只写出divide and conquer递归调用部分的时间开销</li>
+</ol>
+
+
+<p>不过其实这个是有严格的证明的：<br/>
+设$T(n) = aT(\frac{n}{b}) + cn^d$<br/>
+对于第j层递归 ，运算量为：$a^j \times c \times (\frac{n}{b^j})^d$<br/>
+即：$cn^d(\frac{a}{b^d})^j$，所以a和$b^d$的大小关系是关键！<br/>
+进而总计算时间： $total work \leqslant cn^d \centerdot \sum\limits_{j=0}^{\log_bn}(\frac{a}{b^d})^j$, 然后通过这个式子，由a和$b^d$的大小关系可以较容易想通为什么master method会是上述这种三段分段函数的形式。<br/>
+Week2作业是快排...写个快排倒是简单，可是作业要求要count快排过程中的比较次数...在作业论坛里面看到哀嚎声一片...毕竟实现只要稍微有点偏差，虽然同样是快排，确实很容易比较次数不一样。<br/>
+值得一提的是讲解中给出的in-place的快排partition方法，就是不用建立额外的数组来进行partition，python示意代码如下：</p>
+
+<pre><code>def partition(pivotIndex, arr):
+    swap(arr, 0, pivotIndex)
+    pivot = arr[0]
+    i = 1 # index 0...i &lt; pivot
+    j = 1 # index i...j &gt; pivot
+    for k in range(1, len(arr)):
+    if arr[k] &lt;= pivot :
+        swap(arr, i, k)
+        i += 1
+        j += 1
+    else:
+        j += 1
+    return (arr[1:i], pivot, arr[i:j])
+</code></pre>
+
+<p>另外，从快排的例子可以看出，若divide and conquer算法是基于某种比较结果，将问题规模初步divide and conquer的话，每一次比较“能否将问题划分为规模差不多均等的子问题”将很大地影响算法实际的执行效率。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[[algo-class]第一周作业——Count Inversions]]></title>
@@ -236,7 +290,7 @@ Node* has_circle(Node* head) {
 
 <p>其中，<code>has_circle</code>方法是判断一个单向链表是否带环的，基本原理就是设置2个“速度”不同的链表，快的去追慢的，追上就是带环，直到较快指针遇到null还没追上就是没有环；假设环包含n个节点，指针<code>p2</code>的"速度"是2，<code>p1</code>的速度是1，相对速度就是1，从相同一点出发的话，<code>p2</code>追上<code>p1</code>至少要n步；若再假设该链表除了环的部分外还带有一个长度为k的“尾巴”，那么追上的步数最多是n+k;也就是线性时间复杂度内就能完成这个判断。</p>
 
-<p>这提供了一种很好的判断是否"环状"的思路；以前我只写过“用一个栈来记录”的方式，弱爆了...(时间复杂度为O(n<sup>2))</sup></p>
+<p>这提供了一种很好的判断是否"环状"的思路；以前我只写过“用一个栈来记录”的方式，弱爆了...(时间复杂度为O(n<sup>2</sup>))</p>
 
 <p>在<code>has_circle_1</code>和<code>has_circle_2</code>都满足的时候，也就是说2个链表都带环的时候，要分别取2个环上的一点来玩“追逐游戏”来判断是否相交；在这段程序里是<code>pp1</code>和<code>pp2</code>;然后一个速度为2一个速度为1开始玩“追逐游戏”，当慢的那个走完环上所有节点时快的那个还没追上它的话，说明不相交(此时耗费时间n——即环节点数;因为快慢指针的相对速度为1，快指针理应在时间n以内追上慢链表，否则不相交)。</p>
 
@@ -262,8 +316,8 @@ Node* has_circle(Node* head) {
 <li>若K不小，则可利用这“只能容纳K个数的最小堆”的方法来做；时间复杂度是O(nlogk);用“堆”这种结构来解决此问题，很好地理解和利用了堆的特性:
 
 <ol>
-<li>找最大的K个数要使用最小堆，是因为最小堆总能最方便地剔除“最小的元素”，那么最后剩在堆中的都是最大的K个元素了；反之，若要找“最小的K个元素”则应该使用最大堆</li>
-<li>二叉堆的同层节点之间是没有顺序的，这恰好符合我们的题目“不要求K个数之间排序”的需求，少了K个数之间的排序则能够减少不必要计算</li>
+<li> 找最大的K个数要使用最小堆，是因为最小堆总能最方便地剔除“最小的元素”，那么最后剩在堆中的都是最大的K个元素了；反之，若要找“最小的K个元素”则应该使用最大堆</li>
+<li> 二叉堆的同层节点之间是没有顺序的，这恰好符合我们的题目“不要求K个数之间排序”的需求，少了K个数之间的排序则能够减少不必要计算</li>
 </ol>
 </li>
 </ul>
@@ -430,47 +484,6 @@ print found
 </code></pre>
 
 <p>这样一来，其实路径上的每一步，都是记录在调用栈上的(就算子节点没有父节点的指针，函数参数也直接把父节点带过来了，也就是在调用栈中)，当程序想要输出路径时，也完全能够将路径还原。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[[面试中的算法]求子数组的最大和]]></title>
-    <link href="http://pfmiles.github.com/blog/algorithms-in-job-interview-max-sum-sub-list"/>
-    <updated>2012-02-28T22:48:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/algorithms-in-job-interview-max-sum-sub-list</id>
-    <content type="html"><![CDATA[<p>此问题由<a href="http://blog.csdn.net/v_JULY_v/article/details/6050133">v_JULY_v</a>整理发布并发表于<a href="http://blog.csdn.net/v_JULY_v">blog</a>上, 版权归原作者所有。</p>
-
-<p><strong>输入一个整形数组,数组里有正数也有负数。
-数组中连续的一个或多个整数组成一个子数组,每个子数组都有一个和。
-求所有子数组的和的最大值。要求时间复杂度为 O(n)。
-例如输入的数组为 1, -2, 3, 10, -4, 7, 2, -5,和最大的子数组为 3, 10, -4, 7, 2, 因此输出为该子数组的和 18</strong></p>
-
-<h3>分析：</h3>
-
-<p>贪心算法能在此问题的任意一个子问题上找到最优解(最优子结构)，所以可以用贪心算法解决。</p>
-
-<!-- more -->
-
-
-<h3>程序：</h3>
-
-<pre><code># 1, -2, 3, 10, -4, 7, 2, -5, output the maximum summarized sub-list
-# greedy algorithm
-def greatestSumSubList(al):
-    mx = 0
-    sm = 0
-    for i in al:
-    sm += i
-    if sm &lt; 0:
-        sm = 0
-    if sm &gt; mx:
-        mx = sm
-    return mx
-
-print greatestSumSubList([1, -2, 3, 10, -4, 7, 2, -5])
-</code></pre>
-
-<p>输出： 18</p>
 ]]></content>
   </entry>
   

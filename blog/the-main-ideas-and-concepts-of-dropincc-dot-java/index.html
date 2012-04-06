@@ -28,6 +28,20 @@
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
 
   
   <script type="text/javascript">
@@ -267,8 +281,10 @@ lang.exe("1+2+3*4/(5*6*7+8)");
 
   <section>
     <h1>Comments</h1>
-    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <div class="tex2jax_ignore">
+        <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
+    </div>
   </section>
 
 </div>
@@ -278,6 +294,10 @@ lang.exe("1+2+3*4/(5*6*7+8)");
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/algo-class-week2-notes-master-method">Algo-class第二周小记: Master Method</a>
+      </li>
     
       <li class="post">
         <a href="/blog/left-recursion-removal-using-kleene-closure">使用Kleene闭包语法糖消除语法中的左递归</a>
@@ -295,19 +315,15 @@ lang.exe("1+2+3*4/(5*6*7+8)");
         <a href="/blog/the-main-ideas-and-concepts-of-dropincc-dot-java">Dropincc.java的概念与设计</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/liquid-error-about-regexp-match-when-using-octopress-tagcloud">Liquid Error about regexp match when using octopress-tagcloud</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Tag Cloud</h1>
-  <span id="tag-cloud"><a href='/blog/category/ai-class' style='font-size: 108.57142857142857%'>Ai-class(1)</a> <a href='/blog/category/algo-class' style='font-size: 108.57142857142857%'>Algo-class(1)</a> <a href='/blog/category/algorithm' style='font-size: 160.0%'>Algorithm(7)</a> <a href='/blog/category/compiler' style='font-size: 117.14285714285714%'>Compiler(2)</a> <a href='/blog/category/computer' style='font-size: 108.57142857142857%'>Computer(1)</a> <a href='/blog/category/design' style='font-size: 108.57142857142857%'>Design(1)</a> <a href='/blog/category/dropincc' style='font-size: 125.71428571428572%'>Dropincc(3)</a> <a href='/blog/category/interview' style='font-size: 134.28571428571428%'>Interview(4)</a> <a href='/blog/category/life' style='font-size: 108.57142857142857%'>Life(1)</a> <a href='/blog/category/octopress' style='font-size: 108.57142857142857%'>Octopress(1)</a> <a href='/blog/category/performance' style='font-size: 108.57142857142857%'>Performance(1)</a> <a href='/blog/category/probability' style='font-size: 108.57142857142857%'>Probability(1)</a> <a href='/blog/category/programming' style='font-size: 117.14285714285714%'>Programming(2)</a> <a href='/blog/category/python' style='font-size: 108.57142857142857%'>Python(1)</a> <a href='/blog/category/translation' style='font-size: 108.57142857142857%'>Translation(1)</a> </span>
+  <span id="tag-cloud"><a href='/blog/category/ai-class' style='font-size: 107.5%'>Ai-class(1)</a> <a href='/blog/category/algo-class' style='font-size: 115.0%'>Algo-class(2)</a> <a href='/blog/category/algorithm' style='font-size: 160.0%'>Algorithm(8)</a> <a href='/blog/category/compiler' style='font-size: 115.0%'>Compiler(2)</a> <a href='/blog/category/computer' style='font-size: 107.5%'>Computer(1)</a> <a href='/blog/category/design' style='font-size: 107.5%'>Design(1)</a> <a href='/blog/category/dropincc' style='font-size: 122.5%'>Dropincc(3)</a> <a href='/blog/category/interview' style='font-size: 130.0%'>Interview(4)</a> <a href='/blog/category/life' style='font-size: 107.5%'>Life(1)</a> <a href='/blog/category/octopress' style='font-size: 107.5%'>Octopress(1)</a> <a href='/blog/category/performance' style='font-size: 107.5%'>Performance(1)</a> <a href='/blog/category/probability' style='font-size: 107.5%'>Probability(1)</a> <a href='/blog/category/programming' style='font-size: 115.0%'>Programming(2)</a> <a href='/blog/category/python' style='font-size: 107.5%'>Python(1)</a> <a href='/blog/category/translation' style='font-size: 107.5%'>Translation(1)</a> </span>
 </section>
 <section>
   <h1>Categories</h1>
-    <ul id="category-list"><li><a href='/blog/category/ai-class'>Ai-class (1)</a></li><li><a href='/blog/category/algo-class'>Algo-class (1)</a></li><li><a href='/blog/category/algorithm'>Algorithm (7)</a></li><li><a href='/blog/category/compiler'>Compiler (2)</a></li><li><a href='/blog/category/computer'>Computer (1)</a></li><li><a href='/blog/category/design'>Design (1)</a></li><li><a href='/blog/category/dropincc'>Dropincc (3)</a></li><li><a href='/blog/category/interview'>Interview (4)</a></li><li><a href='/blog/category/life'>Life (1)</a></li><li><a href='/blog/category/octopress'>Octopress (1)</a></li><li><a href='/blog/category/performance'>Performance (1)</a></li><li><a href='/blog/category/probability'>Probability (1)</a></li><li><a href='/blog/category/programming'>Programming (2)</a></li><li><a href='/blog/category/python'>Python (1)</a></li><li><a href='/blog/category/translation'>Translation (1)</a></li></ul>
+    <ul id="category-list"><li><a href='/blog/category/ai-class'>Ai-class (1)</a></li><li><a href='/blog/category/algo-class'>Algo-class (2)</a></li><li><a href='/blog/category/algorithm'>Algorithm (8)</a></li><li><a href='/blog/category/compiler'>Compiler (2)</a></li><li><a href='/blog/category/computer'>Computer (1)</a></li><li><a href='/blog/category/design'>Design (1)</a></li><li><a href='/blog/category/dropincc'>Dropincc (3)</a></li><li><a href='/blog/category/interview'>Interview (4)</a></li><li><a href='/blog/category/life'>Life (1)</a></li><li><a href='/blog/category/octopress'>Octopress (1)</a></li><li><a href='/blog/category/performance'>Performance (1)</a></li><li><a href='/blog/category/probability'>Probability (1)</a></li><li><a href='/blog/category/programming'>Programming (2)</a></li><li><a href='/blog/category/python'>Python (1)</a></li><li><a href='/blog/category/translation'>Translation (1)</a></li></ul>
 </section>
 
 <section>
@@ -356,6 +372,13 @@ lang.exe("1+2+3*4/(5*6*7+8)");
   
 </section>
 
+
+<section>
+  <h1>On Delicious</h1>
+  <div id="delicious"></div>
+  <script type="text/javascript" src="http://feeds.delicious.com/v2/json/pf_miles?count=3&amp;sort=date&amp;callback=renderDeliciousLinks"></script>
+  <p><a href="http://delicious.com/pf_miles">My Delicious Bookmarks &raquo;</a></p>
+</section>
 
 
 <section class="googleplus">

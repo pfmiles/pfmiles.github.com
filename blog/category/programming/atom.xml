@@ -4,7 +4,7 @@
   <title><![CDATA[Category: programming | Meta-Interpretation]]></title>
   <link href="http://pfmiles.github.com/blog/category/programming/atom.xml" rel="self"/>
   <link href="http://pfmiles.github.com/"/>
-  <updated>2012-04-01T17:55:34+08:00</updated>
+  <updated>2012-04-06T22:36:05+08:00</updated>
   <id>http://pfmiles.github.com/</id>
   <author>
     <name><![CDATA[pf_miles]]></name>
@@ -29,8 +29,8 @@
 <li>若K不小，则可利用这“只能容纳K个数的最小堆”的方法来做；时间复杂度是O(nlogk);用“堆”这种结构来解决此问题，很好地理解和利用了堆的特性:
 
 <ol>
-<li>找最大的K个数要使用最小堆，是因为最小堆总能最方便地剔除“最小的元素”，那么最后剩在堆中的都是最大的K个元素了；反之，若要找“最小的K个元素”则应该使用最大堆</li>
-<li>二叉堆的同层节点之间是没有顺序的，这恰好符合我们的题目“不要求K个数之间排序”的需求，少了K个数之间的排序则能够减少不必要计算</li>
+<li> 找最大的K个数要使用最小堆，是因为最小堆总能最方便地剔除“最小的元素”，那么最后剩在堆中的都是最大的K个元素了；反之，若要找“最小的K个元素”则应该使用最大堆</li>
+<li> 二叉堆的同层节点之间是没有顺序的，这恰好符合我们的题目“不要求K个数之间排序”的需求，少了K个数之间的排序则能够减少不必要计算</li>
 </ol>
 </li>
 </ul>
