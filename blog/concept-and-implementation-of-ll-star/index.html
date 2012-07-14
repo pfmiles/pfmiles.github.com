@@ -1,0 +1,517 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>LL(*)的概念与实现 - Meta-Interpretation</title>
+  <meta name="author" content="pf_miles">
+
+  
+  <meta name="description" content="概念和起源 LL(*)是由Terrence Parr教授创造的，为使用LL分析的语法解析器做超前查看(look ahead)的一种算法。按照Parr教授的说法，这个算法从最初的想法至今的完善和调整已经历了15年。目前该算法的一个著名的实现在antlr3中。 特点，n言以蔽之&#8230; &hellip;">
+  <meta name="keywords" content="LL(*), LL, star, LL-star, python, dropincc, antlr, compiler">
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://pfmiles.github.com/blog/concept-and-implementation-of-ll-star">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Meta-Interpretation" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-4513284-8']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Meta-Interpretation</a></h1>
+  
+    <h2>Code, better explained.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:pfmiles.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">LL(*)的概念与实现</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-14T13:59:00+08:00" pubdate data-updated="true">Jul 14<span>th</span>, 2012</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h3>概念和起源</h3>
+
+<p>LL(*)是由<a href="http://www.cs.usfca.edu/~parrt/">Terrence Parr</a>教授创造的，为使用<a href="http://en.wikipedia.org/wiki/LL_parsing">LL分析</a>的语法解析器做超前查看(look ahead)的一种算法。按照Parr教授的说法，这个算法从最初的想法至今的完善和调整已经历了15年。目前该算法的一个著名的实现在<a href="http://www.antlr.org/">antlr3</a>中。</p>
+
+<h3>特点，n言以蔽之&#8230;</h3>
+
+<ul>
+<li>对于语法产生式分支的预测判断，走LL分析路子的解析器，其能力完全取决于能超前查看多少个token。传统地讲，LL(1), LL(2)直至LL(k)，就是在讲该解析器能够在语法分析过程中超前查看1, 2, k&#8230;个token。</li>
+<li>而LL(*)的意思就是，它在语法解析的过程中，超前查看的token个数不是固定的，是可伸缩的，不过这一点LL(k)分析也能做到(在k范围之内&#8230;)；</li>
+<li>但是，LL(*)还能越过一些重复出现的token，“到达”这些重复出现的token之后的token来做分析，这一点LL(k)是无法办到的(LL(k)无法意识到有token在循环出现，不管情况如何，它都将在尝试k个token之后放弃)；</li>
+<li>如果将超前查看的决策逻辑画成DFA的话，就是这样的一种形式：<img src="/images/ll3.png" title="Look Ahead DFA" alt="Look Ahead DFA" />
+
+<ul>
+<li>这张图画的是这种语法规则的超前查看决策情况：<code>A ::= a b c | a b e</code>, 显然这是一个LL(3)语法；</li>
+<li>但是这样的语法: <code>A ::= a b* c | a b* e</code>是无法被LL(k)识别的，因为中间的<code>b*</code>代表“0个或多个b”(kleene闭包)，这并不是一个固定的重复次数，因此LL(k)无法识别，for any k&#8230;</li>
+<li>但是，LL(*)算法能够构造出这样的DFA来识别它：<img src="/images/llstar.png" title="LL(*) Look Ahead DFA" alt="LL(*) Look Ahead DFA" /></li>
+<li>也就是说，传统LL(k)的look ahead DFA是不带环的，而LL(*)算法能构造出带环的DFA来做判断，它能越过无穷多个存在于环上的token，从而“到达”环之后的token继续做判断。</li>
+</ul>
+</li>
+<li>上面的<code>A ::= a b* c | a b* e</code>语法使用了<a href="/blog/left-recursion-removal-using-kleene-closure/">&#8220;kleene闭包&#8221;表示法</a>来表示“0个或多个”，这种表示法在正则表达式中很常见；事实上，基于LL(*)算法实现的语法解析器生成器(比如antlr3)对Kleene闭包表示法特别友好，可以鼓励使用，还能顺便解决一些LL分析法所不允许的“<a href="http://en.wikipedia.org/wiki/Left_recursion">左递归</a>”。</li>
+<li>大多数情况来讲，LL(*)的识别能力弱于<a href="http://en.wikipedia.org/wiki/LR_parser">LR(k)</a>，但也有少数情况是LR(k)识别不了但LL(*)可以的，所以LL(*)与LR(k)之间并没有严格的强弱顺序。</li>
+<li>LL(*)本身对语法的识别能力也是有限的，比如它无法区分&#8221;具有相同的递归规则前缀&#8221;的多个分支，这种情况是要尽量避免的，大多数能够较容易地改写;</li>
+<li>对于LL(*)不能正确分析的情况，还能引入&#8221;Semantic Predicate&#8221;(语义断言)来辅助判断, Semantic Predicate可以是任何逻辑，只要返回一个bool值就行；有了Semantic Predicate的辅助，LL(*)甚至能够parse一些上下文相关的语法，实际上它能parse C++</li>
+</ul>
+
+
+<h3>主要算法及其实现(python)</h3>
+
+<p><strong> Parr教授在2011年发表的paper&#8221;LL(*): The Foundation of the ANTLR Parser Generator&#8221;中详细描述了这个算法，下面就是其主要过程，具体的代码实现(python)在工程<a href="https://github.com/pfmiles/llstar">llstar</a>中 </strong></p>
+
+<!-- more -->
+
+
+<p>为了简单起见，约定大写字母用来命名non-terminal, 小写字母命名terminal或Semantic Predicate，<code>$</code>表示EOF，假设有如下语法规则：</p>
+
+<pre><code>S ::= A $  
+A ::= a c*  
+    | b c*  
+</code></pre>
+
+<ul>
+<li>针对此语法规则，构造Augmented Transition Network(ATN)，其实也就是一个NFA，NFA的边就是terminal或non-terminal或者Semantic predicate：<img src="/images/atn.png" alt="ATN network" />, 代码在llstar工程的<code>atn_creation.py</code>的<code>rule.merge_to_atn</code>方法中。</li>
+<li>接下来将要对这个ATN实施的算法其实就是经典的<a href="http://en.wikipedia.org/wiki/Powerset_construction">Subset Construction算法</a> —— 的改造版本：在“空边闭包运算(closure)”中加入了压栈、出栈功能，用于处理运算过程中<code>closure</code>函数经过non-terminal边时对其所对应的ATN的调用和返回。<br/>
+这个算法的具体描述是比较复杂，在Parr教授的paper中已有精确描述。不过真的要用代码实现起来，某些细节还需稍微修饰，才能正确地实现。<br/>
+最后的结果，其实就是使用更改后的版本的Subset Construction算法，将上述ATN(NFA)转化为一个个DFA，每条语法规则都对应一个DFA作为其look ahead DFA。<br/>
+例如上面的<code>S</code>规则最后的DFA为：<img src="/images/sdfa.png" alt="S DFA" />, well, 就一个终结态，没任何状态转换 —— 这是当然的，S规则只有一个alternative production&#8230; <br/>
+而<code>A</code>规则的DFA为：<img src="/images/adfa.png" alt="A DFA" />, 意思就是，如果第一个token为<code>a</code>，就选择第一个分支，若是<code>b</code>，就选择第二个分支，这是一个LL(1)的语法。<br/>
+简单来说就是这样，具体可以参考llstar的代码&#8230;这花了我不少时间调试出来的代码，还是直接看代码了解最直接:)</li>
+</ul>
+
+
+<h3>实验台及例子介绍</h3>
+
+<p>OK，主要的算法原理了解之后，展示了2个玩具例子，似乎还不能看出LL(*)的特点来。<br/>
+下面我将逐步展示一些真正non-trivial的例子，以表明它真的不是过家家&#8230;</p>
+
+<p>LL(3)语法(对应llstar工程中的<code>LL_3_many_alts.py</code>):</p>
+
+<pre><code>S ::= A $
+A ::= B a*
+    | C a+
+    | D a?
+B ::= a b c C
+    | a b c D
+    | d
+C ::= e f g D
+    | e f g h
+D ::= i j k l
+    | i j k m
+</code></pre>
+
+<p>这个语法是固定的LL(3)，没有什么特别，不过分支比较多, 它的ATN：<img src="/images/ll3atn.png" alt="LL(3) ATN" /><br/>
+规则<code>A</code>的DFA: <img src="/images/llstar/ll3adfa.png" alt="LL(3) Rule A DFA" /><br/>
+规则<code>B</code>的DFA: <img src="/images/llstar/ll3bdfa.png" alt="LL(3) Rule B DFA" /><br/>
+规则<code>C</code>的DFA: <img src="/images/llstar/ll3cdfa.png" alt="LL(3) Rule C DFA" /><br/>
+规则<code>D</code>的DFA: <img src="/images/llstar/ll3ddfa.png" alt="LL(3) Rule D DFA" /></p>
+
+<p>上面这个语法，LL(4)分析也能搞定，而真正体现出LL(*)特点的是下面这样的语法(对应llstar工程中<code>over_kleene.py</code>)：</p>
+
+<pre><code>S ::= A $
+A ::= a* b
+    | a+ c
+</code></pre>
+
+<p>其中，规则<code>A</code>的2条分支拥有共同的kleene闭包前缀，LL(k)是无法识别的，它的ATN:<img src="/images/llstar/overkleeneatn.png" alt="Over Kleene ATN" /><br/>
+而LL(*)能够为<code>A</code>生成这样的DFA：<img src="/images/llstar/overkleeneadfa.png" alt="Over Kleene Rule A DFA" /><br/>
+这个DFA能够越过terminal<code>a</code>的任意重复，从而考虑到后面的terminal<code>b</code>和<code>c</code>来做判断<br/>
+而下面这个更加&#8221;恶劣&#8221;的列子则更能说明LL(*)的这个特征(对应llstar工程中<code>over_non_recurse_rule.py</code>)：</p>
+
+<pre><code>S ::= A $
+A ::= B* b
+    | C+ c
+B ::= a d
+    | e
+C ::= a d
+    | e
+</code></pre>
+
+<p>这个例子中，<code>B</code>和<code>C</code>完全相同，并分别被包含在规则<code>A</code>的2条分支的kleene闭包中，<br/>
+最终生成的<code>A</code>的DFA: <img src="/images/llstar/nonrecursiveradfa.png" alt="Non-recursive Rule A DFA" /></p>
+
+<p>上面提到过，LL(*)也有不能解决的情况，比如2条分支拥有&#8221;共同的、递归的规则作为前缀&#8221;，比如这样：</p>
+
+<pre><code>S ::= A eof
+A ::= E a
+    | E b
+E ::= c E d
+    | e
+</code></pre>
+
+<p>上面的<code>A</code>规则的两条分支拥有共同的前缀<code>E</code>，而<code>E</code>本身是一条递归规则，这样的规则是LL(*)无法分析的，在llstar工程中对应<code>experiments/common_recurse_prefix_fail.py</code>, 运行的时候会抛出错误提示。这种情况在antlr3中会将parsing策略退化为LL(1) + 回溯的形式。</p>
+
+<pre><code>Traceback (most recent call last):
+  File "/home/pf-miles/myWorkspace/llstar/experiments/common_recurse_prefix_fail.py", line 31, in &lt;module&gt;
+    d_a = create_dfa(ra.get_start_state(globals_holder.a_net))
+  File "/home/pf-miles/myWorkspace/llstar/algos.py", line 136, in create_dfa
+    d_state_new.add_all_confs(closure(d_state, conf))
+  File "/home/pf-miles/myWorkspace/llstar/algos.py", line 99, in closure
+    raise Exception("Likely non-LL regular, recursive alts: " + str(d_state.recursive_alts) + ", rule: " + str(globals_holder.a_net.get_rule_of_state(p)))
+Exception: Likely non-LL regular, recursive alts: set([0, 1]), rule: E
+</code></pre>
+
+<p>还有一些特殊情况，比如规则完全就是冲突的，那么这个时候就是Semantic Predicate发挥作用的时候(对应llstar工程中<code>conflicting_with_preds.py</code>)：</p>
+
+<pre><code>S ::= A $
+A ::= {pred1}? B
+    | {pred2}? b
+B ::= b
+    | b
+</code></pre>
+
+<p>最终<code>A</code>的DFA：<img src="/images/llstar/confresolvedwithpredsadfa.png" alt="Conflict Resolved With Preds A DFA" /><br/>
+实际开发中，写出这样的规则是坑到爷的&#8230;不过LL(*)还算能很好解决&#8230;其实这里就算没有Semantic Predicate, LL(*)也能按照convention，“选择较早定义的语法分支”来解决。</p>
+
+<p>还有就是在分析的过程中会导致分析栈溢出(不是程序语言的callstack的overflow, 而是LL(*)的closure操作维护的一个规则调用栈溢出)的时候，LL(*)也会使用Semantic Predicate来辅助判断, 比如规则(对应llstar中<code>overflow_with_preds.py</code>):</p>
+
+<pre><code>S ::= A $
+A ::= {pred1?} B a
+    | {pred2?} b* c
+    | {pred3?} b* c
+B ::= b+ B
+</code></pre>
+
+<p>规则<code>A</code>的三条分支全部存在严重冲突(都拥有能识别无穷个&#8217;b&#8217;的前缀)并且其中一个是另一条递归规则<code>B</code>，这种形式会导致LL(*)的分析栈溢出，不过仍然没关系，这样的情况能在溢出发生时，调用<code>pred1</code>、<code>pred2</code>和<code>pred3</code>来解决(这三个pred就是Semantic Precicate，是能包含任何逻辑但最终返回bool值的表达式)<br/>
+生成的规则<code>A</code>的DFA: <img src="/images/llstar/overflowadfa.png" alt="Overflow A DFA" /><br/>
+这里设定的最大分析递归层数为<code>10</code>，因此，DFA在接受了第10个&#8217;b&#8217;之后达到了溢出状态<code>d14</code>，这时调用了各个alternative附带的几个predicate来解决冲突&#8230;</p>
+
+<h3>总结</h3>
+
+<p>OK, 大概如是了；上述算法的实现、例子的代码均在<a href="https://github.com/pfmiles/llstar">llstar</a>工程中能找到<br/>
+llstar工程是我花了不少时间实现并调试好的一块LL(*)算法的“实验台”，可以在里面慢慢把玩各种变态的、五花八门的语法规则，以验证LL(*)的分析能力<br/>
+在工程的<code>experiments</code>文件夹下已经有许多具有代表性的例子&#8230;都是python代码<br/>
+另外，llstar工程是在eclipse + pydev环境下开发的，因此如果要在命令行里运行，可能要对例子里面的import路径稍作修改，当然，最好是直接在eclipse + pydev环境下运行它们了<br/>
+在linux环境下，llstar的所有例子都能自动生成上文中看到的各种DFA/NFA图像，不过前提是环境中要装有<a href="http://www.graphviz.org/">graphviz</a></p>
+
+<p>现在的所有语法解析器生成器中，似乎都是LR分析的天下，LL分析大多是手写解析器的首选&#8230;<br/>
+不过在现有的使用LL分析方式的产品中，也就只有LL(*)和PEG(Packrat)parsing比较常见也比较实用了，能与LR分析一较高下。<br/>
+而配上回溯策略的LL(*)是严格强于Packrat parsing的，这样看来大概走LL分析路子的自动化工具也只有LL(*)容易一枝独秀了(想必这也是antlr相对较为流行的原因)。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">pf_miles</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-14T13:59:00+08:00" pubdate data-updated="true">Jul 14<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/category/algorithm/'>algorithm</a>, <a class='category' href='/blog/category/compiler/'>compiler</a>, <a class='category' href='/blog/category/dropincc/'>dropincc</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pfmiles.github.com/blog/concept-and-implementation-of-ll-star" data-via="pf_miles" data-counturl="http://pfmiles.github.com/blog/concept-and-implementation-of-ll-star" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/algo-class-week2-notes-master-method" title="Previous Post: Algo-class第二周小记: Master Method">&laquo; Algo-class第二周小记: Master Method</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div class="tex2jax_ignore">
+        <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+    </div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/concept-and-implementation-of-ll-star">LL(*)的概念与实现</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/algo-class-week2-notes-master-method">Algo-class第二周小记: Master Method</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/left-recursion-removal-using-kleene-closure">使用Kleene闭包语法糖消除语法中的左递归</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/algo-class-week-one-assignment-counting-inversions">[algo-class]第一周作业——Count Inversions</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/dropincc-dot-java-api-design">dropincc.java API design</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Tag Cloud</h1>
+  <span id="tag-cloud"><a href='/blog/category/ai-class' style='font-size: 106.66666666666667%'>Ai-class(1)</a> <a href='/blog/category/algo-class' style='font-size: 113.33333333333333%'>Algo-class(2)</a> <a href='/blog/category/algorithm' style='font-size: 160.0%'>Algorithm(9)</a> <a href='/blog/category/compiler' style='font-size: 120.0%'>Compiler(3)</a> <a href='/blog/category/computer' style='font-size: 106.66666666666667%'>Computer(1)</a> <a href='/blog/category/design' style='font-size: 106.66666666666667%'>Design(1)</a> <a href='/blog/category/dropincc' style='font-size: 126.66666666666667%'>Dropincc(4)</a> <a href='/blog/category/interview' style='font-size: 126.66666666666667%'>Interview(4)</a> <a href='/blog/category/life' style='font-size: 106.66666666666667%'>Life(1)</a> <a href='/blog/category/octopress' style='font-size: 106.66666666666667%'>Octopress(1)</a> <a href='/blog/category/performance' style='font-size: 106.66666666666667%'>Performance(1)</a> <a href='/blog/category/probability' style='font-size: 106.66666666666667%'>Probability(1)</a> <a href='/blog/category/programming' style='font-size: 113.33333333333333%'>Programming(2)</a> <a href='/blog/category/python' style='font-size: 106.66666666666667%'>Python(1)</a> <a href='/blog/category/translation' style='font-size: 106.66666666666667%'>Translation(1)</a> </span>
+</section>
+<section>
+  <h1>Categories</h1>
+    <ul id="category-list"><li><a href='/blog/category/ai-class'>Ai-class (1)</a></li><li><a href='/blog/category/algo-class'>Algo-class (2)</a></li><li><a href='/blog/category/algorithm'>Algorithm (9)</a></li><li><a href='/blog/category/compiler'>Compiler (3)</a></li><li><a href='/blog/category/computer'>Computer (1)</a></li><li><a href='/blog/category/design'>Design (1)</a></li><li><a href='/blog/category/dropincc'>Dropincc (4)</a></li><li><a href='/blog/category/interview'>Interview (4)</a></li><li><a href='/blog/category/life'>Life (1)</a></li><li><a href='/blog/category/octopress'>Octopress (1)</a></li><li><a href='/blog/category/performance'>Performance (1)</a></li><li><a href='/blog/category/probability'>Probability (1)</a></li><li><a href='/blog/category/programming'>Programming (2)</a></li><li><a href='/blog/category/python'>Python (1)</a></li><li><a href='/blog/category/translation'>Translation (1)</a></li></ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/pfmiles">@pfmiles</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'pfmiles',
+            count: 3,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("pf_miles", 10, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/pf_miles" class="twitter-follow-button" data-show-count="false">Follow @pf_miles</a>
+  
+</section>
+
+
+<section>
+  <h1>On Delicious</h1>
+  <div id="delicious"></div>
+  <script type="text/javascript" src="http://feeds.delicious.com/v2/json/pf_miles?count=3&amp;sort=date&amp;callback=renderDeliciousLinks"></script>
+  <p><a href="http://delicious.com/pf_miles">My Delicious Bookmarks &raquo;</a></p>
+</section>
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/miles.wy.1@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - pf_miles -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'meta-interpretation';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://pfmiles.github.com/blog/concept-and-implementation-of-ll-star';
+        var disqus_url = 'http://pfmiles.github.com/blog/concept-and-implementation-of-ll-star';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
