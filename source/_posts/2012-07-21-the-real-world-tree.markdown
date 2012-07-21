@@ -35,7 +35,7 @@ keywords: "全职猎人, 世界之树, worldTree, HunterxHunter"
 ![tree1](/images/worldtree/tree6.png)  
 ![tree1](/images/worldtree/tree7.png)  
 ![tree1](/images/worldtree/tree8.png)  
-## 岗恍然：  
+## 冈恍然：  
 原来我们熟知的“这个世界”，只是无比巨大的世界中的...  
 **“一小部分啊”**...
 
