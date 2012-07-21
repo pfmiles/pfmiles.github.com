@@ -50,7 +50,7 @@ LL(\*)是由[Terrence Parr](http://www.cs.usfca.edu/~parrt/)教授创造的，�
 OK，主要的算法原理了解之后，展示了2个玩具例子，似乎还不能看出LL(\*)的特点来。  
 下面我将逐步展示一些真正non-trivial的例子，以表明它真的不是过家家...
 
-LL(3)语法(对应llstar工程中的`LL_3_many_alts.py`): 
+LL(3)(更正：或许这该是LL(4)可能我数错了)语法(对应llstar工程中的`LL_3_many_alts.py`): 
 
     S ::= A $
     A ::= B a*
