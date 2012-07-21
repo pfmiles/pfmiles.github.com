@@ -5,12 +5,14 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Algo-class第二周小记: Master Method - Meta-Interpretation</title>
+  <title>The Real World Tree - Meta-Interpretation</title>
   <meta name="author" content="pf_miles">
 
   
-  <meta name="description" content="Algo-class第二周小记: master method的理解与运用">
-  <meta name="keywords" content="algo-class, master method, algorithm, 算法">
+  <meta name="description" content="冈和金的约见，是在在世界之树的顶端, 这对奇特的父子，让无数人期待了15年&#8230; 以冈之见，这是世界最高的树(其实只是道听途说)&#8230; 然而金说： &#8230;真相是&#8230;它只是停止生长的一棵小树而已&#8230;
+因为..
+..营养不足&#8230;所以“ &hellip;">
+  <meta name="keywords" content="全职猎人, 世界之树, worldTree, HunterxHunter">
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -18,7 +20,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://pfmiles.github.com/blog/algo-class-week2-notes-master-method">
+  <link rel="canonical" href="http://pfmiles.github.com/blog/the-real-world-tree">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -94,7 +96,7 @@ MathJax.Hub.Config({
   
   <header>
     
-      <h1 class="entry-title">Algo-class第二周小记: Master Method</h1>
+      <h1 class="entry-title">The Real World Tree</h1>
     
     
       <p class="meta">
@@ -110,61 +112,60 @@ MathJax.Hub.Config({
   
 
 
-<time datetime="2012-04-03T11:40:00+08:00" pubdate data-updated="true">Apr 3<span>rd</span>, 2012</time>
-        
-         | <a href="#disqus_thread">Comments</a>
+<time datetime="2012-07-21T23:50:00+08:00" pubdate data-updated="true">Jul 21<span>st</span>, 2012</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>week2主要讲了master method，感觉从来没有听过如此清晰有条理的介绍master method的讲解，不得不佩服<a href="http://theory.stanford.edu/~tim/">Tim Roughgarden</a>教授的功力。<br/>
-从一些随课笔记总结起来，master method是用来预估divide and conquer算法的大O时间复杂度的公式；它要求divide的时候“所有sub-problems的规模都相等”才能适用。<br/>
-要使用master method, 首先要将算法的时间消耗函数写成递推公式形式：
-$$T(n) &lt;= aT(\frac{n}{b}) + O(n^d)$$
-其中T(n)是本层递归所消耗的时间，$T(\frac{n}{b})$自然就是下一层递归所消耗的时间了，b就是每次往“下层”递归调用时问题规模缩小的倍率，a就是代码中递归调用的个数；$O(n^d)$ 是将递归调用之外的其它代码的时间开销写成关于输入规模n的指数形式，d就是这个指数。<br/>
-基础情况： 当n足够小时，T(n) &lt;= 一个常数<br/>
-a,b,d与输入规模无关。<br/>
-那么，根据a,b,d的情况，T(n)可能被表示为三种情况：<br/>
-<img src="/images/masterMethod.png" title="Master Method" alt="Master Method" /></p>
+<div class="entry-content"><h2>冈和金的约见，是在在世界之树的顶端, 这对奇特的父子，让无数人期待了15年&#8230;</h2>
+
+<p><img src="/images/worldtree/tree1.png" alt="tree1" /></p>
 
 <!-- more -->
 
 
-<p>对于这个式子，我个人的、不严格的、直觉的理解就是：</p>
+<h2>以冈之见，这是世界最高的树(其实只是道听途说)&#8230;</h2>
 
-<ol>
-<li>当$a = b^d$时，程序规模被divide之后，合并代价增大的幅度与程序规模缩小的幅度相当，所以复杂度公式中合并代价部分和切分、解决部分的复杂度都要算在里面</li>
-<li>当$a &lt; b^d$时，合并代价增长快于切分、解决缩小幅度，所以复杂度公式中只算合并代价部分</li>
-<li>当$a > b^d$时，切分、解决部分时间代价占主导，忽略递归调用以外的项，只写出divide and conquer递归调用部分的时间开销</li>
-</ol>
+<p><img src="/images/worldtree/tree2.png" alt="tree1" /></p>
 
+<h2>然而金说：</h2>
 
-<p>不过其实这个是有严格的证明的：<br/>
-设$T(n) = aT(\frac{n}{b}) + cn^d$<br/>
-对于第j层递归 ，运算量为：$a^j \times c \times (\frac{n}{b^j})^d$<br/>
-即：$cn^d(\frac{a}{b^d})^j$，所以a和$b^d$的大小关系是关键！<br/>
-进而总计算时间： $total work \leqslant cn^d \centerdot \sum\limits_{j=0}^{\log_bn}(\frac{a}{b^d})^j$, 然后通过这个式子，由a和$b^d$的大小关系可以较容易想通为什么master method会是上述这种三段分段函数的形式。<br/>
-Week2作业是快排&#8230;写个快排倒是简单，可是作业要求要count快排过程中的比较次数&#8230;在作业论坛里面看到哀嚎声一片&#8230;毕竟实现只要稍微有点偏差，虽然同样是快排，确实很容易比较次数不一样。<br/>
-值得一提的是讲解中给出的in-place的快排partition方法，就是不用建立额外的数组来进行partition，python示意代码如下：</p>
+<blockquote><p>&#8230;真相是&#8230;它只是停止生长的一棵小树而已&#8230;<br/>
+因为..<br/>
+..营养不足&#8230;所以“只能成长到这地步”..</p></blockquote>
 
-<pre><code>def partition(pivotIndex, arr):
-    swap(arr, 0, pivotIndex)
-    pivot = arr[0]
-    i = 1 # index 0...i &lt; pivot
-    j = 1 # index i...j &gt; pivot
-    for k in range(1, len(arr)):
-    if arr[k] &lt;= pivot :
-        swap(arr, i, k)
-        i += 1
-        j += 1
-    else:
-        j += 1
-    return (arr[1:i], pivot, arr[i:j])
-</code></pre>
+<p><img src="/images/worldtree/tree3.png" alt="tree1" /></p>
 
-<p>另外，从快排的例子可以看出，若divide and conquer算法是基于某种比较结果，将问题规模初步divide and conquer的话，每一次比较“能否将问题划分为规模差不多均等的子问题”将很大地影响算法实际的执行效率。</p>
+<h2>&#8220;真正的世界之树&#8230;&#8221;</h2>
+
+<h2>&#8221;..扎根于山脉&#8230;&#8221;</h2>
+
+<h2>&#8220;&#8230;汲取岩浆..&#8221;</h2>
+
+<h2>&#8220;穿破大气层尚能继续成长&#8230;&#8221;</h2>
+
+<p><img src="/images/worldtree/tree4.png" alt="tree1" /></p>
+
+<h2>它就存在于这世界的<em>&#8220;外侧&#8221;</em>..</h2>
+
+<p><img src="/images/worldtree/tree5.png" alt="tree1" /></p>
+
+<h2>这才是学校不会教给你们的<strong>&#8220;真相&#8221;</strong>..金对自己的儿子说.</h2>
+
+<p><img src="/images/worldtree/tree6.png" alt="tree1" /><br/>
+<img src="/images/worldtree/tree7.png" alt="tree1" /><br/>
+<img src="/images/worldtree/tree8.png" alt="tree1" /></p>
+
+<h2>岗恍然：</h2>
+
+<p>原来我们熟知的“这个世界”，只是无比巨大的世界中的&#8230;<br/>
+<strong>“一小部分啊”</strong>&#8230;</p>
+
+<p><img src="/images/worldtree/tree9.png" alt="tree1" /></p>
+
+<h2>是的，它就在外面，outside .. of ..the world&#8230;</h2>
 </div>
 
 
@@ -187,12 +188,12 @@ Week2作业是快排&#8230;写个快排倒是简单，可是作业要求要count
   
 
 
-<time datetime="2012-04-03T11:40:00+08:00" pubdate data-updated="true">Apr 3<span>rd</span>, 2012</time>
+<time datetime="2012-07-21T23:50:00+08:00" pubdate data-updated="true">Jul 21<span>st</span>, 2012</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/category/algo-class/'>algo-class</a>, <a class='category' href='/blog/category/algorithm/'>algorithm</a>
+    <a class='category' href='/blog/category/comic/'>comic</a>, <a class='category' href='/blog/category/life/'>life</a>
   
 </span>
 
@@ -201,7 +202,7 @@ Week2作业是快排&#8230;写个快排倒是简单，可是作业要求要count
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pfmiles.github.com/blog/algo-class-week2-notes-master-method" data-via="pf_miles" data-counturl="http://pfmiles.github.com/blog/algo-class-week2-notes-master-method" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pfmiles.github.com/blog/the-real-world-tree" data-via="pf_miles" data-counturl="http://pfmiles.github.com/blog/the-real-world-tree" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -214,22 +215,12 @@ Week2作业是快排&#8230;写个快排倒是简单，可是作业要求要count
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/left-recursion-removal-using-kleene-closure" title="Previous Post: 使用Kleene闭包语法糖消除语法中的左递归">&laquo; 使用Kleene闭包语法糖消除语法中的左递归</a>
+        <a class="basic-alignment left" href="/blog/concept-and-implementation-of-ll-star" title="Previous Post: LL(*)的概念与实现">&laquo; LL(*)的概念与实现</a>
       
-      
-        <a class="basic-alignment right" href="/blog/concept-and-implementation-of-ll-star" title="Next Post: LL(*)的概念与实现">LL(*)的概念与实现 &raquo;</a>
       
     </p>
   </footer>
 </article>
-
-  <section>
-    <h1>Comments</h1>
-    <div class="tex2jax_ignore">
-        <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-</div>
-    </div>
-  </section>
 
 </div>
 
@@ -349,22 +340,6 @@ Week2作业是快排&#8230;写个快排倒是简单，可是作业要求要count
 
 </footer>
   
-
-<script type="text/javascript">
-      var disqus_shortname = 'meta-interpretation';
-      
-        
-        // var disqus_developer = 1;
-        var disqus_identifier = 'http://pfmiles.github.com/blog/algo-class-week2-notes-master-method';
-        var disqus_url = 'http://pfmiles.github.com/blog/algo-class-week2-notes-master-method';
-        var disqus_script = 'embed.js';
-      
-    (function () {
-      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
-      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    }());
-</script>
 
 
 

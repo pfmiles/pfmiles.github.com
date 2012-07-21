@@ -4,7 +4,7 @@
   <title><![CDATA[Meta-Interpretation]]></title>
   <link href="http://pfmiles.github.com/atom.xml" rel="self"/>
   <link href="http://pfmiles.github.com/"/>
-  <updated>2012-07-15T01:13:29+08:00</updated>
+  <updated>2012-07-22T00:26:30+08:00</updated>
   <id>http://pfmiles.github.com/</id>
   <author>
     <name><![CDATA[pf_miles]]></name>
@@ -12,6 +12,61 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[The Real World Tree]]></title>
+    <link href="http://pfmiles.github.com/blog/the-real-world-tree"/>
+    <updated>2012-07-21T23:50:00+08:00</updated>
+    <id>http://pfmiles.github.com/blog/the-real-world-tree</id>
+    <content type="html"><![CDATA[<h2>冈和金的约见，是在在世界之树的顶端, 这对奇特的父子，让无数人期待了15年&#8230;</h2>
+
+<p><img src="http://pfmiles.github.com/images/worldtree/tree1.png" alt="tree1" /></p>
+
+<!-- more -->
+
+
+<h2>以冈之见，这是世界最高的树(其实只是道听途说)&#8230;</h2>
+
+<p><img src="http://pfmiles.github.com/images/worldtree/tree2.png" alt="tree1" /></p>
+
+<h2>然而金说：</h2>
+
+<blockquote><p>&#8230;真相是&#8230;它只是停止生长的一棵小树而已&#8230;<br/>
+因为..<br/>
+..营养不足&#8230;所以“只能成长到这地步”..</p></blockquote>
+
+<p><img src="http://pfmiles.github.com/images/worldtree/tree3.png" alt="tree1" /></p>
+
+<h2>&#8220;真正的世界之树&#8230;&#8221;</h2>
+
+<h2>&#8221;..扎根于山脉&#8230;&#8221;</h2>
+
+<h2>&#8220;&#8230;汲取岩浆..&#8221;</h2>
+
+<h2>&#8220;穿破大气层尚能继续成长&#8230;&#8221;</h2>
+
+<p><img src="http://pfmiles.github.com/images/worldtree/tree4.png" alt="tree1" /></p>
+
+<h2>它就存在于这世界的<em>&#8220;外侧&#8221;</em>..</h2>
+
+<p><img src="http://pfmiles.github.com/images/worldtree/tree5.png" alt="tree1" /></p>
+
+<h2>这才是学校不会教给你们的<strong>&#8220;真相&#8221;</strong>..金对自己的儿子说.</h2>
+
+<p><img src="http://pfmiles.github.com/images/worldtree/tree6.png" alt="tree1" /><br/>
+<img src="http://pfmiles.github.com/images/worldtree/tree7.png" alt="tree1" /><br/>
+<img src="http://pfmiles.github.com/images/worldtree/tree8.png" alt="tree1" /></p>
+
+<h2>岗恍然：</h2>
+
+<p>原来我们熟知的“这个世界”，只是无比巨大的世界中的&#8230;<br/>
+<strong>“一小部分啊”</strong>&#8230;</p>
+
+<p><img src="http://pfmiles.github.com/images/worldtree/tree9.png" alt="tree1" /></p>
+
+<h2>是的，它就在外面，outside .. of ..the world&#8230;</h2>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[LL(*)的概念与实现]]></title>
@@ -74,7 +129,7 @@ A ::= a c*
 <p>OK，主要的算法原理了解之后，展示了2个玩具例子，似乎还不能看出LL(*)的特点来。<br/>
 下面我将逐步展示一些真正non-trivial的例子，以表明它真的不是过家家&#8230;</p>
 
-<p>LL(3)语法(对应llstar工程中的<code>LL_3_many_alts.py</code>):</p>
+<p>LL(3)(更正：或许这该是LL(4)可能我数错了)语法(对应llstar工程中的<code>LL_3_many_alts.py</code>):</p>
 
 <pre><code>S ::= A $
 A ::= B a*
