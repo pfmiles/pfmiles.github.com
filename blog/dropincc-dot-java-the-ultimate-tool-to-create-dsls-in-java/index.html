@@ -1,0 +1,583 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Dropincc.java, The Ultimate Tool to Create DSLs in Java - Meta-Interpretation</title>
+  <meta name="author" content="pf_miles">
+
+  
+  <meta name="description" content="Initial version released. Dropincc.java is a dynamic parser generator which allows you crafting your DSLs in pure java, using your favorite editor. &hellip;">
+  <meta name="keywords" content="dropincc, java, DSL, parser, Generator, dynamic, compiler">
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://pfmiles.github.com/blog/dropincc-dot-java-the-ultimate-tool-to-create-dsls-in-java">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Meta-Interpretation" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-4513284-8']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Meta-Interpretation</a></h1>
+  
+    <h2>Code, better explained.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:pfmiles.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Dropincc.java, the Ultimate Tool to Create DSLs in Java</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-04T17:22:00+08:00" pubdate data-updated="true">Aug 4<span>th</span>, 2012</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h3>Initial version released.</h3>
+
+<p>Dropincc.java is a dynamic parser generator which allows you crafting your DSLs in pure java, using your favorite editor.<br/>
+Now it reached its initial release version 0.1.0. You can download it from the <a href="https://github.com/pfmiles/dropincc.java">project page</a> and play around with it.<br/>
+There&#8217;s a detailed <em>Quick Start</em> guide on the project page, it could guide you through to have a overall feeling on using dropincc.java.</p>
+
+<h3>Main attributes of Dropincc.java.</h3>
+
+<ul>
+<li>It&#8217;s not just &#8216;yet another compiler compiler&#8217;. It aims to help you building DSLs in java <strong>Dynamically</strong>.</li>
+<li><strong>Dynamic</strong> means you can use your newly defined DSL immediately after you have just finished its definition. No other steps required, no additional command-line instructions needed to type.</li>
+<li>Very close to EBNF grammar syntactically when defining grammar rules using dropincc.java. With the fluent interface API, you can feel as if you are writing EBNF directly. Syntactically  close to EBNF is very nice for a parser generator.</li>
+<li>It generates LL(*) parser for your language, dynamically, using java 1.6&#8217;s compiler API. And it provide powerful <em>semantic predicate</em> mechanics to handle even context-sensitive situations.</li>
+<li>It won&#8217;t generate a parser source file to you and telling you to place the file into some where of your project directory. Instead, it handles all those generation &amp; compiling staff in the background and only provides you a executable object which you can invoke.</li>
+<li>No other dependencies except for the built-in java library. Requires JDK 1.6 or above.</li>
+</ul>
+
+
+<h3>A dummy language example.</h3>
+
+<!-- more -->
+
+
+<p>Requires JDK 1.6 or above. Firstly, place the dropincc <a href="https://github.com/downloads/pfmiles/dropincc.java/dropincc.java-0.1.0.jar">jar file</a> in your class path.</p>
+
+<p>And then, crafting your language&#8217;s <a href="http://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_Form">EBNF</a> definition:<br/>
+Let&#8217;s define a language which accepts arbitrary numbers of quoted &#8216;a&#8217; or &#8216;bc&#8217;. For example: &#8216;(a)(bc)&#8217;, &#8216;(bc)((a))&#8217; or &#8216;(((bc)))(bc)&#8217;, the numbers of pairs of parentheses is unlimited.<br/>
+The EBNF of this dummy language:</p>
+
+<pre><code>S ::= L $
+L ::= Q*
+Q ::= 'a'
+    | 'bc'
+    | '(' Q ')'
+</code></pre>
+
+<p>Ok, after defining the EBNF representation of our language, it&#8217;s time to <strong>translate</strong> the EBNF into dropincc.java representation. I say &#8216;translate&#8217; here because this is a line-by-line straightforward step:</p>
+
+<pre><code>public static void main(String... args) throws Throwable {
+    Lang lang = new Lang("Dummy");
+    TokenDef a = lang.newToken("a");
+    TokenDef bc =lang.newToken("bc");
+    TokenDef lp = lang.newToken("\\(");
+    TokenDef rp = lang.newToken("\\)");
+    Grule L = lang.newGrule();
+    Grule Q = lang.newGrule();
+
+    lang.defineGrule(L, CC.EOF); // S ::= L $
+    L.define(CC.ks(Q));// L ::= Q*
+    /*
+     * Q ::= 'a'
+     *     | 'bc'
+     *     | '(' Q ')'
+     */
+    Q.define(a)
+    .alt(bc)
+    .alt(lp, Q, rp);
+}
+</code></pre>
+
+<p>Ok, we have done defining the grammar rules of our dummy language, so easy:</p>
+
+<ul>
+<li>Define tokens, using built-in java regular expression syntax. And define rules, say, &#8216;Grule&#8217;s in dropincc.java. TokenDefs and Grules are basic elements of defining grammar rules.</li>
+<li>You just using your defined TokenDefs and Grules to express your grammar, just like writing EBNF.</li>
+<li>Elements concatenations are expressed by comma separated sequences: <code>L, CC.EOF</code> means <code>L $</code>. CC.EOF is a predefined TokenDef provided by dropincc.java.</li>
+<li>Alternative productions of a grammar rule is expressed by a <code>alt</code> method call on a grule element. For example, the <code>Q</code> rule has three alternative productions.</li>
+<li>The kleene star(means <strong>zero or more</strong>) and kleene cross(<strong>means one or more</strong>) notation is expressed by <code>CC.ks</code> and <code>CC.kc</code> utility functions. See the line: <code>L.define(CC.ks(Q));// L ::= Q*</code>.</li>
+</ul>
+
+
+<p>That&#8217;s almost all you need to learn about how to define a grammar using dropincc.java.<br/>
+After that, you can <code>compile</code> your grammar:</p>
+
+<pre><code>Exe exe = lang.compile();
+</code></pre>
+
+<p>This step would make you a callable object named &#8216;exe&#8217;. You can use this object to <code>eval</code> and test your newly defined language:</p>
+
+<pre><code>System.out.println(exe.eval("a(a)((bc))"));
+</code></pre>
+
+<p>This would print the output: <code>[Ljava.lang.Object;@67a5a19</code>. It&#8217;s an object array which holds the whole parse tree:<br/>
+<img src="/images/dropincc/dummy.png" alt="Dummy lang parse tree" /></p>
+
+<p>But it&#8217;s useless just getting the parse tree. We should do something to manipulate the parse tree and produce some &#8216;results&#8217; of this parsing.</p>
+
+<p>Ok, suppose we have a dummy task: to remove all parentheses from the input string, leaving only the <code>'a'</code> and <code>'bc'</code>s there. Then at last, return the resulting string as the return value of <code>eval</code> method call on <code>exe</code>.</p>
+
+<p>This involves adding <code>actions</code> to the grammar. The <code>action</code>s are some kind of code block, it should execute when its&#8217; corresponding grammar rule production matches.</p>
+
+<p>In dropincc.java, <code>actions</code> are implemented by <code>closure</code>s, using the <code>Action</code> interface. We try to add an action to the <code>Q</code> rule:</p>
+
+<pre><code>Q.define(a).action(new Action() {
+    public String act(Object matched) {
+        return (String) matched;// string 'a'
+    }
+}).alt(bc).action(new Action() {
+    public String act(Object matched) {
+        return (String) matched;// string 'bc'
+    }
+
+}).alt(lp, Q, rp).action(new Action() {
+    public String act(Object matched) {
+        // returns the middle element matched, that's the returned value of the enclosing 'Q' rule
+        return (String) ((Object[]) matched)[1];
+    }
+});
+</code></pre>
+
+<p>Above is the <code>Q</code> rule with three actions, each action for one alternative production. In fact since the first two actions does noting but just returning the matched string, so they are not necessary. The <code>Q</code> rule with action could be defined as follows:</p>
+
+<pre><code>Q.define(a)
+.alt(bc)
+.alt(lp, Q, rp).action(new Action() {
+    public String act(Object matched) {
+        // returns the middle element matched, that's the returned value of the enclosing 'Q' rule
+        return (String) ((Object[]) matched)[1];
+    }
+});
+</code></pre>
+
+<p>Leaving only the third action there. The third action, returned the middle element matched of its production(ignored left and right parentheses). The middle element matched is the return value of the recursively enclosing <code>Q</code> rule.</p>
+
+<p>The action for <code>L</code> rule is quite simple and significant: it collects all strings matched and concatenates them into a whole large string, then return the resulting string:</p>
+
+<pre><code>L.define(CC.ks(Q)).action(new Action() {
+    public String act(Object matched) {
+        Object[] ms = (Object[]) matched;
+        StringBuilder sb = new StringBuilder();
+        for (Object m : ms)
+            sb.append(m);
+        return sb.toString();
+    }
+});// L ::= Q*
+</code></pre>
+
+<p>Then the last top-level rule&#8217;s action: just return the value of <code>L</code> rule, just ignoring EOF:</p>
+
+<pre><code>lang.defineGrule(L, CC.EOF).action(new Action() {
+    public String act(Object matched) {
+        return (String) ((Object[]) matched)[0];
+    }
+}); // S ::= L $
+</code></pre>
+
+<p>Ok, we can now run the program again and could see it prints out the output: <code>aabc</code>, with all parentheses removed.</p>
+
+<p>The whole program in a gist:</p>
+
+<div><script src='https://gist.github.com/3257023.js?file='></script>
+<noscript><pre><code>package test;
+
+import com.github.pfmiles.dropincc.Action;
+import com.github.pfmiles.dropincc.CC;
+import com.github.pfmiles.dropincc.Exe;
+import com.github.pfmiles.dropincc.Grule;
+import com.github.pfmiles.dropincc.Lang;
+import com.github.pfmiles.dropincc.TokenDef;
+
+public class Test {
+
+    /**
+     * &lt;pre&gt;
+     * S ::= L $
+     * L ::= Q*
+     * Q ::= 'a'
+     *     | 'bc'
+     *     | '(' Q ')'
+     * &lt;/pre&gt;
+     */
+    public static void main(String... args) throws Throwable {
+        Lang lang = new Lang(&quot;Dummy&quot;);
+        TokenDef a = lang.newToken(&quot;a&quot;);
+        TokenDef bc = lang.newToken(&quot;bc&quot;);
+        TokenDef lp = lang.newToken(&quot;\\(&quot;);
+        TokenDef rp = lang.newToken(&quot;\\)&quot;);
+        Grule L = lang.newGrule();
+        Grule Q = lang.newGrule();
+
+        lang.defineGrule(L, CC.EOF).action(new Action() {
+            public String act(Object matched) {
+                return (String) ((Object[]) matched)[0];
+            }
+        }); // S ::= L $
+        L.define(CC.ks(Q)).action(new Action() {
+            public String act(Object matched) {
+                Object[] ms = (Object[]) matched;
+                StringBuilder sb = new StringBuilder();
+                for (Object m : ms)
+                    sb.append(m);
+                return sb.toString();
+            }
+        });// L ::= Q*
+        /*
+         * Q ::= 'a' | 'bc' | '(' Q ')'
+         */
+        Q.define(a).alt(bc).alt(lp, Q, rp).action(new Action() {
+            public String act(Object matched) {
+                // returns the middle element matched, that's the returned value
+                // of the enclosing 'Q' rule
+                return (String) ((Object[]) matched)[1];
+            }
+        });
+
+        Exe exe = lang.compile();
+        System.out.println(exe.eval(&quot;a(a)((bc))&quot;));
+    }
+}</code></pre></noscript></div>
+
+
+<p>You can download and play around with it on your own.</p>
+
+<p>Dropincc.java is currently on its very initial stage. It has some major improvements to be done:</p>
+
+<ul>
+<li>It uses java&#8217;s built-in regEx implementation to support token definition, so it couldn&#8217;t do &#8216;longest match&#8217; currently. This should be fixed later.</li>
+<li>Due to some LL(*) analysis issues, &#8216;Non-LL regular&#8217; exceptions may be thrown when it encounters some special case of grammar rules. This must be fixed soon.</li>
+</ul>
+
+
+<p>There is a more practical <strong>Hello World</strong> example which implements a full-featured calculator in the quick start guide of dropincc.java. On its project <a href="https://github.com/pfmiles/dropincc.java">home page</a>. Go and check out there if you like.</p>
+
+<p>I created a <a href="http://dropincc-java.1068093.n5.nabble.com/">forum</a> for dropincc.java, interested people could discuss about it in the forum. And you are welcomed to subscribe to the mailing list(there&#8217;s a how to guide in the forum about subscribe to the mailing list).</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">pf_miles</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-04T17:22:00+08:00" pubdate data-updated="true">Aug 4<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/category/dsl/'>DSL</a>, <a class='category' href='/blog/category/compiler/'>compiler</a>, <a class='category' href='/blog/category/dropincc/'>dropincc</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pfmiles.github.com/blog/dropincc-dot-java-the-ultimate-tool-to-create-dsls-in-java" data-via="pf_miles" data-counturl="http://pfmiles.github.com/blog/dropincc-dot-java-the-ultimate-tool-to-create-dsls-in-java" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/the-real-world-tree" title="Previous Post: The Real World Tree">&laquo; The Real World Tree</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div class="tex2jax_ignore">
+        <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+    </div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/dropincc-dot-java-the-ultimate-tool-to-create-dsls-in-java">Dropincc.java, The Ultimate Tool to Create DSLs in Java</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/the-real-world-tree">The Real World Tree</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/concept-and-implementation-of-ll-star">LL(*)的概念与实现</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/algo-class-week2-notes-master-method">Algo-class第二周小记: Master Method</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/left-recursion-removal-using-kleene-closure">使用Kleene闭包语法糖消除语法中的左递归</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Tag Cloud</h1>
+  <span id="tag-cloud"><a href='/blog/category/ai-class' style='font-size: 106.66666666666667%'>Ai-class(1)</a> <a href='/blog/category/algo-class' style='font-size: 113.33333333333333%'>Algo-class(2)</a> <a href='/blog/category/algorithm' style='font-size: 160.0%'>Algorithm(9)</a> <a href='/blog/category/comic' style='font-size: 106.66666666666667%'>Comic(1)</a> <a href='/blog/category/compiler' style='font-size: 126.66666666666667%'>Compiler(4)</a> <a href='/blog/category/computer' style='font-size: 106.66666666666667%'>Computer(1)</a> <a href='/blog/category/design' style='font-size: 106.66666666666667%'>Design(1)</a> <a href='/blog/category/dropincc' style='font-size: 133.33333333333334%'>Dropincc(5)</a> <a href='/blog/category/dsl' style='font-size: 106.66666666666667%'>Dsl(1)</a> <a href='/blog/category/interview' style='font-size: 126.66666666666667%'>Interview(4)</a> <a href='/blog/category/life' style='font-size: 113.33333333333333%'>Life(2)</a> <a href='/blog/category/octopress' style='font-size: 106.66666666666667%'>Octopress(1)</a> <a href='/blog/category/performance' style='font-size: 106.66666666666667%'>Performance(1)</a> <a href='/blog/category/probability' style='font-size: 106.66666666666667%'>Probability(1)</a> <a href='/blog/category/programming' style='font-size: 113.33333333333333%'>Programming(2)</a> <a href='/blog/category/python' style='font-size: 106.66666666666667%'>Python(1)</a> <a href='/blog/category/translation' style='font-size: 106.66666666666667%'>Translation(1)</a> </span>
+</section>
+<section>
+  <h1>Categories</h1>
+    <ul id="category-list"><li><a href='/blog/category/ai-class'>Ai-class (1)</a></li><li><a href='/blog/category/algo-class'>Algo-class (2)</a></li><li><a href='/blog/category/algorithm'>Algorithm (9)</a></li><li><a href='/blog/category/comic'>Comic (1)</a></li><li><a href='/blog/category/compiler'>Compiler (4)</a></li><li><a href='/blog/category/computer'>Computer (1)</a></li><li><a href='/blog/category/design'>Design (1)</a></li><li><a href='/blog/category/dropincc'>Dropincc (5)</a></li><li><a href='/blog/category/dsl'>Dsl (1)</a></li><li><a href='/blog/category/interview'>Interview (4)</a></li><li><a href='/blog/category/life'>Life (2)</a></li><li><a href='/blog/category/octopress'>Octopress (1)</a></li><li><a href='/blog/category/performance'>Performance (1)</a></li><li><a href='/blog/category/probability'>Probability (1)</a></li><li><a href='/blog/category/programming'>Programming (2)</a></li><li><a href='/blog/category/python'>Python (1)</a></li><li><a href='/blog/category/translation'>Translation (1)</a></li></ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/pfmiles">@pfmiles</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'pfmiles',
+            count: 3,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("pf_miles", 10, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/pf_miles" class="twitter-follow-button" data-show-count="false">Follow @pf_miles</a>
+  
+</section>
+
+
+<section>
+  <h1>On Delicious</h1>
+  <div id="delicious"></div>
+  <script type="text/javascript" src="http://feeds.delicious.com/v2/json/pf_miles?count=3&amp;sort=date&amp;callback=renderDeliciousLinks"></script>
+  <p><a href="http://delicious.com/pf_miles">My Delicious Bookmarks &raquo;</a></p>
+</section>
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/miles.wy.1@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - pf_miles -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'meta-interpretation';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://pfmiles.github.com/blog/dropincc-dot-java-the-ultimate-tool-to-create-dsls-in-java';
+        var disqus_url = 'http://pfmiles.github.com/blog/dropincc-dot-java-the-ultimate-tool-to-create-dsls-in-java';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

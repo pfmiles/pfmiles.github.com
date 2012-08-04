@@ -9,7 +9,7 @@
   <meta name="author" content="pf_miles">
 
   
-  <meta name="description" content="冈和金的约见，是在在世界之树的顶端, 这对奇特的父子，让无数人期待了15年&#8230; ">
+  <meta name="description" content="Initial version released. Dropincc.java is a dynamic parser generator which allows you crafting your DSLs in pure java, using your favorite editor. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -91,6 +91,67 @@ MathJax.Hub.Config({
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/dropincc-dot-java-the-ultimate-tool-to-create-dsls-in-java">Dropincc.java, the Ultimate Tool to Create DSLs in Java</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-04T17:22:00+08:00" pubdate data-updated="true">Aug 4<span>th</span>, 2012</time>
+        
+         | <a href="/blog/dropincc-dot-java-the-ultimate-tool-to-create-dsls-in-java#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>Initial version released.</h3>
+
+<p>Dropincc.java is a dynamic parser generator which allows you crafting your DSLs in pure java, using your favorite editor.<br/>
+Now it reached its initial release version 0.1.0. You can download it from the <a href="https://github.com/pfmiles/dropincc.java">project page</a> and play around with it.<br/>
+There&#8217;s a detailed <em>Quick Start</em> guide on the project page, it could guide you through to have a overall feeling on using dropincc.java.</p>
+
+<h3>Main attributes of Dropincc.java.</h3>
+
+<ul>
+<li>It&#8217;s not just &#8216;yet another compiler compiler&#8217;. It aims to help you building DSLs in java <strong>Dynamically</strong>.</li>
+<li><strong>Dynamic</strong> means you can use your newly defined DSL immediately after you have just finished its definition. No other steps required, no additional command-line instructions needed to type.</li>
+<li>Very close to EBNF grammar syntactically when defining grammar rules using dropincc.java. With the fluent interface API, you can feel as if you are writing EBNF directly. Syntactically  close to EBNF is very nice for a parser generator.</li>
+<li>It generates LL(*) parser for your language, dynamically, using java 1.6&#8217;s compiler API. And it provide powerful <em>semantic predicate</em> mechanics to handle even context-sensitive situations.</li>
+<li>It won&#8217;t generate a parser source file to you and telling you to place the file into some where of your project directory. Instead, it handles all those generation &amp; compiling staff in the background and only provides you a executable object which you can invoke.</li>
+<li>No other dependencies except for the built-in java library. Requires JDK 1.6 or above.</li>
+</ul>
+
+
+<h3>A dummy language example.</h3>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/dropincc-dot-java-the-ultimate-tool-to-create-dsls-in-java">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -649,64 +710,6 @@ tag_cloud.rb: ascii (confidence: 1.00)
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/algorithms-in-job-interview-test-if-two-linked-lists-intersected">[面试中的算法]编程判断两个链表是否相交</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-03-06T23:30:00+08:00" pubdate data-updated="true">Mar 6<span>th</span>, 2012</time>
-        
-         | <a href="/blog/algorithms-in-job-interview-test-if-two-linked-lists-intersected#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>这是一道广为流传的题目: <a href="http://bop1.wikispaces.com/%E7%AC%AC%E4%B8%89%E7%AB%A0+%E7%BB%93%E6%9E%84%E4%B9%8B%E6%B3%95#x-%E7%AC%AC3%E7%AB%A0%20%E7%BB%93%E6%9E%84%E4%B9%8B%E6%B3%95%E2%80%94%E2%80%94%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8F%8A%E9%93%BE%E8%A1%A8%E7%9A%84%E6%8E%A2%E7%B4%A2-3.6%E7%BC%96%E7%A8%8B%E5%88%A4%E6%96%AD%E4%B8%A4%E4%B8%AA%E9%93%BE%E8%A1%A8%E6%98%AF%E5%90%A6%E7%9B%B8%E4%BA%A4">编程判断两个链表是否相交</a>;原题假设“不带环”，所以只要想通了之后很简单；但是，若要考虑带环的情况，那么要注意的点就很多了。
-其实可以把无环和有环的情况全都包括在一个方法实现内解决。</p>
-
-<h3>分析</h3>
-
-<p>首先，无环的情况；无环是《编程之美》原书里的题目，很多人都反应说这个题相对书中其它题来讲太过于简单了。也确实，只要在纸上把“所有单向链表相交的情况”画出来很容易就能想通解法了（只要正确理解题意，那么“两个无环单向链表”画出来只可能是2条不相干的链表或一个&#8221;Y&#8221;字形） —— 所以，判断两个不带环的链表是否相交，只要将两个链表的头指针都移到链表尾，然后比较尾指针地址是否相等就可以了。
-如果带环，个人总结，要明白以下几点：</p>
-
-<ol>
-<li>无环链表和有环链表是不可能相交的;</li>
-<li>两个有环链表若相交，其“整个环上”的所有node一定都重合;</li>
-<li>有环链表的相交，情况只有2种：相交于&#8221;环上&#8221;或相交于&#8221;不是环的部分&#8221;,即下图所示;两种情况都需要使用“两个指针的追逐”方法来判断两个链表的环部分是否相交;
-<img src="/images/circledLinkedListsIntersections.png" title="带环单向链表相交只有2种情况" alt="带环单向链表相交只有2种情况" /></li>
-<li>有关链表追逐的考虑: 相对速度、距离、时间要算好，否则很容易漏掉几种边界情况;</li>
-</ol>
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/algorithms-in-job-interview-test-if-two-linked-lists-intersected">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -720,6 +723,10 @@ tag_cloud.rb: ascii (confidence: 1.00)
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/dropincc-dot-java-the-ultimate-tool-to-create-dsls-in-java">Dropincc.java, The Ultimate Tool to Create DSLs in Java</a>
+      </li>
     
       <li class="post">
         <a href="/blog/the-real-world-tree">The Real World Tree</a>
@@ -737,19 +744,15 @@ tag_cloud.rb: ascii (confidence: 1.00)
         <a href="/blog/left-recursion-removal-using-kleene-closure">使用Kleene闭包语法糖消除语法中的左递归</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/algo-class-week-one-assignment-counting-inversions">[algo-class]第一周作业——Count Inversions</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Tag Cloud</h1>
-  <span id="tag-cloud"><a href='/blog/category/ai-class' style='font-size: 106.66666666666667%'>Ai-class(1)</a> <a href='/blog/category/algo-class' style='font-size: 113.33333333333333%'>Algo-class(2)</a> <a href='/blog/category/algorithm' style='font-size: 160.0%'>Algorithm(9)</a> <a href='/blog/category/comic' style='font-size: 106.66666666666667%'>Comic(1)</a> <a href='/blog/category/compiler' style='font-size: 120.0%'>Compiler(3)</a> <a href='/blog/category/computer' style='font-size: 106.66666666666667%'>Computer(1)</a> <a href='/blog/category/design' style='font-size: 106.66666666666667%'>Design(1)</a> <a href='/blog/category/dropincc' style='font-size: 126.66666666666667%'>Dropincc(4)</a> <a href='/blog/category/interview' style='font-size: 126.66666666666667%'>Interview(4)</a> <a href='/blog/category/life' style='font-size: 113.33333333333333%'>Life(2)</a> <a href='/blog/category/octopress' style='font-size: 106.66666666666667%'>Octopress(1)</a> <a href='/blog/category/performance' style='font-size: 106.66666666666667%'>Performance(1)</a> <a href='/blog/category/probability' style='font-size: 106.66666666666667%'>Probability(1)</a> <a href='/blog/category/programming' style='font-size: 113.33333333333333%'>Programming(2)</a> <a href='/blog/category/python' style='font-size: 106.66666666666667%'>Python(1)</a> <a href='/blog/category/translation' style='font-size: 106.66666666666667%'>Translation(1)</a> </span>
+  <span id="tag-cloud"><a href='/blog/category/ai-class' style='font-size: 106.66666666666667%'>Ai-class(1)</a> <a href='/blog/category/algo-class' style='font-size: 113.33333333333333%'>Algo-class(2)</a> <a href='/blog/category/algorithm' style='font-size: 160.0%'>Algorithm(9)</a> <a href='/blog/category/comic' style='font-size: 106.66666666666667%'>Comic(1)</a> <a href='/blog/category/compiler' style='font-size: 126.66666666666667%'>Compiler(4)</a> <a href='/blog/category/computer' style='font-size: 106.66666666666667%'>Computer(1)</a> <a href='/blog/category/design' style='font-size: 106.66666666666667%'>Design(1)</a> <a href='/blog/category/dropincc' style='font-size: 133.33333333333334%'>Dropincc(5)</a> <a href='/blog/category/dsl' style='font-size: 106.66666666666667%'>Dsl(1)</a> <a href='/blog/category/interview' style='font-size: 126.66666666666667%'>Interview(4)</a> <a href='/blog/category/life' style='font-size: 113.33333333333333%'>Life(2)</a> <a href='/blog/category/octopress' style='font-size: 106.66666666666667%'>Octopress(1)</a> <a href='/blog/category/performance' style='font-size: 106.66666666666667%'>Performance(1)</a> <a href='/blog/category/probability' style='font-size: 106.66666666666667%'>Probability(1)</a> <a href='/blog/category/programming' style='font-size: 113.33333333333333%'>Programming(2)</a> <a href='/blog/category/python' style='font-size: 106.66666666666667%'>Python(1)</a> <a href='/blog/category/translation' style='font-size: 106.66666666666667%'>Translation(1)</a> </span>
 </section>
 <section>
   <h1>Categories</h1>
-    <ul id="category-list"><li><a href='/blog/category/ai-class'>Ai-class (1)</a></li><li><a href='/blog/category/algo-class'>Algo-class (2)</a></li><li><a href='/blog/category/algorithm'>Algorithm (9)</a></li><li><a href='/blog/category/comic'>Comic (1)</a></li><li><a href='/blog/category/compiler'>Compiler (3)</a></li><li><a href='/blog/category/computer'>Computer (1)</a></li><li><a href='/blog/category/design'>Design (1)</a></li><li><a href='/blog/category/dropincc'>Dropincc (4)</a></li><li><a href='/blog/category/interview'>Interview (4)</a></li><li><a href='/blog/category/life'>Life (2)</a></li><li><a href='/blog/category/octopress'>Octopress (1)</a></li><li><a href='/blog/category/performance'>Performance (1)</a></li><li><a href='/blog/category/probability'>Probability (1)</a></li><li><a href='/blog/category/programming'>Programming (2)</a></li><li><a href='/blog/category/python'>Python (1)</a></li><li><a href='/blog/category/translation'>Translation (1)</a></li></ul>
+    <ul id="category-list"><li><a href='/blog/category/ai-class'>Ai-class (1)</a></li><li><a href='/blog/category/algo-class'>Algo-class (2)</a></li><li><a href='/blog/category/algorithm'>Algorithm (9)</a></li><li><a href='/blog/category/comic'>Comic (1)</a></li><li><a href='/blog/category/compiler'>Compiler (4)</a></li><li><a href='/blog/category/computer'>Computer (1)</a></li><li><a href='/blog/category/design'>Design (1)</a></li><li><a href='/blog/category/dropincc'>Dropincc (5)</a></li><li><a href='/blog/category/dsl'>Dsl (1)</a></li><li><a href='/blog/category/interview'>Interview (4)</a></li><li><a href='/blog/category/life'>Life (2)</a></li><li><a href='/blog/category/octopress'>Octopress (1)</a></li><li><a href='/blog/category/performance'>Performance (1)</a></li><li><a href='/blog/category/probability'>Probability (1)</a></li><li><a href='/blog/category/programming'>Programming (2)</a></li><li><a href='/blog/category/python'>Python (1)</a></li><li><a href='/blog/category/translation'>Translation (1)</a></li></ul>
 </section>
 
 <section>
