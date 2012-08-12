@@ -4,7 +4,7 @@
   <title><![CDATA[Category: dropincc | Meta-Interpretation]]></title>
   <link href="http://pfmiles.github.com/blog/category/dropincc/atom.xml" rel="self"/>
   <link href="http://pfmiles.github.com/"/>
-  <updated>2012-08-04T20:35:26+08:00</updated>
+  <updated>2012-08-12T15:04:50+08:00</updated>
   <id>http://pfmiles.github.com/</id>
   <author>
     <name><![CDATA[pf_miles]]></name>
@@ -12,6 +12,55 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Ideas and Concepts behind Dropincc.java]]></title>
+    <link href="http://pfmiles.github.com/blog/ideas-and-concepts-behind-dropincc-dot-java"/>
+    <updated>2012-08-10T00:40:00+08:00</updated>
+    <id>http://pfmiles.github.com/blog/ideas-and-concepts-behind-dropincc-dot-java</id>
+    <content type="html"><![CDATA[<h3>DSLs in java is hard.</h3>
+
+<p>DSLs are rarely discussed in java community. Or, at least comparing to other dynamic languages' world, DSLs in java is much harder to create.</p>
+
+<p>Why does this happen?</p>
+
+<p>According to <a href="http://martinfowler.com/bliki/DomainSpecificLanguage.html">Martin Fowler's comments on DSLs</a>, they are separated mainly to two kinds: internal and external DSLs.</p>
+
+<p>I believe that, the ability of how a specific general purposed programming language could be customized to an internal DSL relies on the language's <a href="http://en.wikipedia.org/wiki/Metaprogramming">meta-programming</a> features.</p>
+
+<p>Some languages, especially dynamic typed ones, have ability to customize its syntactical appearance at runtime. By intercepting their class defining life-cycles, executing fail-over strategies when method or field missings, or doing presentation substitutions via sophisticated macro systems or even, directly change their parse tree at runtime. All those incredible features are the magic behind internal DSLs.</p>
+
+<p>But, we sadly found that java has none of those magic stuff to help building internal DSLs. There's little meta-programming features in java. Annotations? Perhaps one rare creature, but its not enough.<br/>
+Maybe the only way to create internal DSLs in java is to design a set of <a href="http://www.martinfowler.com/bliki/FluentInterface.html">Fluent Interface</a> API. It's great, but you won't have much space on customizing the syntax of your DSL.</p>
+
+<p>Then, seems that the possible ways to create real-world, sophisticated DSLs in java are always turns out to be external-DSLs. But, this won't be easy, always, since the creation of computer world.</p>
+
+<!-- more -->
+
+
+<p>Creating external DSLs means doing lexical &amp; syntactical analyzing all by ourselves. There is a whole bunch of open sourced tools, say, <a href="http://en.wikipedia.org/wiki/Compiler-compiler">parser generators</a>, to help doing so, but there's too much unnecessary efforts must be made before you get your grammar run.</p>
+
+<p>Those traditional parser generators are great but in fact not suitable for DSL creating. Like lex&amp;bison, javacc, jcup and antlr etc. They usually have their own grammar you must learn to define grammar rules, this is some what big learning cost.<br/>
+After you have done writing your grammar, they usually requires you to run a specific compiling tool in command-line to 'compile' the rules you just wrote. And finally gives you a couple of source files in your host language and telling you to place them into somewhere of your project directory. Then you could run your program. If errors occur, you would re-do those steps by frequently switching between command-line and your IDE.</p>
+
+<p>These steps are troublesome in practice. Especially for those first using a parser generator. I've seen one of my colleague struggled against antlr for one month, in order to build a SQL-like DSL. And much of his time was spent on getting familiar with antlr's grammar, its 'antlrWorks' IDE and some command-line tools. It was painful when recall on this month.</p>
+
+<p>So I think one must not have to carry so much burden when he just want to create a relatively simple DSL. And <a href="https://github.com/pfmiles/dropincc.java">dropincc.java</a> is something I create to ease the building process of external DSL in java.</p>
+
+<h3>If all done in one place.</h3>
+
+<ul>
+<li>I don't think additional grammar must be created to describe grammar rules, this could be done in internal DSL in java, a.k.a fluent interfaces. Creating a <a href="http://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_Form">EBNF</a> like internal DSL in java is affordable.</li>
+<li>I don't think additional command-line tools or individual specific IDE is needed since we are adopting internal DSL to describe grammar rules. Just a commonly used java IDE is sufficient.</li>
+<li>Also, I don't think we must repeat the compile-copy, and run cycle when we trying and debugging our new creating language. Grammar may be run directly just after we defined it. Like we edit and test java program instantly in most modern IDEs.</li>
+</ul>
+
+
+<p>And, all in all, in summary... dropincc.java ends up such a tool with those missions. I hope this small lib could help a lot in building external DSLs.</p>
+
+<p>For a starter dummy example, please refer to <a href="/blog/dropincc-dot-java-the-ultimate-tool-to-create-dsls-in-java/">this post</a>.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Dropincc.java, The Ultimate Tool to Create DSLs in Java]]></title>
@@ -613,117 +662,6 @@ System.out.println(calculator.exe("1+2+3+(4+5*6*7*(64/8/2/(2/1)/1)*8+9)+10"));
 就是这样，实际上你可以在动作代码里面做任何事情，只要符合java语法的、你能想到的。</p>
 
 <p>第一个版本的API设计基本就是这样了，往后可能还会加入一些语法糖，比如“Kleen闭包”来进一步方便语法规则的定义，不过会很慎重，因为dropincc.java是以小巧、易用为设计目标的，语法糖太多很可能会帮倒忙。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Dropincc.java的概念与设计]]></title>
-    <link href="http://pfmiles.github.com/blog/the-main-ideas-and-concepts-of-dropincc-dot-java"/>
-    <updated>2012-03-17T17:40:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/the-main-ideas-and-concepts-of-dropincc-dot-java</id>
-    <content type="html"><![CDATA[<h3>做这么个小lib的动机？</h3>
-
-<p>其实由于java语言先天缺陷的元编程能力，在java的圈子里很少有人提到“DSL”的概念，就算有也是说说而已。与之相比，一些其它语言ruby, python, lisp等等，得益于其强大的元编程能力，直接利用自身语法特性，取一块语法子集，利用一些对象、类生命周期切入函数或者宏系统两三下就DSL 'on-the-fly'了，这种便利性可能由java的设计目标来看，恐怕永远也无法达到了。<br/>
-那么，在java里面想实现一个DSL，恐怕就得走“外部DSL(详见Fowler的文章: <a href="http://martinfowler.com/bliki/DomainSpecificLanguage.html">DomainSpecificLanguage</a>)”的路子。<br/>
-而“外部DSL”这条路并不好走，说白了也就是自己做词法、语法、语义分析，自己生成目标语言代码去执行真正的逻辑；也就是做一个编译器前端外加一段解释执行逻辑；编译器前端，虽然业界看上去有很多很多工具可以直接采用，但是这些工具，目前看来，我认为还是太“General purpose”了，它们往往要求使用者学习它们自己规定的一套用作表达词法、语法规则的DSL，然后提供一个特殊的编译程序，用作编译你用它的DSL写的这些词法、语法文件，最终生成你想要的、基本不可读的编译器前端代码 —— 放到你的项目中去使用；<br/>
-这种形式的工具在目前的编译器前端生成器中占大多数，使用上绝对称不上是“便利”。除了它用作描述规则的DSL需要使用者学习之外，其使用过程涉及好几个步骤与环境，是很麻烦的一件事情。<br/>
-曾经有一次，一个同学试图使用antlr来做一个类似SQL子集的DSL，他花很多时间与antlr本身的语法文件、IDE “antlrworks”作斗争...频繁地在eclipse, 命令行, antlrWorks之间切换；我就想，做一个这样的DSL，是否真的用得上这么多工具？是否真的用得上号称能parse C++的antlr？这些事情能否全部在一个工作环境内搞定？比如eclipse？
-而来自<a href="https://github.com/luikore/rsec">rsec</a>的启发让我觉得java似乎更应该有这样一个东西：</p>
-
-<ol>
-<li>以java的语法来新增词法、语法规则，不需要学习新的语法；</li>
-<li>不需要依赖外部环境，仅在java开发环境中就能完成新语言的定义与编译器前端程序的生成；</li>
-<li>虽然java是静态类型编译型语言，但整个新语言构建过程应该看上去是“动态的”、“解释性”的，这样“体验”才会好；</li>
-<li>这个库要小、要没有其它三方库依赖，仅依靠JDK自带库就能使用；</li>
-<li>在使用过程中尝试推行一些好的实践，确保大多数普通青年不会“自找麻烦”，比如“限制词法规则必须为正规文法(或者说乔姆斯基3型文法)”。</li>
-</ol>
-
-
-<p>而<a href="https://github.com/pfmiles/dropincc.java">Dropincc.java</a>正是以上述几点为设计目标的一个小巧(但足够强大)的编译器生成器。</p>
-
-<!-- more -->
-
-
-<h3>设计与实现思路</h3>
-
-<p>以上第一点，基本上的想法就是，设计一套“串接与组合(cascading &amp; composition)”风格的API，模拟出一套parser combinator，让用户使用这套“貌似带有CC的语义”的java方法API来做词法、语法规则的添加(CC即："compiler-compiler, 就是'编译器生成器'")。<br/>
-比如我想创建一套支持加减乘除的表达式计算器，还能使用括号调整运算优先级，我大概能用下面这样的形式直接在java代码中定义其词法、语法规则：</p>
-
-<blockquote><p>注：下面的代码只是示意说明整体API风格，不一定是最终能运行的代码。</p></blockquote>
-
-<pre><code>Lang lang = new Lang();
-Token DIGIT = lang.addToken("\\d+");
-Token ADD = lang.addToken("\\+");
-Token SUB = lang.addToken("\\-");
-Token MUL = lang.addToken("\\*");
-Token DIV = lang.addToken("/");
-Token LEFTPAREN = lang.addToken("\\(");
-Token RIGHTPAREN = lang.addToken("\\)");
-
-Grule expr = new Grule(); // grammar root
-Grule term = new Grule();
-
-Element mulTail = lang.addGrammarRule(MUL.or(DIV), term);
-term.addGrammarRule(DIGIT, mulTail)
-        .alt(LEFTPAREN, expr, RIGHTPAREN)
-        .alt(DIGIT);
-Element addendTail = lang.addGrammarRule(ADD.or(SUB), term);
-expr.addGrammarRule(term , addendTail, CC.EOF);
-</code></pre>
-
-<p>其实想要表达的规则写成类似"BNF"的形式就是：</p>
-
-<pre><code>// token rules
-DIGIT ::= '\d+';
-ADD ::= '+';
-SUB ::= '-';
-MUL ::= '*';
-DIV ::= '/';
-LEFTPAREN ::= '(';
-RIGHTPAREN ::= ')';
-
-// grammar rules
-mulTail ::= (MUL | DIV) term;
-term ::= DIGIT multail
-       | LEFTPAREN expr RIGHTPAREN
-       | DIGIT
-       ;
-addendTail ::= (ADD | SUB) term;
-expr ::= term addendTail EOF;
-</code></pre>
-
-<p>这简直就是“line to line”的直译，而<a href="https://github.com/pfmiles/dropincc.java">Dropincc.java</a>的目标也就是要达到这样的效果；<br/>
-这么做的目的并不是实现一套标准意义上的BNF；它使用了正则表达式来描述词法规则(token)，也就是上面提到的“目标”的第5点：“限制词法规则必须为正规文法”，这么做的意思也就是建议用户在“若词法规则中出现正规文法无法解决的意义冲突时”，将冲突“推后”到后面的语法、甚至语义分析阶段去解决；这种推荐的“较好实践”能够保持词法规则足够简单，使用正则表达式就能清晰地描述；如果用户不理解“保持词法规则足够简单”的重要性，只需要让他思考一下“为什么java的标识符不能由数字开头”应该就能想通了。<br/>
-事实上就是：如果你不想自找麻烦，那么就应该保持词法规则足够简单 —— 你不应该在词法解析阶段耗费太多的实现精力 —— 这里用正则表达式就好了 —— 后面还有更麻烦、更有意义的活儿等着你去干呢...你不应该卡在词法分析这里太久...<br/>
-好了，上面的这种约束一方面推行了一种“较好的实践”，另一方面也使得我们的这个工具更加直观、好用、简单，并且并不降低其实现语言的能力。</p>
-
-<p>第二、三点，打算使用JDK1.6的新compiler API来实现；目前业界中的大多数CC工具都是“生成一个源文件”，让用户直接在项目中使用这个源文件；其实我认为这个东西以“源文件”的形式出现在项目中意义并不大，因为它几乎不可读(不可读的源代码有什么意义呢？)。只要有一个可执行的内存表示即可，“源文件”其实就不必了...这样也似乎使得项目代码看上去更“干净”。</p>
-
-<p>至于第四点，也是很重要的，实现过程中一直保持“不依赖JDK以外的库”即可。</p>
-
-<p>当所有的规则都定义完毕，只要在代码中触发"compile"，立刻就能基于定义的规则在内存中生成一个可执行的编译器前端，没有“源代码”，因为那没有意义，用户需要做的就只是拿它去执行新出生的语言的代码逻辑：</p>
-
-<pre><code>lang.compile();
-lang.exe("1+2+3*4/(5*6*7+8)");
-</code></pre>
-
-<p>当然，还有“action代码”的具体组织形式示例，上面没有给出，在<a href="dropincc-dot-java-api-design/">dropincc.java API Design</a>里面有详尽的阐述。<br/>
-基本上对于这个工具的最终输出形式，计划中应该有两种：</p>
-
-<ol>
-<li>AST</li>
-<li>直接执行的action</li>
-</ol>
-
-
-<p>输出AST其实是灵活度最大的一种形式，有了AST，那么后面是想解释执行？还是做翻译？那就交由用户去考虑了，dropincc.java的工作到这里也就结束了；<br/>
-而“直接执行action”的方式适合像上面这种简单的诸如“四则运算”这样的简单表达式语言，在创建解析树的过程中就把对应的动作代码给执行了，解析结束后直接就能得到结果。</p>
-
-<p>根据dropincc.java的后续设想，上述2种方式在dropincc.java中实现应该“几乎没有差别”，这两种输出形式虽然目的可能不一样，但在dropincc.java中实现起来应该是高度统一、一致的，这也是为了实现“足够简单”的目标，尽量不要让用户过多地去学习一些概念，增加上手成本。</p>
-
-<p>至于dropincc.java能够用来识别哪种级别的语法？我的设想中dropincc.java是一个LL解析器生成器，最终要能识别LL(*)的语法，也就是跟antlr具有同等能力；不过初期的实现可能还识别不了那种程度的不确定性，这个可以一步一步随着版本推进慢慢来改进。其它一些诸如解决左递归的一些算法改进都可以排在计划中...</p>
-
-<p>OK，前期的设想也就暂时介绍到这里，希望dropincc.java的努力能够将java圈子里的DSL应用甚至<a href="http://en.wikipedia.org/wiki/Language-oriented_programming">LOP</a>编程往前推进一步，这是相当令人振奋的事情。</p>
 ]]></content>
   </entry>
   

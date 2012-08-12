@@ -4,7 +4,7 @@
   <title><![CDATA[Meta-Interpretation]]></title>
   <link href="http://pfmiles.github.com/atom.xml" rel="self"/>
   <link href="http://pfmiles.github.com/"/>
-  <updated>2012-08-04T20:35:26+08:00</updated>
+  <updated>2012-08-12T15:04:50+08:00</updated>
   <id>http://pfmiles.github.com/</id>
   <author>
     <name><![CDATA[pf_miles]]></name>
@@ -12,6 +12,55 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Ideas and Concepts behind Dropincc.java]]></title>
+    <link href="http://pfmiles.github.com/blog/ideas-and-concepts-behind-dropincc-dot-java"/>
+    <updated>2012-08-10T00:40:00+08:00</updated>
+    <id>http://pfmiles.github.com/blog/ideas-and-concepts-behind-dropincc-dot-java</id>
+    <content type="html"><![CDATA[<h3>DSLs in java is hard.</h3>
+
+<p>DSLs are rarely discussed in java community. Or, at least comparing to other dynamic languages&#8217; world, DSLs in java is much harder to create.</p>
+
+<p>Why does this happen?</p>
+
+<p>According to <a href="http://martinfowler.com/bliki/DomainSpecificLanguage.html">Martin Fowler&#8217;s comments on DSLs</a>, they are separated mainly to two kinds: internal and external DSLs.</p>
+
+<p>I believe that, the ability of how a specific general purposed programming language could be customized to an internal DSL relies on the language&#8217;s <a href="http://en.wikipedia.org/wiki/Metaprogramming">meta-programming</a> features.</p>
+
+<p>Some languages, especially dynamic typed ones, have ability to customize its syntactical appearance at runtime. By intercepting their class defining life-cycles, executing fail-over strategies when method or field missings, or doing presentation substitutions via sophisticated macro systems or even, directly change their parse tree at runtime. All those incredible features are the magic behind internal DSLs.</p>
+
+<p>But, we sadly found that java has none of those magic stuff to help building internal DSLs. There&#8217;s little meta-programming features in java. Annotations? Perhaps one rare creature, but its not enough.<br/>
+Maybe the only way to create internal DSLs in java is to design a set of <a href="http://www.martinfowler.com/bliki/FluentInterface.html">Fluent Interface</a> API. It&#8217;s great, but you won&#8217;t have much space on customizing the syntax of your DSL.</p>
+
+<p>Then, seems that the possible ways to create real-world, sophisticated DSLs in java are always turns out to be external-DSLs. But, this won&#8217;t be easy, always, since the creation of computer world.</p>
+
+<!-- more -->
+
+
+<p>Creating external DSLs means doing lexical &amp; syntactical analyzing all by ourselves. There is a whole bunch of open sourced tools, say, <a href="http://en.wikipedia.org/wiki/Compiler-compiler">parser generators</a>, to help doing so, but there&#8217;s too much unnecessary efforts must be made before you get your grammar run.</p>
+
+<p>Those traditional parser generators are great but in fact not suitable for DSL creating. Like lex&amp;bison, javacc, jcup and antlr etc. They usually have their own grammar you must learn to define grammar rules, this is some what big learning cost.<br/>
+After you have done writing your grammar, they usually requires you to run a specific compiling tool in command-line to &#8216;compile&#8217; the rules you just wrote. And finally gives you a couple of source files in your host language and telling you to place them into somewhere of your project directory. Then you could run your program. If errors occur, you would re-do those steps by frequently switching between command-line and your IDE.</p>
+
+<p>These steps are troublesome in practice. Especially for those first using a parser generator. I&#8217;ve seen one of my colleague struggled against antlr for one month, in order to build a SQL-like DSL. And much of his time was spent on getting familiar with antlr&#8217;s grammar, its &#8216;antlrWorks&#8217; IDE and some command-line tools. It was painful when recall on this month.</p>
+
+<p>So I think one must not have to carry so much burden when he just want to create a relatively simple DSL. And <a href="https://github.com/pfmiles/dropincc.java">dropincc.java</a> is something I create to ease the building process of external DSL in java.</p>
+
+<h3>If all done in one place.</h3>
+
+<ul>
+<li>I don&#8217;t think additional grammar must be created to describe grammar rules, this could be done in internal DSL in java, a.k.a fluent interfaces. Creating a <a href="http://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_Form">EBNF</a> like internal DSL in java is affordable.</li>
+<li>I don&#8217;t think additional command-line tools or individual specific IDE is needed since we are adopting internal DSL to describe grammar rules. Just a commonly used java IDE is sufficient.</li>
+<li>Also, I don&#8217;t think we must repeat the compile-copy, and run cycle when we trying and debugging our new creating language. Grammar may be run directly just after we defined it. Like we edit and test java program instantly in most modern IDEs.</li>
+</ul>
+
+
+<p>And, all in all, in summary&#8230; dropincc.java ends up such a tool with those missions. I hope this small lib could help a lot in building external DSLs.</p>
+
+<p>For a starter dummy example, please refer to <a href="http://pfmiles.github.com/blog/dropincc-dot-java-the-ultimate-tool-to-create-dsls-in-java/">this post</a>.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Dropincc.java, The Ultimate Tool to Create DSLs in Java]]></title>

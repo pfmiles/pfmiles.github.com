@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>about pf_miles - Meta-Interpretation</title>
+  <title>Ideas and Concepts behind Dropincc.java - Meta-Interpretation</title>
   <meta name="author" content="pf_miles">
 
   
-  <meta name="description" content="About Pf_miles Jun 25th, 2012 我是pf_miles，一个无聊，不随和，一般宅，不招人待见，不抽烟，说话累，7，代码没写完，吃饭慢，anonymous magician，喝酒，已婚，唯心主义，养猫的程序员，有人气味相投？ -> Email: Twitter: &hellip;">
-  
+  <meta name="description" content="DSLs in java is hard. DSLs are rarely discussed in java community. Or, at least comparing to other dynamic languages&#8217; world, DSLs in java is &hellip;">
+  <meta name="keywords" content="design, idea, concept, dropincc">
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://pfmiles.github.com/about">
+  <link rel="canonical" href="http://pfmiles.github.com/blog/ideas-and-concepts-behind-dropincc-dot-java">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -90,43 +90,15 @@ MathJax.Hub.Config({
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">About Pf_miles</h1>
-    <p class="meta">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-06-25T23:47:00+08:00" pubdate data-updated="true">Jun 25<span>th</span>, 2012</time></p>
-  </header>
-  
-  <ul>
-<li>我是pf_miles，一个无聊，不随和，一般宅，不招人待见，不抽烟，说话累，7，代码没写完，吃饭慢，anonymous magician，喝酒，已婚，唯心主义，养猫的程序员，有人气味相投？ ->
-
-<ul>
-<li>Email: <img src="/images/email.png" title="email" alt="email" /></li>
-<li>Twitter: <a href="https://twitter.com/pf_miles">pf_miles</a></li>
-<li>新浪t: <a href="http://weibo.com/pfmiles">pf_miles</a></li>
-</ul>
-</li>
-<li>我的代码库：<a href="https://github.com/pfmiles">pf_miles AT github</a></li>
-</ul>
-
-
-  
-    <footer>
+    
+      <h1 class="entry-title">Ideas and Concepts Behind Dropincc.java</h1>
+    
+    
       <p class="meta">
         
-        
 
 
 
@@ -138,13 +110,93 @@ MathJax.Hub.Config({
   
 
 
-<time datetime="2012-06-25T23:47:00+08:00" pubdate data-updated="true">Jun 25<span>th</span>, 2012</time>
+<time datetime="2012-08-10T00:40:00+08:00" pubdate data-updated="true">Aug 10<span>th</span>, 2012</time>
+        
+         | <a href="#disqus_thread">Comments</a>
         
       </p>
+    
+  </header>
+
+
+<div class="entry-content"><h3>DSLs in java is hard.</h3>
+
+<p>DSLs are rarely discussed in java community. Or, at least comparing to other dynamic languages&#8217; world, DSLs in java is much harder to create.</p>
+
+<p>Why does this happen?</p>
+
+<p>According to <a href="http://martinfowler.com/bliki/DomainSpecificLanguage.html">Martin Fowler&#8217;s comments on DSLs</a>, they are separated mainly to two kinds: internal and external DSLs.</p>
+
+<p>I believe that, the ability of how a specific general purposed programming language could be customized to an internal DSL relies on the language&#8217;s <a href="http://en.wikipedia.org/wiki/Metaprogramming">meta-programming</a> features.</p>
+
+<p>Some languages, especially dynamic typed ones, have ability to customize its syntactical appearance at runtime. By intercepting their class defining life-cycles, executing fail-over strategies when method or field missings, or doing presentation substitutions via sophisticated macro systems or even, directly change their parse tree at runtime. All those incredible features are the magic behind internal DSLs.</p>
+
+<p>But, we sadly found that java has none of those magic stuff to help building internal DSLs. There&#8217;s little meta-programming features in java. Annotations? Perhaps one rare creature, but its not enough.<br/>
+Maybe the only way to create internal DSLs in java is to design a set of <a href="http://www.martinfowler.com/bliki/FluentInterface.html">Fluent Interface</a> API. It&#8217;s great, but you won&#8217;t have much space on customizing the syntax of your DSL.</p>
+
+<p>Then, seems that the possible ways to create real-world, sophisticated DSLs in java are always turns out to be external-DSLs. But, this won&#8217;t be easy, always, since the creation of computer world.</p>
+
+<!-- more -->
+
+
+<p>Creating external DSLs means doing lexical &amp; syntactical analyzing all by ourselves. There is a whole bunch of open sourced tools, say, <a href="http://en.wikipedia.org/wiki/Compiler-compiler">parser generators</a>, to help doing so, but there&#8217;s too much unnecessary efforts must be made before you get your grammar run.</p>
+
+<p>Those traditional parser generators are great but in fact not suitable for DSL creating. Like lex&amp;bison, javacc, jcup and antlr etc. They usually have their own grammar you must learn to define grammar rules, this is some what big learning cost.<br/>
+After you have done writing your grammar, they usually requires you to run a specific compiling tool in command-line to &#8216;compile&#8217; the rules you just wrote. And finally gives you a couple of source files in your host language and telling you to place them into somewhere of your project directory. Then you could run your program. If errors occur, you would re-do those steps by frequently switching between command-line and your IDE.</p>
+
+<p>These steps are troublesome in practice. Especially for those first using a parser generator. I&#8217;ve seen one of my colleague struggled against antlr for one month, in order to build a SQL-like DSL. And much of his time was spent on getting familiar with antlr&#8217;s grammar, its &#8216;antlrWorks&#8217; IDE and some command-line tools. It was painful when recall on this month.</p>
+
+<p>So I think one must not have to carry so much burden when he just want to create a relatively simple DSL. And <a href="https://github.com/pfmiles/dropincc.java">dropincc.java</a> is something I create to ease the building process of external DSL in java.</p>
+
+<h3>If all done in one place.</h3>
+
+<ul>
+<li>I don&#8217;t think additional grammar must be created to describe grammar rules, this could be done in internal DSL in java, a.k.a fluent interfaces. Creating a <a href="http://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_Form">EBNF</a> like internal DSL in java is affordable.</li>
+<li>I don&#8217;t think additional command-line tools or individual specific IDE is needed since we are adopting internal DSL to describe grammar rules. Just a commonly used java IDE is sufficient.</li>
+<li>Also, I don&#8217;t think we must repeat the compile-copy, and run cycle when we trying and debugging our new creating language. Grammar may be run directly just after we defined it. Like we edit and test java program instantly in most modern IDEs.</li>
+</ul>
+
+
+<p>And, all in all, in summary&#8230; dropincc.java ends up such a tool with those missions. I hope this small lib could help a lot in building external DSLs.</p>
+
+<p>For a starter dummy example, please refer to <a href="/blog/dropincc-dot-java-the-ultimate-tool-to-create-dsls-in-java/">this post</a>.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
       
-        <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pfmiles.github.com/about/index.html" data-via="pf_miles" data-counturl="http://pfmiles.github.com/about/index.html" >Tweet</a>
+
+<span class="byline author vcard">Posted by <span class="fn">pf_miles</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-10T00:40:00+08:00" pubdate data-updated="true">Aug 10<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/category/dsl/'>DSL</a>, <a class='category' href='/blog/category/dropincc/'>dropincc</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pfmiles.github.com/blog/ideas-and-concepts-behind-dropincc-dot-java" data-via="pf_miles" data-counturl="http://pfmiles.github.com/blog/ideas-and-concepts-behind-dropincc-dot-java" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -154,10 +206,23 @@ MathJax.Hub.Config({
   
 </div>
 
+    
+    <p class="meta">
       
-    </footer>
-  
+        <a class="basic-alignment left" href="/blog/dropincc-dot-java-the-ultimate-tool-to-create-dsls-in-java" title="Previous Post: Dropincc.java, The Ultimate Tool to Create DSLs in Java">&laquo; Dropincc.java, The Ultimate Tool to Create DSLs in Java</a>
+      
+      
+    </p>
+  </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div class="tex2jax_ignore">
+        <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+    </div>
+  </section>
 
 </div>
 
@@ -277,6 +342,22 @@ MathJax.Hub.Config({
 
 </footer>
   
+
+<script type="text/javascript">
+      var disqus_shortname = 'meta-interpretation';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://pfmiles.github.com/blog/ideas-and-concepts-behind-dropincc-dot-java';
+        var disqus_url = 'http://pfmiles.github.com/blog/ideas-and-concepts-behind-dropincc-dot-java';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
 
 
 
