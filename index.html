@@ -9,7 +9,7 @@
   <meta name="author" content="pf_miles">
 
   
-  <meta name="description" content="DSLs in java is hard. DSLs are rarely discussed in java community. Or, at least comparing to other dynamic languages&#8217; world, DSLs in java is &hellip;">
+  <meta name="description" content="First, let&#8217;s create a empty java project in eclipse IDE, download newest playable dropincc.java jar file from here. Adding it to the build path &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -91,6 +91,80 @@ MathJax.Hub.Config({
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/growing-a-full-featured-calculator-in-15-minutes-using-dropincc-dot-java">Growing a Full-Featured Calculator in 15 Minutes Using Dropincc.java</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-12T15:58:00+08:00" pubdate data-updated="true">Aug 12<span>th</span>, 2012</time>
+        
+         | <a href="/blog/growing-a-full-featured-calculator-in-15-minutes-using-dropincc-dot-java#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>First, let&#8217;s create a empty java project in eclipse IDE, download newest playable dropincc.java jar file from <a href="https://github.com/pfmiles/dropincc.java/downloads">here</a>. Adding it to the build path of the project, like this(note: jdk1.6 or above required):<br/>
+<img src="/images/dropincc/calc/emptyProjWithJar.png" alt="emptyProjWithJar" /><br/>
+And then, create a new java source file to build our grammar, for example, <code>Calculator.java</code>.<br/>
+We start by specifying the EBNF form of our expected calculator language. The calculator expression would do addition and subtraction operations and also multiplication and division operations which have a greater priority.<br/>
+Also, we expect the calculator could handle parentheses to do priority adjustment.<br/>
+We could write the EBNF grammar rules in a top-down pattern:</p>
+
+<pre><code>calc ::= expr $
+expr ::= addend (('+'|'-') addend)*
+</code></pre>
+
+<p>We specified that the overall <code>expression</code> consists one or more <code>addend</code> sub-expressions with <code>'+'</code> or <code>'-'</code> symbol delimited.<br/>
+And for every single <code>addend</code> expression:</p>
+
+<pre><code>addend ::= factor (('\*'|'/') factor)*
+</code></pre>
+
+<p>consists one or more <code>factor</code> separated by <code>'*'</code> or <code>'/'</code>.<br/>
+And finally, for any single <code>factor</code>, is either a single digit or a quoted expression:</p>
+
+<pre><code>factor ::= '\d+(\.\d+)?'
+         | '(' expr ')'
+</code></pre>
+
+<p>Ok, we&#8217;ve done defining the EBNF of our calculator. This is what it look like all over:</p>
+
+<pre><code>calc ::= expr $
+expr ::= addend (('+'|'-') addend)*
+addend ::= factor (('\*'|'/') factor)*
+factor ::= '\d+(\.\d+)?'
+         | '(' expr ')'
+</code></pre>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/growing-a-full-featured-calculator-in-15-minutes-using-dropincc-dot-java">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -646,68 +720,6 @@ print countInversions(numbers)[0]
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/liquid-error-about-regexp-match-when-using-octopress-tagcloud">Liquid Error About Regexp Match When Using Octopress-tagcloud</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-03-14T19:33:00+08:00" pubdate data-updated="true">Mar 14<span>th</span>, 2012</time>
-        
-         | <a href="/blog/liquid-error-about-regexp-match-when-using-octopress-tagcloud#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Octopress插件：<a href="https://github.com/tokkonopapa/octopress-tagcloud">octopress-tagcloud</a>相当nice，不过在使用的时候，若是blog整体采用了非ascii码的编码格式(比如utf-8)就会出现类似这样的错误：</p>
-
-<pre><code>Liquid error: incompatible encoding regexp match (ascii-8bit regexp with utf-8 string)
-</code></pre>
-
-<p>其实是由于octopress-tagcloud的插件文件：<code>plugins/tag_cloud.rb</code>文件本身是ascii编码所致:</p>
-
-<pre><code>$ chardet tag_cloud.rb
-tag_cloud.rb: ascii (confidence: 1.00)
-</code></pre>
-
-<p><code>tag_cloud.rb</code>中很多地方用到了ruby的正则表达式，而ruby的正则表达式在匹配的时候，默认是按照“代码源文件”的编码格式(在这里是ascii)进行匹配的，而若我的blog是utf-8编码的话就会出现上述错误。</p>
-
-<p>解决办法有二：</p>
-
-<ol>
-<li>将<code>tag_cloud.rb</code>转成utf-8&#8230;</li>
-<li>更改<code>tag_cloud.rb</code>中所有的正则表达式声明，加上<code>u</code>选项(根据<a href="http://www.ruby-doc.org/core-1.9.3/Regexp.html">这里</a>的说明，<code>u</code>的意思就是以utf-8编码格式来进行匹配)，即，若原正则式是：<code>/regexp/</code>, 则改成：<code>/regexp/u</code></li>
-</ol>
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/liquid-error-about-regexp-match-when-using-octopress-tagcloud">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -721,6 +733,10 @@ tag_cloud.rb: ascii (confidence: 1.00)
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/growing-a-full-featured-calculator-in-15-minutes-using-dropincc-dot-java">Growing a Full-Featured Calculator in 15 Minutes Using Dropincc.java</a>
+      </li>
     
       <li class="post">
         <a href="/blog/ideas-and-concepts-behind-dropincc-dot-java">Ideas and Concepts behind Dropincc.java</a>
@@ -738,19 +754,15 @@ tag_cloud.rb: ascii (confidence: 1.00)
         <a href="/blog/concept-and-implementation-of-ll-star">LL(*)的概念与实现</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/algo-class-week2-notes-master-method">Algo-class第二周小记: Master Method</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Tag Cloud</h1>
-  <span id="tag-cloud"><a href='/blog/category/ai-class' style='font-size: 106.66666666666667%'>Ai-class(1)</a> <a href='/blog/category/algo-class' style='font-size: 113.33333333333333%'>Algo-class(2)</a> <a href='/blog/category/algorithm' style='font-size: 160.0%'>Algorithm(9)</a> <a href='/blog/category/comic' style='font-size: 106.66666666666667%'>Comic(1)</a> <a href='/blog/category/compiler' style='font-size: 126.66666666666667%'>Compiler(4)</a> <a href='/blog/category/computer' style='font-size: 106.66666666666667%'>Computer(1)</a> <a href='/blog/category/design' style='font-size: 106.66666666666667%'>Design(1)</a> <a href='/blog/category/dropincc' style='font-size: 140.0%'>Dropincc(6)</a> <a href='/blog/category/dsl' style='font-size: 113.33333333333333%'>Dsl(2)</a> <a href='/blog/category/interview' style='font-size: 126.66666666666667%'>Interview(4)</a> <a href='/blog/category/life' style='font-size: 113.33333333333333%'>Life(2)</a> <a href='/blog/category/octopress' style='font-size: 106.66666666666667%'>Octopress(1)</a> <a href='/blog/category/performance' style='font-size: 106.66666666666667%'>Performance(1)</a> <a href='/blog/category/probability' style='font-size: 106.66666666666667%'>Probability(1)</a> <a href='/blog/category/programming' style='font-size: 113.33333333333333%'>Programming(2)</a> <a href='/blog/category/python' style='font-size: 106.66666666666667%'>Python(1)</a> <a href='/blog/category/translation' style='font-size: 106.66666666666667%'>Translation(1)</a> </span>
+  <span id="tag-cloud"><a href='/blog/category/ai-class' style='font-size: 106.66666666666667%'>Ai-class(1)</a> <a href='/blog/category/algo-class' style='font-size: 113.33333333333333%'>Algo-class(2)</a> <a href='/blog/category/algorithm' style='font-size: 160.0%'>Algorithm(9)</a> <a href='/blog/category/comic' style='font-size: 106.66666666666667%'>Comic(1)</a> <a href='/blog/category/compiler' style='font-size: 126.66666666666667%'>Compiler(4)</a> <a href='/blog/category/computer' style='font-size: 106.66666666666667%'>Computer(1)</a> <a href='/blog/category/design' style='font-size: 106.66666666666667%'>Design(1)</a> <a href='/blog/category/dropincc' style='font-size: 146.66666666666666%'>Dropincc(7)</a> <a href='/blog/category/dsl' style='font-size: 120.0%'>Dsl(3)</a> <a href='/blog/category/interview' style='font-size: 126.66666666666667%'>Interview(4)</a> <a href='/blog/category/life' style='font-size: 113.33333333333333%'>Life(2)</a> <a href='/blog/category/octopress' style='font-size: 106.66666666666667%'>Octopress(1)</a> <a href='/blog/category/performance' style='font-size: 106.66666666666667%'>Performance(1)</a> <a href='/blog/category/probability' style='font-size: 106.66666666666667%'>Probability(1)</a> <a href='/blog/category/programming' style='font-size: 113.33333333333333%'>Programming(2)</a> <a href='/blog/category/python' style='font-size: 106.66666666666667%'>Python(1)</a> <a href='/blog/category/translation' style='font-size: 106.66666666666667%'>Translation(1)</a> </span>
 </section>
 <section>
   <h1>Categories</h1>
-    <ul id="category-list"><li><a href='/blog/category/ai-class'>Ai-class (1)</a></li><li><a href='/blog/category/algo-class'>Algo-class (2)</a></li><li><a href='/blog/category/algorithm'>Algorithm (9)</a></li><li><a href='/blog/category/comic'>Comic (1)</a></li><li><a href='/blog/category/compiler'>Compiler (4)</a></li><li><a href='/blog/category/computer'>Computer (1)</a></li><li><a href='/blog/category/design'>Design (1)</a></li><li><a href='/blog/category/dropincc'>Dropincc (6)</a></li><li><a href='/blog/category/dsl'>Dsl (2)</a></li><li><a href='/blog/category/interview'>Interview (4)</a></li><li><a href='/blog/category/life'>Life (2)</a></li><li><a href='/blog/category/octopress'>Octopress (1)</a></li><li><a href='/blog/category/performance'>Performance (1)</a></li><li><a href='/blog/category/probability'>Probability (1)</a></li><li><a href='/blog/category/programming'>Programming (2)</a></li><li><a href='/blog/category/python'>Python (1)</a></li><li><a href='/blog/category/translation'>Translation (1)</a></li></ul>
+    <ul id="category-list"><li><a href='/blog/category/ai-class'>Ai-class (1)</a></li><li><a href='/blog/category/algo-class'>Algo-class (2)</a></li><li><a href='/blog/category/algorithm'>Algorithm (9)</a></li><li><a href='/blog/category/comic'>Comic (1)</a></li><li><a href='/blog/category/compiler'>Compiler (4)</a></li><li><a href='/blog/category/computer'>Computer (1)</a></li><li><a href='/blog/category/design'>Design (1)</a></li><li><a href='/blog/category/dropincc'>Dropincc (7)</a></li><li><a href='/blog/category/dsl'>Dsl (3)</a></li><li><a href='/blog/category/interview'>Interview (4)</a></li><li><a href='/blog/category/life'>Life (2)</a></li><li><a href='/blog/category/octopress'>Octopress (1)</a></li><li><a href='/blog/category/performance'>Performance (1)</a></li><li><a href='/blog/category/probability'>Probability (1)</a></li><li><a href='/blog/category/programming'>Programming (2)</a></li><li><a href='/blog/category/python'>Python (1)</a></li><li><a href='/blog/category/translation'>Translation (1)</a></li></ul>
 </section>
 
 <section>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: dropincc | Meta-Interpretation]]></title>
   <link href="http://pfmiles.github.com/blog/category/dropincc/atom.xml" rel="self"/>
   <link href="http://pfmiles.github.com/"/>
-  <updated>2012-08-12T15:04:50+08:00</updated>
+  <updated>2012-08-13T19:32:12+08:00</updated>
   <id>http://pfmiles.github.com/</id>
   <author>
     <name><![CDATA[pf_miles]]></name>
@@ -12,6 +12,279 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Growing a Full-Featured Calculator in 15 Minutes Using Dropincc.java]]></title>
+    <link href="http://pfmiles.github.com/blog/growing-a-full-featured-calculator-in-15-minutes-using-dropincc-dot-java"/>
+    <updated>2012-08-12T15:58:00+08:00</updated>
+    <id>http://pfmiles.github.com/blog/growing-a-full-featured-calculator-in-15-minutes-using-dropincc-dot-java</id>
+    <content type="html"><![CDATA[<p>First, let's create a empty java project in eclipse IDE, download newest playable dropincc.java jar file from <a href="https://github.com/pfmiles/dropincc.java/downloads">here</a>. Adding it to the build path of the project, like this(note: jdk1.6 or above required):<br/>
+<img src="/images/dropincc/calc/emptyProjWithJar.png" alt="emptyProjWithJar" /><br/>
+And then, create a new java source file to build our grammar, for example, <code>Calculator.java</code>.<br/>
+We start by specifying the EBNF form of our expected calculator language. The calculator expression would do addition and subtraction operations and also multiplication and division operations which have a greater priority.<br/>
+Also, we expect the calculator could handle parentheses to do priority adjustment.<br/>
+We could write the EBNF grammar rules in a top-down pattern:</p>
+
+<pre><code>calc ::= expr $
+expr ::= addend (('+'|'-') addend)*
+</code></pre>
+
+<p>We specified that the overall <code>expression</code> consists one or more <code>addend</code> sub-expressions with <code>'+'</code> or <code>'-'</code> symbol delimited.<br/>
+And for every single <code>addend</code> expression:</p>
+
+<pre><code>addend ::= factor (('\*'|'/') factor)*
+</code></pre>
+
+<p>consists one or more <code>factor</code> separated by <code>'*'</code> or <code>'/'</code>.<br/>
+And finally, for any single <code>factor</code>, is either a single digit or a quoted expression:</p>
+
+<pre><code>factor ::= '\d+(\.\d+)?'
+         | '(' expr ')'
+</code></pre>
+
+<p>Ok, we've done defining the EBNF of our calculator. This is what it look like all over:</p>
+
+<pre><code>calc ::= expr $
+expr ::= addend (('+'|'-') addend)*
+addend ::= factor (('\*'|'/') factor)*
+factor ::= '\d+(\.\d+)?'
+         | '(' expr ')'
+</code></pre>
+
+<!-- more -->
+
+
+<p>It's quite short because it utilized the kleene notation to represent 'zero or more'. And a shorter EBNF ends up a shorter dropincc.java program!<br/>
+Now let's 'translate' the EBNF into dropincc.java program. I say 'translate' here because it's a really straightforward step:</p>
+
+<pre><code>// some elements' pre-definitions in order to call the methods
+Lang calc = new Lang("Calc");
+TokenDef a = calc.newToken("\\+");
+TokenDef m = calc.newToken("\\*");
+Grule expr = calc.newGrule();
+Grule addend = calc.newGrule();
+Grule factor = calc.newGrule();
+
+// grammar definition section start
+calc.defineGrule(expr, CC.EOF);
+expr.define(addend, CC.ks(a.or("\\-"), addend));
+addend.define(factor, CC.ks(m.or("/"), factor));
+factor.define("\\d+(\\.\\d+)?")
+.alt("\\(", expr, "\\)");
+// grammar definition end
+</code></pre>
+
+<p>The 'grammar definition' part is as many lines as the EBNF. In fact it's a line-by-line translation of the EBNF(please look at the 'grammar definition' section carefully).</p>
+
+<p>Just a little more explanation:</p>
+
+<ul>
+<li>The basic elements of grammar rule is <code>TokenDef</code>s and <code>Grule</code>s.(In fact <code>Grule</code> means 'grammar rule') <code>TokenDef</code>s are defined using java built-in regular expression currently.</li>
+<li>Rule production's match sequence is represented as comma separated elements list. Like <code>expr, CC.EOF</code> means <code>expr $</code>, <code>addend, CC.ks(a.or("\\-"), addend)</code> means <code>addend (('+'|'-') addend)*</code>.</li>
+<li>Note the <code>CC.EOF</code> constant, it's a predefined constant provided by dropincc.java to represent <code>EOF</code> token definition.</li>
+<li>And the <code>CC.ks</code> method call means all elements passed in as parameters are enclosed in a kleene star node(kleene star node means zero or more multiplication of its enclosing elements, the same as you learnt from using a regular expression). And <code>ks</code> in fact means 'kleene star'.</li>
+<li>Likewise, there are <code>CC.kc</code> method and <code>CC.op</code> method which means <code>kleene cross</code>(one or more) and <code>optional</code>(zero or one) respectively but not used in the above example, you can browse them from source code.</li>
+<li>Rule alternative productions are represented by an <code>alt</code> method call. Look at the <code>factor</code> rule definition, the <code>factor</code> rule has two productions. And, respectively, in java code, it has an additional <code>alt</code> call besides <code>define</code>.</li>
+</ul>
+
+
+<p>'Comma separated match sequence', 'CC.EOF', 'CC.ks/kc/op' and 'alt', those are almost all you need to know to define a non-trivial DSL grammar in dropincc.java.</p>
+
+<p>Ok, after we have defined the grammar, it's time to add <code>Action</code>s to process the elements the parser matched while parsing. It's also achieved by a very intuitive way:</p>
+
+<ul>
+<li>One <code>alternative production</code>(note: not one rule) could have only one action. That's, the <code>calc</code> rule could have only one action because it has only one alternative production. While <code>factor</code> rule could have two actions because it has two alternative productions.</li>
+<li>Let's add actions for the <code>factor</code> rule first:</li>
+</ul>
+
+
+<p>For the first alternative production:</p>
+
+<pre><code>factor.define("\\d+(\\.\\d+)?").action(new Action&lt;String&gt;(){
+    public Double act(String matched) {
+        return Double.parseDouble(matched);
+    }})
+</code></pre>
+
+<p>The first alt of <code>factor</code> rule only matches a single string which have a 'digit' format. So the <code>act</code> method of the <code>Action</code> interface should be a single <code>String</code> object holding the matched digit string. And, also, the generic type argument of <code>Action</code> interface should be <code>String</code>, to provide a strong type safety for the actually matched element.<br/>
+We just parse the matched digit string to a number and returned it. So the return type of this action is <code>Double</code>.</p>
+
+<p>And the <code>Action</code> for the second alt:</p>
+
+<pre><code>.alt("\\(", expr, "\\)").action(new Action&lt;Object[]&gt;(){
+    public Double act(Object[] ms) {
+        return (Double) ms[1];
+    }
+});
+</code></pre>
+
+<p>The second alt is an expression enclosed by parentheses. There are three element in the match sequence: <code>(</code>, enclosing <code>expr</code>, and <code>)</code>.<br/>
+The type argument of <code>Action</code> interface should be <code>Object[]</code> since the matched element will be passed in as an object array of length 3. With first element <code>(</code>, second element the returned value of the enclosing <code>expr</code> rule's action, and third element <code>)</code>.<br/>
+All we care about is the second element: the returned value of the enclosing <code>expr</code>'s action. So we just return <code>ms[1]</code> here, ignoring <code>(</code> and <code>)</code>. Note that we confidently converted the <code>ms[1]</code> to a <code>Double</code> object, that's because we knew the return value of <code>expr</code> rule's action is definitely a <code>Double</code> value.</p>
+
+<ul>
+<li>Then, let's add action for the <code>addend</code> rule:</li>
+</ul>
+
+
+<p>It has only one production, so it could have only one corresponding action:</p>
+
+<pre><code>addend.define(factor, CC.ks(m.or("/"), factor)).action(new Action&lt;Object[]&gt;() {
+    public Double act(Object[] ms) {
+        Double f0 = (Double) ms[0];
+        Object[] others = (Object[]) ms[1];
+        for (Object other : others) {
+            Object[] opAndFactor = (Object[]) other;
+            if ("*".equals(opAndFactor[0])) {
+                f0 *= (Double) opAndFactor[1];
+            } else {
+                f0 /= (Double) opAndFactor[1];
+            }
+        }
+        return f0;
+    }
+});
+</code></pre>
+
+<p>The argument of <code>act</code> method is an object array of length 2. Its first element is the returned value from the matched <code>factor</code> rule's action,<br/>
+and the second are other operator &amp; factor pairs.<br/>
+If there's only one factor matched here, the 'operator &amp; factor' pairs would be an array of length 0, otherwise it contains all other matched operators and factors.<br/>
+You can see that the argument structure of method <code>act</code> is highly consistent to the defined match sequence of the corresponding alternative production.</p>
+
+<p>We wrote some logic to compute the total multiplication or division of all matched factors, and finally, returned the result as the result of this action.</p>
+
+<ul>
+<li>Then, we add action for the <code>expr</code> rule. It's almost the same as the action of <code>addend</code> rule, but in an <code>add</code> or <code>subtract</code> manner when computing the matched elements:</li>
+</ul>
+
+
+<p>The <code>expr</code> rule also could have only one action:</p>
+
+<pre><code>expr.define(addend, CC.ks(a.or("\\-"), addend)).action(new Action&lt;Object[]&gt;() {
+    public Double act(Object[] ms) {
+        Double a0 = (Double) ms[0];
+        Object[] others = (Object[]) ms[1];
+        for (Object other : others) {
+            Object[] opAndFactor = (Object[]) other;
+            if ("+".equals(opAndFactor[0])) {
+                a0 += (Double) opAndFactor[1];
+            } else {
+                a0 -= (Double) opAndFactor[1];
+            }
+        }
+        return a0;
+    }
+});
+</code></pre>
+
+<p>Finally, we add action for the <code>calc</code> rule. It's the starter rule. All computations should have been done at this point. So all we need to do in its action is return the final result, ignoring the <code>EOF</code>:</p>
+
+<pre><code>calc.defineGrule(expr, CC.EOF).action(new Action&lt;Object[]&gt;() {
+    public Double act(Object[] ms) {
+        return (Double) ms[0];
+    }
+});
+</code></pre>
+
+<p>Now, we have done defining a calculator and added proper actions for it, we could <code>compile</code> it now:</p>
+
+<pre><code>Exe exe = calc.compile();
+</code></pre>
+
+<p>Then, enjoy with our new calculator:</p>
+
+<pre><code>// this should print the result: 3389.0
+System.out.println(exe.eval("1 +2+3+(4 +5*6*7*(64/8/2/(2/1 )/1)*8  +9  )+   10"));
+</code></pre>
+
+<p>It's quite simple isn't it? If you are already familiar with the API, 15 min is too much for defining such a calculator!<br/>
+And the follow is all the code in a gist, you could copy and try it in your own IDE:<br/>
+<div><script src='https://gist.github.com/3339604.js?file='></script>
+<noscript><pre><code>import com.github.pfmiles.dropincc.Action;
+import com.github.pfmiles.dropincc.CC;
+import com.github.pfmiles.dropincc.Exe;
+import com.github.pfmiles.dropincc.Grule;
+import com.github.pfmiles.dropincc.Lang;
+import com.github.pfmiles.dropincc.TokenDef;
+
+public class Calculator {
+    private static Exe exe = null;
+    /**
+     * &lt;pre&gt;
+     * calc ::= expr $
+     * expr ::= addend (('+'|'-') addend)*
+     * addend ::= factor (('\*'|'/') factor)*
+     * factor ::= '\d+(\.\d+)?'
+     *          | '(' expr ')'
+     * &lt;/pre&gt;
+     */
+    static {
+        // some elements' pre-definitions in order to call the methods
+        Lang calc = new Lang(&quot;Calc&quot;);
+        TokenDef a = calc.newToken(&quot;\\+&quot;);
+        TokenDef m = calc.newToken(&quot;\\*&quot;);
+        Grule expr = calc.newGrule();
+        Grule addend = calc.newGrule();
+        Grule factor = calc.newGrule();
+
+        // grammar definition starts here
+        calc.defineGrule(expr, CC.EOF).action(new Action&lt;Object[]&gt;() {
+            public Double act(Object[] ms) {
+                return (Double) ms[0];
+            }
+        });
+        expr.define(addend, CC.ks(a.or(&quot;\\-&quot;), addend)).action(new Action&lt;Object[]&gt;() {
+            public Double act(Object[] ms) {
+                Double a0 = (Double) ms[0];
+                Object[] others = (Object[]) ms[1];
+                for (Object other : others) {
+                    Object[] opAndFactor = (Object[]) other;
+                    if (&quot;+&quot;.equals(opAndFactor[0])) {
+                        a0 += (Double) opAndFactor[1];
+                    } else {
+                        a0 -= (Double) opAndFactor[1];
+                    }
+                }
+                return a0;
+            }
+        });
+        addend.define(factor, CC.ks(m.or(&quot;/&quot;), factor)).action(new Action&lt;Object[]&gt;() {
+            public Double act(Object[] ms) {
+                Double f0 = (Double) ms[0];
+                Object[] others = (Object[]) ms[1];
+                for (Object other : others) {
+                    Object[] opAndFactor = (Object[]) other;
+                    if (&quot;*&quot;.equals(opAndFactor[0])) {
+                        f0 *= (Double) opAndFactor[1];
+                    } else {
+                        f0 /= (Double) opAndFactor[1];
+                    }
+                }
+                return f0;
+            }
+        });
+        factor.define(&quot;\\d+(\\.\\d+)?&quot;).action(new Action&lt;String&gt;() {
+            public Double act(String matched) {
+                return Double.parseDouble(matched);
+            }
+        }).alt(&quot;\\(&quot;, expr, &quot;\\)&quot;).action(new Action&lt;Object[]&gt;() {
+            public Double act(Object[] ms) {
+                return (Double) ms[1];
+            }
+        });
+        // grammar definition end
+
+        exe = calc.compile();
+    }
+
+    public static void main(String... args) {
+        System.out.println(exe.eval(&quot;1 +2+3+(4 +5*6*7*(64/8/2/(2/1 )/1)*8  +9  )+   10&quot;));
+    }
+}
+</code></pre></noscript></div>
+</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Ideas and Concepts behind Dropincc.java]]></title>
@@ -504,164 +777,6 @@ llstar工程是我花了不少时间实现并调试好的一块LL(*)算法的“
 </code></pre>
 
 <p><code>CC.ks</code>方法就是kleene star的意思，当然还有<code>CC.kc</code>，顾名思义。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[dropincc.java API design]]></title>
-    <link href="http://pfmiles.github.com/blog/dropincc-dot-java-api-design"/>
-    <updated>2012-03-18T16:29:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/dropincc-dot-java-api-design</id>
-    <content type="html"><![CDATA[<p><a href="https://github.com/pfmiles/dropincc.java">dropincc.java</a>为了使得用户能够在java语言中直接定义新语言的词法、语法规则，API设计采用了串接与组合(cascading &amp; composition)风格的<a href="http://martinfowler.com/bliki/FluentInterface.html">FluentInterface</a>形式。</p>
-
-<p>这种形式能够使得这一套API看起来更具有“业务语义”，而不需要像antlr等其它工具一样强迫用户去学习全新的另外一种含有业务语义的DSL。<br/>
-新语言的词法、语法规则被用户直接在java语句里书写、执行，其实得到的是dropincc.java这个CC工具的内部概念的AST。这个AST其实与“让用户学习一套DSL，然后编写，然后编译这些DSL得到的AST”是一样的。<br/>
-也就是说 —— dropincc.java里面很重要的一个理念就是：像书写字面量一样书写CC工具的AST(AST literal???)。</p>
-
-<blockquote><p>注意：强调一下这里说的AST并非用户想要实现的新语言的AST，我指的是dropincc.java这个工具其内部表达词法、语法规则的内部形式。</p></blockquote>
-
-<p>经过一些初步的尝试，我认为在java中定义出这样一套API是完全可行的，其中一些值得列出的、具有代表性的点如下：</p>
-
-<!-- more -->
-
-
-<ol>
-<li>词法规则强制用户限定在正则文法的表达能力之内(即使用正则表达式，例子略)</li>
-<li>上下文无关文法的表示主要是解决3种形式的表示：连接、选择、递归;
-
-<ol>
-<li>其中“连接”的表示, 若BNF为：<code>term ::= LEFTPAREN expr RIGHTPAREN</code>, 则右边的部分在java中表达为：<code>func(LEFTPAREN, expr, RIGHTPAREN)</code>;即：“以方法传参的自然按顺序排列表达‘连接’的意思”;而其中<code>expr</code>是一个non-terminal，也就是说这里要引用<code>expr</code>这个规则，这也就表达了“递归” —— 要递归地引用<code>expr</code>的话那么直接写在这里就好了；</li>
-<li>“选择”的表示，即一个产生式有好几个alternative的情况，若BNF是<code>term ::= DIGIT multail | LEFTPAREN expr RIGHTPAREN | DIGIT;</code>, 则java中表达为：<code>func(DIGIT, mulTail).alt(LEFTPAREN, expr, RIGHTPAREN).alt(DIGIT);</code>。</li>
-</ol>
-</li>
-<li>上述3种基本元素的表达具备之后，其实已经足够表达出复杂的语法了，不过为了“更好的体验”，为了用得更方便，我认为还应该加入“子rule语法糖”。即让使用者能够以“加括号”的方式在产生式中直接定义子规则，而不必每次都单独写成一个产生式，这种做法应该能很受欢迎，比如：
-
-<ul>
-<li>第一个产生式是：<code>MUL_DIV ::= MUL | DIV;</code></li>
-<li>第二个产生式是：<code>mulTail ::= MUL_DIV term;</code></li>
-<li>其实，若是有了前面说的语法糖，那么上述2个产生式就可以合并为：<code>mulTail ::= (MUL | DIV) term;</code>, 少了<code>MUL_DIV</code>这个没太多意义的产生式定义；</li>
-<li>在java中表达为：<code>func(MUL.or(DIV), term)</code>; 若子规则中想表达的不是“选择”关系，而是“连接”关系的话，也就是<code>mulTail ::= (MUL DIV) term;</code>的话，在java中表达为：<code>func(MUL.and(DIV), term)</code>; 其中<code>and</code>这个方法就是表达“连接”关系，只不过加了括号，成为了一个子规则而已。</li>
-</ul>
-</li>
-</ol>
-
-
-<p>OK, dropincc.java的核心FluentInterface形式的API应该就这些了，我相信这是一种很自然的方式，用户需要掌握的东西很少。</p>
-
-<h3>设计FluentInterface风格API过程中的经验总结</h3>
-
-<p>对于这个接口设计，我的经验就是：</p>
-
-<ol>
-<li>传入参数尽量“泛化”、“统一接口化”;这个“统一接口”最好不要包含任何方法(也就是说只是一个标记接口)，否则会给FluentInterface带来一些令人困惑的方法选项(当用户敲入'.'操作符的时候将会在IDE工具的方法提示里多出很多不必要的方法)。</li>
-<li>每个串接方法的返回结果可以随意“具体化”，因为这个返回结果的具体类名是不必展示给用户看的，所以你打算让用户下一步还能串接出什么样的方法，就尽管去返回一个具体的子类；但要注意返回结果不应该有太深的继承层次，否则“下一步串接”(当用户敲入'.'操作符的时候)将会在IDE工具里列出令人困惑的方法列表 —— 一般就一层继承关系 —— 继承自Object —— 一个接口实现 —— 就是1中所述的“泛化接口”，这样做方便你将返回值继续传入另一个方法中 —— 实现为所欲为的cascading &amp; composition...</li>
-</ol>
-
-
-<h3>以闭包的形式嵌入动作代码</h3>
-
-<p>几乎所有的CC工具都提供一种“在match到特定的节点或树模式时允许执行一段用户自定义代码”的功能；这种自定义代码我把它叫做“动作代码”, “action”。无论是lex &amp; yacc或是antlr都是这样。<br/>
-这个功能几乎是必须的，这提供了一种自由度相当高的形式让用户可以自定义AST节点，或是直接在parse的过程当中做一些自定义的计算，然后当整个parse结束时直接输出的就是整个的计算结果。<br/>
-动作代码一般来讲，都是用该CC工具所要生成的程序所使用的语言来写的；比如lex要生成C代码，他们的动作代码就是C来写的；antlr要生成java代码，那么它的动作代码自然就是java写的（当然antlr也能生成其它语言代码，相对应的，就使用那种语言来编写动作代码）。
-dropincc.java既然设计目标是要嵌入到java语言中去使用，自然就是要用java语言来写动作代码了；<br/>
-但是，跟lex &amp; yacc或者antlr不同的是，我并不打算让用户写一些残缺不全的动作代码放在某个约定的位置然后在生成目标程序的过程中将它们“编织”到目标程序中，这样的话就跟传统的CC工具没有任何区别了，没有什么实质上的改进；<br/>
-既然dropincc.java是“嵌入”到普通的java应用程序代码中间工作的，那么它完全有理由使用“闭包(closure)”的形式来组织“动作代码”！为什么用“闭包”？因为dropincc.java是“嵌入”到业务代码中使用的，用闭包来写动作代码可以capture一些业务代码上下文信息，这对构建DSL来讲是非常大的便利！<br/>
-比如，你的业务代码上下文里面有个<code>OrderService</code>对象，它负责一些"订单"业务逻辑，而当你编写一个闭包作为动作代码的时候，你完全可以"capture"上下文中的这个<code>OrderService</code>对象，从而使得你创造的语言在执行逻辑上与订单业务紧密、无缝地结合 —— 这是一种非常平滑的构建DSL的方式。</p>
-
-<h3>最终的样子</h3>
-
-<blockquote><p>注：此段代码只代表示意的风格、API情况，虽然能编译通过、运行，但不一定是行为完全正确四则运算表达式计算器</p></blockquote>
-
-<pre><code>// 3.define lexical rules
-Lang calculator = new Lang();
-Token DIGIT = calculator.addToken("\\d+");
-Token ADD = calculator.addToken("\\+");
-Token SUB = calculator.addToken("\\-");
-Token MUL = calculator.addToken("\\*");
-Token DIV = calculator.addToken("/");
-Token LEFTPAREN = calculator.addToken("\\(");
-Token RIGHTPAREN = calculator.addToken("\\)");
-// 2.define grammar rules and corresponding actions
-Grule expr = new Grule();
-Grule term = new Grule();
-Element mulTail = calculator.addGrammarRule(MUL.or(DIV), term).action(
-        new Action() {
-            public Object act(Object... params) {
-                return params;
-            }
-        });
-term.fillGrammarRule(DIGIT, mulTail).action(new Action() {
-    public Object act(Object... params) {
-        int factor = Integer.parseInt((String) params[0]);
-        Object[] mulTailReturn = (Object[]) params[1];
-        String op = (String) mulTailReturn[0];
-        int factor2 = (Integer) mulTailReturn[1];
-        if ("*".equals(op)) {
-            return factor * factor2;
-        } else if ("/".equals(op)) {
-            return factor / factor2;
-        } else {
-            throw new RuntimeException("Unsupported operator: " + op);
-        }
-    }
-}).alt(LEFTPAREN, expr, RIGHTPAREN).action(new Action() {
-    public Object act(Object... params) {
-        return params[1];
-    }
-}).alt(DIGIT).action(new Action() {
-    public Object act(Object... params) {
-        return Integer.parseInt((String) params[0]);
-    }
-});
-Element addendTail = calculator.addGrammarRule(ADD.or(SUB), term)
-        .action(new Action() {
-            public Object act(Object... params) {
-                return params;
-            }
-        });
-expr.fillGrammarRule(term, addendTail, CC.EOF).action(new Action() {
-    public Object act(Object... params) {
-        int addend = (Integer) params[0];
-        Object[] addendTailReturn = (Object[]) params[1];
-        String op = (String) addendTailReturn[0];
-        int addend2 = (Integer) addendTailReturn[1];
-        if ("+".equals(op)) {
-            return addend + addend2;
-        } else if ("-".equals(op)) {
-            return addend - addend2;
-        } else {
-            throw new RuntimeException("Unsupported operator: " + op);
-        }
-    }
-});
-// 1.compile it!
-calculator.compile();
-// 0.FIRE!!!
-System.out.println(calculator.exe("1+2+3+(4+5*6*7*(64/8/2/(2/1)/1)*8+9)+10"));
-</code></pre>
-
-<p>上面约60行java代码实现了一个相当复杂的多项式计算器语言：支持加减乘除四则运算以及括号调整优先级。而以往我们使用antlr来实现这个功能的话，最终生成、放到项目中工作的java代码会以千行计。</p>
-
-<ul>
-<li>这段代码是能够完全嵌入到任何普通的java业务系统程序代码当中的，是完全语法合格、能编译通过的，这是与传统CC工具的“代码残片”表示的动作代码所不同的地方</li>
-<li>其中用到了上面介绍的“以正则语言来定义词法规则”、“以FluentInterfaces来定义语法规则”，以及“以闭包的形式来书写动作代码”（java中的闭包以“匿名内部类”的形式表示，道理一样）</li>
-<li>其中，动作代码是一段段由<code>Action</code>接口实现的闭包（匿名内部类），里面的代码显然可以随意引用当前上下文中的所有变量、对象，这样实现了对上下文的capture，跟业务系统的无缝结合。</li>
-<li><code>Action</code>闭包带有一个方法，参数是<code>Object... params</code>，这个参数里的值以位置顺序的方式对应于该action代码所附着的产生式里面的语法元素在parsing的时候所match到的值，听起来比较绕口，但实际上很简单，比如上面的 :</li>
-</ul>
-
-
-<p>带括号的表达式的action:</p>
-
-<pre><code>.alt(LEFTPAREN, expr, RIGHTPAREN).action(new Action() {
-    public Object act(Object... params) {
-        return params[1];
-    }
-</code></pre>
-
-<p>它的<code>params</code>的长度为3，分别是<code>["(", expr子规则匹配所返回的值, ")"]</code>，而这里我们的“业务(四则运算)”只需要关心<code>expr</code>的返回值，所以动作代码直接将<code>params[1]</code>（expr的返回值）返回给上一级匹配。<br/>
-就是这样，实际上你可以在动作代码里面做任何事情，只要符合java语法的、你能想到的。</p>
-
-<p>第一个版本的API设计基本就是这样了，往后可能还会加入一些语法糖，比如“Kleen闭包”来进一步方便语法规则的定义，不过会很慎重，因为dropincc.java是以小巧、易用为设计目标的，语法糖太多很可能会帮倒忙。</p>
 ]]></content>
   </entry>
   
