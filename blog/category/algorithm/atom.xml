@@ -4,7 +4,7 @@
   <title><![CDATA[Category: algorithm | Meta-Interpretation]]></title>
   <link href="http://pfmiles.github.com/blog/category/algorithm/atom.xml" rel="self"/>
   <link href="http://pfmiles.github.com/"/>
-  <updated>2012-08-13T19:32:12+08:00</updated>
+  <updated>2012-09-17T15:53:38+08:00</updated>
   <id>http://pfmiles.github.com/</id>
   <author>
     <name><![CDATA[pf_miles]]></name>
@@ -164,6 +164,8 @@ B ::= b+ B
 <p>规则<code>A</code>的三条分支全部存在严重冲突(都拥有能识别无穷个'b'的前缀)并且其中一个是另一条递归规则<code>B</code>，这种形式会导致LL(*)的分析栈溢出，不过仍然没关系，这样的情况能在溢出发生时，调用<code>pred1</code>、<code>pred2</code>和<code>pred3</code>来解决(这三个pred就是Semantic Precicate，是能包含任何逻辑但最终返回bool值的表达式)<br/>
 生成的规则<code>A</code>的DFA: <img src="/images/llstar/overflowadfa.png" alt="Overflow A DFA" /><br/>
 这里设定的最大分析递归层数为<code>10</code>，因此，DFA在接受了第10个'b'之后达到了溢出状态<code>d14</code>，这时调用了各个alternative附带的几个predicate来解决冲突...</p>
+
+<blockquote><p>(2012-09-03 注： 实际上上述规则是不正确的，<code>B ::= b+ B</code>是有问题的规则，因为<code>b+</code>会贪婪地match掉所有的连续的<code>'b'</code>，导致后面的<code>B</code>只可能抛错; 所以这个例子也只能用来演示分析栈溢出的情况，实际应用中是不可能写出这样的规则的)</p></blockquote>
 
 <h3>总结</h3>
 

@@ -9,7 +9,10 @@
   <meta name="author" content="pf_miles">
 
   
-  <meta name="description" content="First, let&#8217;s create a empty java project in eclipse IDE, download newest playable dropincc.java jar file from here. Adding it to the build path &hellip;">
+  <meta name="description" content="以前在做一个涉及代码生成的项目的时候，使用了velocity模板引擎来做这个代码生成；
+而事后发现，velocity有大部分的语法是我在代码生成过程中没有用到的；
+且velocity的引入，也导致引入了一些看起来很多余的jar包；
+后来我看了看StringTemplate这个东西， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -91,6 +94,125 @@ MathJax.Hub.Config({
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/what-does-a-template-engine-for-code-generation-look-like">用于代码生成的模板引擎应该是什么样子？</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-13T15:27:00+08:00" pubdate data-updated="true">Sep 13<span>th</span>, 2012</time>
+        
+         | <a href="/blog/what-does-a-template-engine-for-code-generation-look-like#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>以前在做一个涉及代码生成的项目的时候，使用了velocity模板引擎来做这个代码生成；<br/>
+而事后发现，velocity有大部分的语法是我在代码生成过程中没有用到的；<br/>
+且velocity的引入，也导致引入了一些看起来很多余的jar包；<br/>
+后来我看了看<code>StringTemplate</code>这个东西，发现它不仅包含velocity几乎全部的语法，还有模板继承机制！这岂不是更复杂？虽然标榜为“为了代码生成”的模板引擎&#8230;但鉴于<code>velocity</code>的复杂印象，我并没有使用它.  <br/>
+再后来，我为了包管理上的简洁(对于某些项目我承认我有洁癖)，我直接使用了java标准库里的<code>java.text.MessageFormat</code>来做代码生成；这也确实可行！不过，缺点也是很快就能遇到的：</p>
+
+<ol>
+<li>大括号<code>{</code>和<code>}</code>在<code>MessageFormat</code>中是关键字！所以输出时必须转义；这两个东西在目标代码中(比如java)很常见，遇到一个就要转义一个是很不爽的事情;</li>
+<li>除了字符串替换之外，没有任何分支逻辑判断、循环结构支持，这使得所有的分支逻辑和循环结构都要写在调用这些<code>MessageFormat</code>的java代码里；虽然很多时候确实可以这么做并且很合适，但是还是有一些情况，如果能写在模板里会明显比写在java代码里好;</li>
+<li><code>MessageFormat</code>的placeholder是数字，渲染时是根据传入参数的位置来做值替换，这很不直观，更好的用户体验应该是依据名字来替换，就像所有的、普遍意义上人们所见过的模板引擎那样;</li>
+</ol>
+
+
+<p>总结性地思考一下：我在做代码生成的时候，需要的模板引擎大概应该是：</p>
+
+<ul>
+<li>简单，这意味着只需要拥有简单的语法以及简单的jar包依赖(或者不需要jar包依赖)</li>
+<li>高效，最好直接编译成字节码执行，而非像velocity那样每次渲染都遍历AST</li>
+</ul>
+
+
+<p>而重点就在于第一点：简单，这需要我好好总结一份“用作代码生成的模板引擎所必须的语法特性”列表, 并且除此以外，不能有更多其它的东西;<br/>
+至于高效，只要确保最终被反复执行的逻辑是一个编译好的java类就行了，而非遍历AST，这很容易办到;<br/>
+而且..正好之前开发的<a href="https://github.com/pfmiles/dropincc.java">dropincc.java</a>需要为用户提供一个模板引擎，因为语法解析与代码生成在很多任务中是一对好基友，常常是伴随着出现；那么在dropincc.java中内建一个针对代码生成的模板引擎也就是非常有必要的了；它之于dropincc.java，就好比StringTemplate之于antlr，都是为了方便用户做代码生成创造的;<br/>
+并且，这个模板引擎应该随着dropincc.java一起发布，不需要引入新的jar包依赖;<br/>
+计划中，这个模板引擎的基本特性：</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/what-does-a-template-engine-for-code-generation-look-like">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/prime-numbers-less-than-n">Prime Numbers Less Than N</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-03T13:57:00+08:00" pubdate data-updated="true">Sep 3<span>rd</span>, 2012</time>
+        
+         | <a href="/blog/prime-numbers-less-than-n#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
+<li>Sieve方法: <a href="http://en.wikipedia.org/wiki/Sieve_of_Eratosthenes">http://en.wikipedia.org/wiki/Sieve_of_Eratosthenes</a></li>
+<li>优化1：初始化list时，预先排除2,3,5,7的倍数, 得到一个初始化list</li>
+<li>优化2：在筛除合数时，不必一个一个挨着筛，只需在列表中剔除： p * x 即可(x是从p开始，初始list中的数字), 直到p*p > 初始化list中的最大数</li>
+</ul>
+
+
+<p>资料：
+用作测试，素数个数对照表： <a href="http://primes.utm.edu/howmany.shtml">http://primes.utm.edu/howmany.shtml</a></p>
+
+<p>扩展：
+也许下一篇文章介绍一下“素数测试”？ <a href="http://en.wikipedia.org/wiki/Primality_tests">http://en.wikipedia.org/wiki/Primality_tests</a></p>
+
+<p>TODO 后面再完成本文，反正有版本管理～</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -608,118 +730,6 @@ print countInversions(numbers)[0]
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/dropincc-dot-java-api-design">dropincc.java API Design</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-03-18T16:29:00+08:00" pubdate data-updated="true">Mar 18<span>th</span>, 2012</time>
-        
-         | <a href="/blog/dropincc-dot-java-api-design#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="https://github.com/pfmiles/dropincc.java">dropincc.java</a>为了使得用户能够在java语言中直接定义新语言的词法、语法规则，API设计采用了串接与组合(cascading &amp; composition)风格的<a href="http://martinfowler.com/bliki/FluentInterface.html">FluentInterface</a>形式。</p>
-
-<p>这种形式能够使得这一套API看起来更具有“业务语义”，而不需要像antlr等其它工具一样强迫用户去学习全新的另外一种含有业务语义的DSL。<br/>
-新语言的词法、语法规则被用户直接在java语句里书写、执行，其实得到的是dropincc.java这个CC工具的内部概念的AST。这个AST其实与“让用户学习一套DSL，然后编写，然后编译这些DSL得到的AST”是一样的。<br/>
-也就是说 —— dropincc.java里面很重要的一个理念就是：像书写字面量一样书写CC工具的AST(AST literal???)。</p>
-
-<blockquote><p>注意：强调一下这里说的AST并非用户想要实现的新语言的AST，我指的是dropincc.java这个工具其内部表达词法、语法规则的内部形式。</p></blockquote>
-
-<p>经过一些初步的尝试，我认为在java中定义出这样一套API是完全可行的，其中一些值得列出的、具有代表性的点如下：</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/dropincc-dot-java-api-design">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/the-main-ideas-and-concepts-of-dropincc-dot-java">Dropincc.java的概念与设计</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-03-17T17:40:00+08:00" pubdate data-updated="true">Mar 17<span>th</span>, 2012</time>
-        
-         | <a href="/blog/the-main-ideas-and-concepts-of-dropincc-dot-java#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>做这么个小lib的动机？</h3>
-
-<p>其实由于java语言先天缺陷的元编程能力，在java的圈子里很少有人提到“DSL”的概念，就算有也是说说而已。与之相比，一些其它语言ruby, python, lisp等等，得益于其强大的元编程能力，直接利用自身语法特性，取一块语法子集，利用一些对象、类生命周期切入函数或者宏系统两三下就DSL &#8216;on-the-fly&#8217;了，这种便利性可能由java的设计目标来看，恐怕永远也无法达到了。<br/>
-那么，在java里面想实现一个DSL，恐怕就得走“外部DSL(详见Fowler的文章: <a href="http://martinfowler.com/bliki/DomainSpecificLanguage.html">DomainSpecificLanguage</a>)”的路子。<br/>
-而“外部DSL”这条路并不好走，说白了也就是自己做词法、语法、语义分析，自己生成目标语言代码去执行真正的逻辑；也就是做一个编译器前端外加一段解释执行逻辑；编译器前端，虽然业界看上去有很多很多工具可以直接采用，但是这些工具，目前看来，我认为还是太“General purpose”了，它们往往要求使用者学习它们自己规定的一套用作表达词法、语法规则的DSL，然后提供一个特殊的编译程序，用作编译你用它的DSL写的这些词法、语法文件，最终生成你想要的、基本不可读的编译器前端代码 —— 放到你的项目中去使用；<br/>
-这种形式的工具在目前的编译器前端生成器中占大多数，使用上绝对称不上是“便利”。除了它用作描述规则的DSL需要使用者学习之外，其使用过程涉及好几个步骤与环境，是很麻烦的一件事情。<br/>
-曾经有一次，一个同学试图使用antlr来做一个类似SQL子集的DSL，他花很多时间与antlr本身的语法文件、IDE “antlrworks”作斗争&#8230;频繁地在eclipse, 命令行, antlrWorks之间切换；我就想，做一个这样的DSL，是否真的用得上这么多工具？是否真的用得上号称能parse C++的antlr？这些事情能否全部在一个工作环境内搞定？比如eclipse？
-而来自<a href="https://github.com/luikore/rsec">rsec</a>的启发让我觉得java似乎更应该有这样一个东西：</p>
-
-<ol>
-<li>以java的语法来新增词法、语法规则，不需要学习新的语法；</li>
-<li>不需要依赖外部环境，仅在java开发环境中就能完成新语言的定义与编译器前端程序的生成；</li>
-<li>虽然java是静态类型编译型语言，但整个新语言构建过程应该看上去是“动态的”、“解释性”的，这样“体验”才会好；</li>
-<li>这个库要小、要没有其它三方库依赖，仅依靠JDK自带库就能使用；</li>
-<li>在使用过程中尝试推行一些好的实践，确保大多数普通青年不会“自找麻烦”，比如“限制词法规则必须为正规文法(或者说乔姆斯基3型文法)”。</li>
-</ol>
-
-
-<p>而<a href="https://github.com/pfmiles/dropincc.java">Dropincc.java</a>正是以上述几点为设计目标的一个小巧(但足够强大)的编译器生成器。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/the-main-ideas-and-concepts-of-dropincc-dot-java">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -735,6 +745,14 @@ print countInversions(numbers)[0]
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/what-does-a-template-engine-for-code-generation-look-like">用于代码生成的模板引擎应该是什么样子？</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/prime-numbers-less-than-n">Prime Numbers Less Than N</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/growing-a-full-featured-calculator-in-15-minutes-using-dropincc-dot-java">Growing a Full-Featured Calculator in 15 Minutes Using Dropincc.java</a>
       </li>
     
@@ -746,23 +764,15 @@ print countInversions(numbers)[0]
         <a href="/blog/dropincc-dot-java-the-ultimate-tool-to-create-dsls-in-java">Dropincc.java, The Ultimate Tool to Create DSLs in Java</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/the-real-world-tree">The Real World Tree</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/concept-and-implementation-of-ll-star">LL(*)的概念与实现</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Tag Cloud</h1>
-  <span id="tag-cloud"><a href='/blog/category/ai-class' style='font-size: 106.66666666666667%'>Ai-class(1)</a> <a href='/blog/category/algo-class' style='font-size: 113.33333333333333%'>Algo-class(2)</a> <a href='/blog/category/algorithm' style='font-size: 160.0%'>Algorithm(9)</a> <a href='/blog/category/comic' style='font-size: 106.66666666666667%'>Comic(1)</a> <a href='/blog/category/compiler' style='font-size: 126.66666666666667%'>Compiler(4)</a> <a href='/blog/category/computer' style='font-size: 106.66666666666667%'>Computer(1)</a> <a href='/blog/category/design' style='font-size: 106.66666666666667%'>Design(1)</a> <a href='/blog/category/dropincc' style='font-size: 146.66666666666666%'>Dropincc(7)</a> <a href='/blog/category/dsl' style='font-size: 120.0%'>Dsl(3)</a> <a href='/blog/category/interview' style='font-size: 126.66666666666667%'>Interview(4)</a> <a href='/blog/category/life' style='font-size: 113.33333333333333%'>Life(2)</a> <a href='/blog/category/octopress' style='font-size: 106.66666666666667%'>Octopress(1)</a> <a href='/blog/category/performance' style='font-size: 106.66666666666667%'>Performance(1)</a> <a href='/blog/category/probability' style='font-size: 106.66666666666667%'>Probability(1)</a> <a href='/blog/category/programming' style='font-size: 113.33333333333333%'>Programming(2)</a> <a href='/blog/category/python' style='font-size: 106.66666666666667%'>Python(1)</a> <a href='/blog/category/translation' style='font-size: 106.66666666666667%'>Translation(1)</a> </span>
+  <span id="tag-cloud"><a href='/blog/category/ai-class' style='font-size: 106.66666666666667%'>Ai-class(1)</a> <a href='/blog/category/algo-class' style='font-size: 113.33333333333333%'>Algo-class(2)</a> <a href='/blog/category/algorithm' style='font-size: 160.0%'>Algorithm(9)</a> <a href='/blog/category/comic' style='font-size: 106.66666666666667%'>Comic(1)</a> <a href='/blog/category/compiler' style='font-size: 133.33333333333334%'>Compiler(5)</a> <a href='/blog/category/computer' style='font-size: 106.66666666666667%'>Computer(1)</a> <a href='/blog/category/design' style='font-size: 106.66666666666667%'>Design(1)</a> <a href='/blog/category/dropincc' style='font-size: 153.33333333333334%'>Dropincc(8)</a> <a href='/blog/category/dsl' style='font-size: 120.0%'>Dsl(3)</a> <a href='/blog/category/interview' style='font-size: 126.66666666666667%'>Interview(4)</a> <a href='/blog/category/life' style='font-size: 113.33333333333333%'>Life(2)</a> <a href='/blog/category/octopress' style='font-size: 106.66666666666667%'>Octopress(1)</a> <a href='/blog/category/performance' style='font-size: 106.66666666666667%'>Performance(1)</a> <a href='/blog/category/probability' style='font-size: 106.66666666666667%'>Probability(1)</a> <a href='/blog/category/programming' style='font-size: 113.33333333333333%'>Programming(2)</a> <a href='/blog/category/python' style='font-size: 106.66666666666667%'>Python(1)</a> <a href='/blog/category/translation' style='font-size: 106.66666666666667%'>Translation(1)</a> </span>
 </section>
 <section>
   <h1>Categories</h1>
-    <ul id="category-list"><li><a href='/blog/category/ai-class'>Ai-class (1)</a></li><li><a href='/blog/category/algo-class'>Algo-class (2)</a></li><li><a href='/blog/category/algorithm'>Algorithm (9)</a></li><li><a href='/blog/category/comic'>Comic (1)</a></li><li><a href='/blog/category/compiler'>Compiler (4)</a></li><li><a href='/blog/category/computer'>Computer (1)</a></li><li><a href='/blog/category/design'>Design (1)</a></li><li><a href='/blog/category/dropincc'>Dropincc (7)</a></li><li><a href='/blog/category/dsl'>Dsl (3)</a></li><li><a href='/blog/category/interview'>Interview (4)</a></li><li><a href='/blog/category/life'>Life (2)</a></li><li><a href='/blog/category/octopress'>Octopress (1)</a></li><li><a href='/blog/category/performance'>Performance (1)</a></li><li><a href='/blog/category/probability'>Probability (1)</a></li><li><a href='/blog/category/programming'>Programming (2)</a></li><li><a href='/blog/category/python'>Python (1)</a></li><li><a href='/blog/category/translation'>Translation (1)</a></li></ul>
+    <ul id="category-list"><li><a href='/blog/category/ai-class'>Ai-class (1)</a></li><li><a href='/blog/category/algo-class'>Algo-class (2)</a></li><li><a href='/blog/category/algorithm'>Algorithm (9)</a></li><li><a href='/blog/category/comic'>Comic (1)</a></li><li><a href='/blog/category/compiler'>Compiler (5)</a></li><li><a href='/blog/category/computer'>Computer (1)</a></li><li><a href='/blog/category/design'>Design (1)</a></li><li><a href='/blog/category/dropincc'>Dropincc (8)</a></li><li><a href='/blog/category/dsl'>Dsl (3)</a></li><li><a href='/blog/category/interview'>Interview (4)</a></li><li><a href='/blog/category/life'>Life (2)</a></li><li><a href='/blog/category/octopress'>Octopress (1)</a></li><li><a href='/blog/category/performance'>Performance (1)</a></li><li><a href='/blog/category/probability'>Probability (1)</a></li><li><a href='/blog/category/programming'>Programming (2)</a></li><li><a href='/blog/category/python'>Python (1)</a></li><li><a href='/blog/category/translation'>Translation (1)</a></li></ul>
 </section>
 
 <section>

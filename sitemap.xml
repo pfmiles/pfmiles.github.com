@@ -72,7 +72,7 @@
     </url>
     <url>
         <loc>http://pfmiles.github.com/blog/concept-and-implementation-of-ll-star</loc>
-        <lastmod>2012-07-15T14:57:35+08:00</lastmod>
+        <lastmod>2012-09-03T23:03:02+08:00</lastmod>
     </url>
     <url>
         <loc>http://pfmiles.github.com/blog/the-real-world-tree</loc>
@@ -95,12 +95,22 @@
         <lastmod>2012-08-13T19:30:56+08:00</lastmod>
     </url>
     <url>
+        <loc>http://pfmiles.github.com/blog/prime-numbers-less-than-n</loc>
+        <lastmod>2012-09-17T15:52:43+08:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://pfmiles.github.com/blog/what-does-a-template-engine-for-code-generation-look-like
+        </loc>
+        <lastmod>2012-09-17T15:50:36+08:00</lastmod>
+    </url>
+    <url>
         <loc>http://pfmiles.github.com/</loc>
-        <lastmod>2012-08-13T19:30:56+08:00</lastmod>
+        <lastmod>2012-09-17T15:52:43+08:00</lastmod>
     </url>
     <url>
         <loc>http://pfmiles.github.com/blog/archives/</loc>
-        <lastmod>2012-08-13T19:30:56+08:00</lastmod>
+        <lastmod>2012-09-17T15:52:43+08:00</lastmod>
     </url>
     <url>
         <loc>http://pfmiles.github.com/about/</loc>
