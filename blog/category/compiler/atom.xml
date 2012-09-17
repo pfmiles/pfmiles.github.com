@@ -4,7 +4,7 @@
   <title><![CDATA[Category: compiler | Meta-Interpretation]]></title>
   <link href="http://pfmiles.github.com/blog/category/compiler/atom.xml" rel="self"/>
   <link href="http://pfmiles.github.com/"/>
-  <updated>2012-09-17T15:53:38+08:00</updated>
+  <updated>2012-09-17T22:17:12+08:00</updated>
   <id>http://pfmiles.github.com/</id>
   <author>
     <name><![CDATA[pf_miles]]></name>
@@ -60,11 +60,11 @@
 <li>模板引擎接口简单、清晰，只有4个static方法：
 
 <ul>
-<li><code>public static String merge(String filePath, Object context)</code></li>
-<li><code>public static byte[] merge(String filePath, Object context)</code></li>
-<li><code>public static String merge(String filePath, Object context, String encoding)</code></li>
-<li><code>public static byte[] merge(String filePath, Object context, String encoding)</code></li>
-<li>其中，<code>filePath</code>是模板路径; <code>context</code>可是javabean或map，为模板上下文，包含要输出的元素和控制条件; <code>encoding</code>是指定模板所使用的编码格式; 返回<code>String</code>的方法即返回渲染后的字符串结果；返回<code>byte[]</code>的接口则是直接返回带编码格式的、<code>byte</code>的数组，这个结果可直接用作写入外部存储或流，而无需再应用编码格式;</li>
+<li><code>public static String merge(String filePath, Object context, Class&lt;?&gt; cls)</code></li>
+<li><code>public static byte[] mergeAsBytes(String filePath, Object context, Class&lt;?&gt; cls)</code></li>
+<li><code>public static String merge(String filePath, Object context, Class&lt;?&gt; cls, String encoding)</code></li>
+<li><code>public static byte[] mergeAsBytes(String filePath, Object context, Class&lt;?&gt; cls, String encoding)</code></li>
+<li>其中，<code>filePath</code>是模板路径; <code>context</code>可是javabean或map，为模板上下文，包含要输出的元素和控制条件; <code>cls</code>是用于加载模板资源的class类，模板资源查找规律与<code>Class.getResourceAsStream</code>方法一致; <code>encoding</code>是指定模板所使用的编码格式; 返回<code>String</code>的方法即返回渲染后的字符串结果；返回<code>byte[]</code>的接口则是直接返回带编码格式的、<code>byte</code>的数组，这个结果可直接用作写入外部存储或流，而无需再应用编码格式;</li>
 </ul>
 </li>
 </ol>
