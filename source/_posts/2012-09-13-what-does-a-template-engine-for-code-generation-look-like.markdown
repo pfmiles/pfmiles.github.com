@@ -37,11 +37,11 @@ keywords: "代码生成, 模板引擎, codeGeneration, templateEngine"
 1. 模板context支持map和javabean两种形式, 可使用`.`操作读取bean或map中的属性值，但不支持方法调用
 1. 没有赋值语句，context中的所有东西，要么是要输出的元素，要么是作为输出控制的bool开关，它们在渲染过程中是不可变的
 1. 模板引擎接口简单、清晰，只有4个static方法：
-    * `public static String merge(String filePath, Object context)`
-    * `public static byte[] merge(String filePath, Object context)`
-    * `public static String merge(String filePath, Object context, String encoding)`
-    * `public static byte[] merge(String filePath, Object context, String encoding)`
-    * 其中，`filePath`是模板路径; `context`可是javabean或map，为模板上下文，包含要输出的元素和控制条件; `encoding`是指定模板所使用的编码格式; 返回`String`的方法即返回渲染后的字符串结果；返回`byte[]`的接口则是直接返回带编码格式的、`byte`的数组，这个结果可直接用作写入外部存储或流，而无需再应用编码格式;
+    * `public static String merge(String filePath, Object context, Class<?> cls)`
+    * `public static byte[] mergeAsBytes(String filePath, Object context, Class<?> cls)`
+    * `public static String merge(String filePath, Object context, Class<?> cls, String encoding)`
+    * `public static byte[] mergeAsBytes(String filePath, Object context, Class<?> cls, String encoding)`
+    * 其中，`filePath`是模板路径; `context`可是javabean或map，为模板上下文，包含要输出的元素和控制条件; `cls`是用于加载模板资源的class类，模板资源查找规律与`Class.getResourceAsStream`方法一致; `encoding`是指定模板所使用的编码格式; 返回`String`的方法即返回渲染后的字符串结果；返回`byte[]`的接口则是直接返回带编码格式的、`byte`的数组，这个结果可直接用作写入外部存储或流，而无需再应用编码格式;
 
 而基本上就是这些，不需要太多东西，可能第一眼会觉得“功能是不是太少”？但是，我已经见过了许多过重的逻辑被放在模板语法里的情况，与其增加这种不必要的、很可能是错误的使用方式(因为这样做确实不好维护)，还不如一开始就不提供了；  
 并且，代码生成所需要的模板引擎，相比起做web页面所需要的模板引擎来讲，一定要简单许多；因为大部分的逻辑是应该放在java代码中(比如负责翻译代码的visitor)而不是模板里。  
