@@ -4,7 +4,7 @@
   <title><![CDATA[Meta-Interpretation]]></title>
   <link href="http://pfmiles.github.com/atom.xml" rel="self"/>
   <link href="http://pfmiles.github.com/"/>
-  <updated>2012-09-17T22:17:12+08:00</updated>
+  <updated>2013-03-17T13:20:43+08:00</updated>
   <id>http://pfmiles.github.com/</id>
   <author>
     <name><![CDATA[pf_miles]]></name>
@@ -12,6 +12,84 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[使用'Tsukuba Help'观看国外免费在线网络课程(android篇)]]></title>
+    <link href="http://pfmiles.github.com/blog/watch-mooc-videos-with-tsukuba-help-android-version"/>
+    <updated>2013-03-17T11:56:00+08:00</updated>
+    <id>http://pfmiles.github.com/blog/watch-mooc-videos-with-tsukuba-help-android-version</id>
+    <content type="html"><![CDATA[<p>目前在<a href="https://www.coursera.org/">Coursera.org</a>, <a href="https://www.udacity.com/">udacity.com</a>, <a href="https://www.edx.org/">edx.org</a>等网站都提供有丰富的、高质量的在线视频课程可学习；<br/>
+虽然国内也有网易公开课等视频课程项目(其课程来源仍是上述国外网站)，但数量相对较少且翻译也跟不上，而且，更重要的是，这些在线课程往往随堂提供有课后作业，如果你想同一时间与来自世界各地的同学一起交作业、一起讨论的话，用网易公开课平台是无法达到的；<br/>
+(当然我没有说网易公开课不好，在这里我要向网易致敬！)<br/>
+但由于网速、网络等各种原因，直接观看上述国外网站的在线课程有些困难，为此我推荐一种快速有效的办法，在android手机上，直接观看国外在线课程视频。</p>
+
+<!-- more -->
+
+
+<p>以目前的android街机三星Galaxy Note2为例(Android 4.1)：</p>
+
+<ol>
+<li>打开浏览器，访问如图所示的网页: <img src="http://pfmiles.github.com/images/tsukuba/android_tsukuba1.png" alt="android 1" /><br/>
+这个页面上面有许多ip地址等信息，并且每过2小时会刷新&#8230;而且越靠上的ip地址其服务质量越好&#8230;</li>
+<li>对于android，要使用L2TP/IPSEC方式连接，因此我们找到&#8221;Support L2TP/IPSEC&#8221;这一列： <img src="http://pfmiles.github.com/images/tsukuba/android_tsukuba2.png" alt="android 2" /><br/>
+注意这一列中标有&#8221;yes&#8221;字样的行，就是你的目标！</li>
+<li>将刚才看到的&#8221;Support L2TP/IPSEC&#8221;这一列为“yes”的这一行的ip地址拷下来: <img src="http://pfmiles.github.com/images/tsukuba/android_tsukuba3.png" alt="android 2" /></li>
+<li>打开“设定”， 点击“更多设置”: <img src="http://pfmiles.github.com/images/tsukuba/android_tsukuba4.png" alt="android 2" /></li>
+<li>点开如图所示的选项后进去“新建”: <img src="http://pfmiles.github.com/images/tsukuba/android_tsukuba5.png" alt="android 2" /></li>
+<li>如下图般设置：<br/>
+<img src="http://pfmiles.github.com/images/tsukuba/android_tsukuba6.png" alt="android 2" /><br/>
+&#8220;名称&#8221;随便起一个；<br/>
+“类型”选“L2TP/IPSec PSK”;<br/>
+&#8220;服务器地址&#8221;就粘帖你上一步复制的ip地址;<br/>
+屏幕继续滑动往下走(要点开“高级选项”)：</li>
+<li><img src="http://pfmiles.github.com/images/tsukuba/android_tsukuba7.png" alt="android 2" /><br/>
+“IPsec预共享密钥”填：<img src="http://pfmiles.github.com/images/tsukuba/v.png" alt="android 2" />, 全小写;<br/>
+“转发路由”填上图所示的值;<br/>
+然后其它不用管，保存吧！</li>
+<li>点击连接你刚才建立的网络，若要求输入用户名密码，则均填: <img src="http://pfmiles.github.com/images/tsukuba/v.png" alt="android 2" />, 全小写：<br/>
+<img src="http://pfmiles.github.com/images/tsukuba/android_tsukuba8.png" alt="android 2" /></li>
+<li>连接成功后，左上角会有一个小钥匙的图标，这时候就已经成功了！<br/>
+<img src="http://pfmiles.github.com/images/tsukuba/android_tsukuba9.png" alt="android 2" /></li>
+<li>打开浏览器试试吧：<br/>
+<img src="http://pfmiles.github.com/images/tsukuba/android_tsukuba10.png" alt="android 2" /></li>
+</ol>
+
+
+<p>常见FAQ：</p>
+
+<ul>
+<li>这个工具由谁提供？
+
+<ul>
+<li>A: 这是日本筑波大学的研究生们发起的一个实验(社会实验？), 邀请全世界范围内的服务器，参与这个活动，免费为人们提供连接服务; 因此你最初用浏览器打开的那个服务器列表中的ip地址来自世界各地; 但由于日本同学普遍网络技术不好，导致原本的页面网络故障，我国国内的人们无法直接访问筑波大学的活动页面，因此我使用了一些技术手段把这些信息呈现到了国内，以方便爱学习的同学们使用</li>
+</ul>
+</li>
+<li>服务质量如何？
+
+<ul>
+<li>A: 很快，从可以看视频这一点就能体会到</li>
+</ul>
+</li>
+<li>这个服务能用多久？
+
+<ul>
+<li>A: 没有规定这个服务能用多久，如果断掉的话，重新连接或再去服务器列表中找一个来用就是了，换服务器的话, 所有配置都一样，只是覆盖一个ip地址而已，很方便；如果你关心的是这个免费服务的活动能进行多久，那我也不知道，总之我们目前能好好利用它帮助我们学习就OK了</li>
+</ul>
+</li>
+<li>除了android，其它平台能够使用这个服务么？
+
+<ul>
+<li>A: 当然可以，由于我中午还没吃饭，所以后面再介绍windows下如何使用该服务；linux众们我就忽略你们了吧，我知道你们自己能搞定的:)</li>
+</ul>
+</li>
+</ul>
+
+
+<p>&#8230;&#8230;</p>
+
+<p>有任何问题可发邮件至： <img src="http://pfmiles.github.com/images/email.png" alt="email" />, 不定期可能会回复(当我心血来潮查看垃圾箱时)</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[用于代码生成的模板引擎应该是什么样子？]]></title>
@@ -1971,94 +2049,6 @@ print stack.pop() # 9 expected
 </code></pre>
 
 <p>要点：利用栈的“还原上一次记录”的能力, 随时维护当前最小元素</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[[面试中的算法]把二元查找树转变成排序的双向链表]]></title>
-    <link href="http://pfmiles.github.com/blog/algorithms-in-job-interview-turn-binary-search-tree-to-doubly-linked-list"/>
-    <updated>2012-02-27T23:26:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/algorithms-in-job-interview-turn-binary-search-tree-to-doubly-linked-list</id>
-    <content type="html"><![CDATA[<p>此问题由<a href="http://blog.csdn.net/v_JULY_v/article/details/6050133">v_JULY_v</a>整理发布并发表于<a href="http://blog.csdn.net/v_JULY_v">blog</a>上, 版权归原作者所有。</p>
-
-<p><strong>问题描述：输入一棵二元查找树,将该二元查找树转换成一个排序的双向链表。要求不能创建任何新的结点,只调整指针的指向</strong></p>
-
-<p>比如二叉搜索树：</p>
-
-<pre><code>       10
-      /   \
-    4      12
-   / \    /  \
-  3   5 11    13
-</code></pre>
-
-<p>输出应为： 3, 4, 5, 10, 11, 12, 13</p>
-
-<h3>分析：</h3>
-
-<p>处理树状结构很容易想到递归，而二叉搜索树其实恰好是已经排序好的一个结构，而要把它变成数组，只需“中序遍历”即可: 3,4,5,10,11,12,13</p>
-
-<!--more-->
-
-
-<h3>程序：</h3>
-
-<pre><code># define the data-structure first
-class Node(object):
-    def __init__(self, left=None, value=None, right=None):
-        self.value = value
-        self.left = left
-        self.right = right
-
-# construct the bin-search tree 
-root = Node(None, 10, None)
-
-left = Node(Node(None, 3, None), 4, Node(None, 5, None))
-
-right = Node(Node(None, 11, None), 12, Node(None, 13, None))
-
-root.left = left
-root.right = right
-
-def show(node):
-    rst = [node.value]
-    leftCur, rightCur = node, node
-    while leftCur.left != None:
-        rst.insert(0, leftCur.left.value)
-        leftCur = leftCur.left
-    while rightCur.right != None:
-        rst.append(rightCur.right.value)
-        rightCur = rightCur.right
-    print rst
-
-# 3,4,5,10,11,12,13 expected
-
-# the recursive mid-order traverse function
-def traverse(node, leftOrRight = None):
-    l, r = None, None
-    if node.left != None:
-        l = traverse(node.left, "left")
-        node.left = l
-        l.right = node
-    if node.right != None:
-        r = traverse(node.right, "right")
-        node.right = r
-        r.left = node
-    if leftOrRight == "left" and r != None:
-        return r
-    elif leftOrRight == "right" and l != None:
-        return l
-    else:
-        return node
-
-n = traverse(root)
-
-show(n)
-</code></pre>
-
-<p>结果输出： [3, 4, 5, 10, 11, 12, 13]</p>
-
-<p>要点除了搞清楚二叉搜索树的特性以及中序遍历的规律外，要注意traverse方法中对于该返回&#8217;l&#8217; 还是 &#8216;r&#8217; 或者是node的判断</p>
 ]]></content>
   </entry>
   
