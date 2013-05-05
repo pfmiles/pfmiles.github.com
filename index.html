@@ -9,8 +9,8 @@
   <meta name="author" content="pf_miles">
 
   
-  <meta name="description" content="目前在Coursera.org, udacity.com, edx.org等网站都提供有丰富的、高质量的在线视频课程可学习；
-虽然国内也有网易公开课等视频课程项目(其课程来源仍是上述国外网站)，但数量相对较少且翻译也跟不上，而且，更重要的是，这些在线课程往往随堂提供有课后作业， &hellip;">
+  <meta name="description" content="最近工作中遇到一个诡异的问题：别人远程调用我们的系统暴露的服务，同步调用，底层使用hessian协议做序列化；
+调用方系统报空指针，反序列化失败： ">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -92,6 +92,50 @@ MathJax.Hub.Config({
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/recently-hessian-deserialize-problem-and-thread-pool-executor-experience">近期hessian反序列化问题总结与ThreadPoolExecutor使用心得</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-05T14:53:00+08:00" pubdate data-updated="true">May 5<span>th</span>, 2013</time>
+        
+         | <a href="/blog/recently-hessian-deserialize-problem-and-thread-pool-executor-experience#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>最近工作中遇到一个诡异的问题：别人远程调用我们的系统暴露的服务，同步调用，底层使用hessian协议做序列化；<br/>
+调用方系统报空指针，反序列化失败：</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/recently-hessian-deserialize-problem-and-thread-pool-executor-experience">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -618,67 +662,6 @@ a,b,d与输入规模无关。<br/>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/left-recursion-removal-using-kleene-closure">使用Kleene闭包语法糖消除语法中的左递归</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-03-28T11:18:00+08:00" pubdate data-updated="true">Mar 28<span>th</span>, 2012</time>
-        
-         | <a href="/blog/left-recursion-removal-using-kleene-closure#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>一般来讲，如果使用的解析器生成器是基于LL分析法来解析文本的话(比如antlr)，我们就需要在编写语法规则的时候避免<a href="http://en.wikipedia.org/wiki/Left_recursion">左递归</a>。<br/>
-虽然有一套成熟的、公式化的方法来去除左递归，但它会影响原有文法的结合顺序、优先级，或者多出一些本不需要的、额外的产生式。<br/>
-例如，有左递归语法规则：</p>
-
-<pre><code>addition ::= addition '+' factor
-           | factor
-</code></pre>
-
-<p>这个式子其实是想要表达一个“一连串+号组成的和”的表达式，例如<code>1+2+3+4</code>；<br/>
-假设目前的输入就是<code>1+2+3+4</code>, 那么超前查看带来的选择应该是<code>addition '+' factor</code>这个产生式；于是在parser的代码中立刻就又直接调用了<code>addition()</code>方法，但注意，整个递归过程没有消耗掉任何token&#8230;也就是说，当流程再次递归到<code>addition</code>函数里时，输入<code>1+2+3+4</code>并没有任何改变，这又会进入下一轮递归&#8230;很快就会overflow。<br/>
-这个问题，除了机械性地按照公式来消除左递归外，还可以改写语法规则，使其成为右递归语法：</p>
-
-<pre><code>addition ::= factor '+' addition
-           | factor
-</code></pre>
-
-<p>这样就不用stackOverFlow了，但是带来另一个问题：这使得我们的&#8217;+&#8217;加法成为了一个&#8217;右结合&#8217;的运算&#8230;<br/>
-也就是说，<code>1+2+3+4</code>的计算次序是这样的：<code>1+(2+(3+4))</code><br/>
-还好这里是“加法”，整数集合和加法运算构成“阿贝尔群(可交换群)”，满足交换律，所以就算实现成右结合的也能蒙混过关&#8230;但减法呢？除法呢？</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/left-recursion-removal-using-kleene-closure">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -692,6 +675,10 @@ a,b,d与输入规模无关。<br/>
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/recently-hessian-deserialize-problem-and-thread-pool-executor-experience">近期hessian反序列化问题总结与ThreadPoolExecutor使用心得</a>
+      </li>
     
       <li class="post">
         <a href="/blog/watch-mooc-videos-with-tsukuba-help-android-version">使用&#8217;Tsukuba Help&#8217;观看国外免费在线网络课程(android篇)</a>
@@ -709,19 +696,15 @@ a,b,d与输入规模无关。<br/>
         <a href="/blog/growing-a-full-featured-calculator-in-15-minutes-using-dropincc-dot-java">Growing a Full-Featured Calculator in 15 Minutes Using Dropincc.java</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/ideas-and-concepts-behind-dropincc-dot-java">Ideas and Concepts behind Dropincc.java</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Tag Cloud</h1>
-  <span id="tag-cloud"><a href='/blog/category/ai-class' style='font-size: 106.66666666666667%'>Ai-class(1)</a> <a href='/blog/category/algo-class' style='font-size: 113.33333333333333%'>Algo-class(2)</a> <a href='/blog/category/algorithm' style='font-size: 160.0%'>Algorithm(9)</a> <a href='/blog/category/comic' style='font-size: 106.66666666666667%'>Comic(1)</a> <a href='/blog/category/compiler' style='font-size: 133.33333333333334%'>Compiler(5)</a> <a href='/blog/category/computer' style='font-size: 106.66666666666667%'>Computer(1)</a> <a href='/blog/category/design' style='font-size: 106.66666666666667%'>Design(1)</a> <a href='/blog/category/dropincc' style='font-size: 153.33333333333334%'>Dropincc(8)</a> <a href='/blog/category/dsl' style='font-size: 120.0%'>Dsl(3)</a> <a href='/blog/category/interview' style='font-size: 126.66666666666667%'>Interview(4)</a> <a href='/blog/category/life' style='font-size: 120.0%'>Life(3)</a> <a href='/blog/category/octopress' style='font-size: 106.66666666666667%'>Octopress(1)</a> <a href='/blog/category/performance' style='font-size: 106.66666666666667%'>Performance(1)</a> <a href='/blog/category/probability' style='font-size: 106.66666666666667%'>Probability(1)</a> <a href='/blog/category/programming' style='font-size: 113.33333333333333%'>Programming(2)</a> <a href='/blog/category/python' style='font-size: 106.66666666666667%'>Python(1)</a> <a href='/blog/category/translation' style='font-size: 106.66666666666667%'>Translation(1)</a> </span>
+  <span id="tag-cloud"><a href='/blog/category/ai-class' style='font-size: 106.66666666666667%'>Ai-class(1)</a> <a href='/blog/category/algo-class' style='font-size: 113.33333333333333%'>Algo-class(2)</a> <a href='/blog/category/algorithm' style='font-size: 160.0%'>Algorithm(9)</a> <a href='/blog/category/comic' style='font-size: 106.66666666666667%'>Comic(1)</a> <a href='/blog/category/compiler' style='font-size: 133.33333333333334%'>Compiler(5)</a> <a href='/blog/category/computer' style='font-size: 106.66666666666667%'>Computer(1)</a> <a href='/blog/category/design' style='font-size: 106.66666666666667%'>Design(1)</a> <a href='/blog/category/dropincc' style='font-size: 153.33333333333334%'>Dropincc(8)</a> <a href='/blog/category/dsl' style='font-size: 120.0%'>Dsl(3)</a> <a href='/blog/category/interview' style='font-size: 126.66666666666667%'>Interview(4)</a> <a href='/blog/category/java' style='font-size: 106.66666666666667%'>Java(1)</a> <a href='/blog/category/life' style='font-size: 120.0%'>Life(3)</a> <a href='/blog/category/octopress' style='font-size: 106.66666666666667%'>Octopress(1)</a> <a href='/blog/category/performance' style='font-size: 106.66666666666667%'>Performance(1)</a> <a href='/blog/category/probability' style='font-size: 106.66666666666667%'>Probability(1)</a> <a href='/blog/category/programming' style='font-size: 113.33333333333333%'>Programming(2)</a> <a href='/blog/category/python' style='font-size: 106.66666666666667%'>Python(1)</a> <a href='/blog/category/translation' style='font-size: 106.66666666666667%'>Translation(1)</a> <a href='/blog/category/troubleshooting' style='font-size: 106.66666666666667%'>Troubleshooting(1)</a> </span>
 </section>
 <section>
   <h1>Categories</h1>
-    <ul id="category-list"><li><a href='/blog/category/ai-class'>Ai-class (1)</a></li><li><a href='/blog/category/algo-class'>Algo-class (2)</a></li><li><a href='/blog/category/algorithm'>Algorithm (9)</a></li><li><a href='/blog/category/comic'>Comic (1)</a></li><li><a href='/blog/category/compiler'>Compiler (5)</a></li><li><a href='/blog/category/computer'>Computer (1)</a></li><li><a href='/blog/category/design'>Design (1)</a></li><li><a href='/blog/category/dropincc'>Dropincc (8)</a></li><li><a href='/blog/category/dsl'>Dsl (3)</a></li><li><a href='/blog/category/interview'>Interview (4)</a></li><li><a href='/blog/category/life'>Life (3)</a></li><li><a href='/blog/category/octopress'>Octopress (1)</a></li><li><a href='/blog/category/performance'>Performance (1)</a></li><li><a href='/blog/category/probability'>Probability (1)</a></li><li><a href='/blog/category/programming'>Programming (2)</a></li><li><a href='/blog/category/python'>Python (1)</a></li><li><a href='/blog/category/translation'>Translation (1)</a></li></ul>
+    <ul id="category-list"><li><a href='/blog/category/ai-class'>Ai-class (1)</a></li><li><a href='/blog/category/algo-class'>Algo-class (2)</a></li><li><a href='/blog/category/algorithm'>Algorithm (9)</a></li><li><a href='/blog/category/comic'>Comic (1)</a></li><li><a href='/blog/category/compiler'>Compiler (5)</a></li><li><a href='/blog/category/computer'>Computer (1)</a></li><li><a href='/blog/category/design'>Design (1)</a></li><li><a href='/blog/category/dropincc'>Dropincc (8)</a></li><li><a href='/blog/category/dsl'>Dsl (3)</a></li><li><a href='/blog/category/interview'>Interview (4)</a></li><li><a href='/blog/category/java'>Java (1)</a></li><li><a href='/blog/category/life'>Life (3)</a></li><li><a href='/blog/category/octopress'>Octopress (1)</a></li><li><a href='/blog/category/performance'>Performance (1)</a></li><li><a href='/blog/category/probability'>Probability (1)</a></li><li><a href='/blog/category/programming'>Programming (2)</a></li><li><a href='/blog/category/python'>Python (1)</a></li><li><a href='/blog/category/translation'>Translation (1)</a></li><li><a href='/blog/category/troubleshooting'>Troubleshooting (1)</a></li></ul>
 </section>
 
 <section>
