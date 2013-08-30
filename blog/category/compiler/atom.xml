@@ -4,7 +4,7 @@
   <title><![CDATA[Category: compiler | Meta-Interpretation]]></title>
   <link href="http://pfmiles.github.com/blog/category/compiler/atom.xml" rel="self"/>
   <link href="http://pfmiles.github.com/"/>
-  <updated>2013-08-30T13:38:23+08:00</updated>
+  <updated>2013-08-30T14:11:08+08:00</updated>
   <id>http://pfmiles.github.com/</id>
   <author>
     <name><![CDATA[pf_miles]]></name>
@@ -134,7 +134,7 @@ There's a detailed <em>Quick Start</em> guide on the project page, it could guid
 <!-- more -->
 
 
-<p>Requires JDK 1.6 or above. Firstly, place the dropincc <a href="https://github.com/downloads/pfmiles/dropincc.java/dropincc.java-0.1.0.jar">jar file</a> in your class path.</p>
+<p>Requires JDK 1.6 or above. Firstly, place the dropincc <a href="https://github.com/pfmiles/dropincc.java/releases">jar file</a> in your class path.</p>
 
 <p>And then, crafting your language's <a href="http://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_Form">EBNF</a> definition:<br/>
 Let's define a language which accepts arbitrary numbers of quoted 'a' or 'bc'. For example: '(a)(bc)', '(bc)((a))' or '(((bc)))(bc)', the numbers of pairs of parentheses is unlimited.<br/>
@@ -260,7 +260,66 @@ After that, you can <code>compile</code> your grammar:</p>
 <p>Ok, we can now run the program again and could see it prints out the output: <code>aabc</code>, with all parentheses removed.</p>
 
 <p>The whole program in a gist:<br/>
-{% gist 3257023 %}
+<div><script src='https://gist.github.com/3257023.js?file='></script>
+<noscript><pre><code>package test;
+
+import com.github.pfmiles.dropincc.Action;
+import com.github.pfmiles.dropincc.CC;
+import com.github.pfmiles.dropincc.Exe;
+import com.github.pfmiles.dropincc.Grule;
+import com.github.pfmiles.dropincc.Lang;
+import com.github.pfmiles.dropincc.TokenDef;
+
+public class Test {
+
+    /**
+     * &lt;pre&gt;
+     * S ::= L $
+     * L ::= Q*
+     * Q ::= 'a'
+     *     | 'bc'
+     *     | '(' Q ')'
+     * &lt;/pre&gt;
+     */
+    public static void main(String... args) throws Throwable {
+        Lang lang = new Lang(&quot;Dummy&quot;);
+        TokenDef a = lang.newToken(&quot;a&quot;);
+        TokenDef bc = lang.newToken(&quot;bc&quot;);
+        TokenDef lp = lang.newToken(&quot;\\(&quot;);
+        TokenDef rp = lang.newToken(&quot;\\)&quot;);
+        Grule L = lang.newGrule();
+        Grule Q = lang.newGrule();
+
+        lang.defineGrule(L, CC.EOF).action(new Action() {
+            public String act(Object matched) {
+                return (String) ((Object[]) matched)[0];
+            }
+        }); // S ::= L $
+        L.define(CC.ks(Q)).action(new Action() {
+            public String act(Object matched) {
+                Object[] ms = (Object[]) matched;
+                StringBuilder sb = new StringBuilder();
+                for (Object m : ms)
+                    sb.append(m);
+                return sb.toString();
+            }
+        });// L ::= Q*
+        /*
+         * Q ::= 'a' | 'bc' | '(' Q ')'
+         */
+        Q.define(a).alt(bc).alt(lp, Q, rp).action(new Action() {
+            public String act(Object matched) {
+                // returns the middle element matched, that's the returned value
+                // of the enclosing 'Q' rule
+                return (String) ((Object[]) matched)[1];
+            }
+        });
+
+        Exe exe = lang.compile();
+        System.out.println(exe.eval(&quot;a(a)((bc))&quot;));
+    }
+}</code></pre></noscript></div>
+
 You can download and play around with it on your own.</p>
 
 <p>Dropincc.java is currently on its very initial stage. It has some major improvements to be done:</p>
@@ -272,8 +331,6 @@ You can download and play around with it on your own.</p>
 
 
 <p>There is a more practical <strong>Hello World</strong> example which implements a full-featured calculator in the quick start guide of dropincc.java. On its project <a href="https://github.com/pfmiles/dropincc.java">home page</a>. Go and check out there if you like.</p>
-
-<p>I created a <a href="http://dropincc-java.1068093.n5.nabble.com/">forum</a> for dropincc.java, interested people could discuss about it in the forum. And you are welcomed to subscribe to the mailing list(there's a how to guide in the forum about subscribe to the mailing list).</p>
 ]]></content>
   </entry>
   
