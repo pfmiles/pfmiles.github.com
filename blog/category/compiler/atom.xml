@@ -4,7 +4,7 @@
   <title><![CDATA[Category: compiler | Meta-Interpretation]]></title>
   <link href="http://pfmiles.github.com/blog/category/compiler/atom.xml" rel="self"/>
   <link href="http://pfmiles.github.com/"/>
-  <updated>2013-08-29T19:05:32+08:00</updated>
+  <updated>2013-08-30T13:38:23+08:00</updated>
   <id>http://pfmiles.github.com/</id>
   <author>
     <name><![CDATA[pf_miles]]></name>
@@ -260,66 +260,7 @@ After that, you can <code>compile</code> your grammar:</p>
 <p>Ok, we can now run the program again and could see it prints out the output: <code>aabc</code>, with all parentheses removed.</p>
 
 <p>The whole program in a gist:<br/>
-<div><script src='https://gist.github.com/3257023.js?file='></script>
-<noscript><pre><code>package test;
-
-import com.github.pfmiles.dropincc.Action;
-import com.github.pfmiles.dropincc.CC;
-import com.github.pfmiles.dropincc.Exe;
-import com.github.pfmiles.dropincc.Grule;
-import com.github.pfmiles.dropincc.Lang;
-import com.github.pfmiles.dropincc.TokenDef;
-
-public class Test {
-
-    /**
-     * &lt;pre&gt;
-     * S ::= L $
-     * L ::= Q*
-     * Q ::= 'a'
-     *     | 'bc'
-     *     | '(' Q ')'
-     * &lt;/pre&gt;
-     */
-    public static void main(String... args) throws Throwable {
-        Lang lang = new Lang(&quot;Dummy&quot;);
-        TokenDef a = lang.newToken(&quot;a&quot;);
-        TokenDef bc = lang.newToken(&quot;bc&quot;);
-        TokenDef lp = lang.newToken(&quot;\\(&quot;);
-        TokenDef rp = lang.newToken(&quot;\\)&quot;);
-        Grule L = lang.newGrule();
-        Grule Q = lang.newGrule();
-
-        lang.defineGrule(L, CC.EOF).action(new Action() {
-            public String act(Object matched) {
-                return (String) ((Object[]) matched)[0];
-            }
-        }); // S ::= L $
-        L.define(CC.ks(Q)).action(new Action() {
-            public String act(Object matched) {
-                Object[] ms = (Object[]) matched;
-                StringBuilder sb = new StringBuilder();
-                for (Object m : ms)
-                    sb.append(m);
-                return sb.toString();
-            }
-        });// L ::= Q*
-        /*
-         * Q ::= 'a' | 'bc' | '(' Q ')'
-         */
-        Q.define(a).alt(bc).alt(lp, Q, rp).action(new Action() {
-            public String act(Object matched) {
-                // returns the middle element matched, that's the returned value
-                // of the enclosing 'Q' rule
-                return (String) ((Object[]) matched)[1];
-            }
-        });
-
-        Exe exe = lang.compile();
-        System.out.println(exe.eval(&quot;a(a)((bc))&quot;));
-    }
-}</code></pre></noscript></div>
-
+{% gist 3257023 %}
 You can download and play around with it on your own.</p>
 
 <p>Dropincc.java is currently on its very initial stage. It has some major improvements to be done:</p>

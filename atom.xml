@@ -4,7 +4,7 @@
   <title><![CDATA[Meta-Interpretation]]></title>
   <link href="http://pfmiles.github.com/atom.xml" rel="self"/>
   <link href="http://pfmiles.github.com/"/>
-  <updated>2013-08-29T19:05:32+08:00</updated>
+  <updated>2013-08-30T13:24:09+08:00</updated>
   <id>http://pfmiles.github.com/</id>
   <author>
     <name><![CDATA[pf_miles]]></name>
@@ -12,6 +12,65 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[游戏规则]]></title>
+    <link href="http://pfmiles.github.com/blog/you-xi-gui-ze"/>
+    <updated>2013-08-30T10:00:00+08:00</updated>
+    <id>http://pfmiles.github.com/blog/you-xi-gui-ze</id>
+    <content type="html"><![CDATA[<h1>不过都是自然现象</h1>
+
+<h2>闪电，台风还有天王星</h2>
+
+<p>闪电图片，木星大红斑图片, 天王星图片<br/>
+我想我可以把木星的大红斑叫做一个“台风”，只不过它有好几个地球那么大而已。</p>
+
+<h2>当然还有生命</h2>
+
+<p>他们才是今天的主角，因为我也是其中之一, 为此我存有私心。</p>
+
+<h3>螺狮与贝壳，还有螃蟹&#8230;</h3>
+
+<p><a href="http://songshuhui.net/archives/84404">http://songshuhui.net/archives/84404</a></p>
+
+<h3>猫们在做什么</h3>
+
+<h3>统治了地球，然后呢？</h3>
+
+<p>在种间竞争中占了绝对优势，然后去做一个优胜物种该做的事<br/>
+Eat what you like, and fuck with whom you want to.</p>
+
+<h4>为什么我们阅读而不是挥剑？</h4>
+
+<p>Why we read books rather than swing swords?</p>
+
+<ul>
+<li>无法逃避的种内竞争</li>
+<li>哺乳动物的死亡如此可怕？而其实它从未改变过
+
+<h4>杀人，打架与口诛笔伐</h4></li>
+<li>现代的秩序</li>
+<li>混乱与“逆袭”
+  混乱是阶梯，更是深渊
+  顺着说的正义与反过来说的邪恶
+  “逆袭”的美好与罪恶
+
+<h4>“不按常理出牌”</h4></li>
+<li>有必要讨论出一个定义</li>
+<li>赞扬与剿灭的天壤之别
+
+<h4>为什么和为什么不</h4></li>
+<li>为什么要帮助身边的人</li>
+<li>为什么要帮助残疾人</li>
+<li>为什么要帮助深山里的穷人</li>
+<li>为什么要帮助吃不起饭、上不起学的儿童
+
+<h4>和平之虚伪</h4></li>
+<li>我再说一遍：它从未改变过</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[近期hessian反序列化问题总结与ThreadPoolExecutor使用心得]]></title>
@@ -2225,47 +2284,6 @@ print found
 </code></pre>
 
 <p>这样一来，其实路径上的每一步，都是记录在调用栈上的(就算子节点没有父节点的指针，函数参数也直接把父节点带过来了，也就是在调用栈中)，当程序想要输出路径时，也完全能够将路径还原。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[[面试中的算法]求子数组的最大和]]></title>
-    <link href="http://pfmiles.github.com/blog/algorithms-in-job-interview-max-sum-sub-list"/>
-    <updated>2012-02-28T22:48:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/algorithms-in-job-interview-max-sum-sub-list</id>
-    <content type="html"><![CDATA[<p>此问题由<a href="http://blog.csdn.net/v_JULY_v/article/details/6050133">v_JULY_v</a>整理发布并发表于<a href="http://blog.csdn.net/v_JULY_v">blog</a>上, 版权归原作者所有。</p>
-
-<p><strong>输入一个整形数组,数组里有正数也有负数。
-数组中连续的一个或多个整数组成一个子数组,每个子数组都有一个和。
-求所有子数组的和的最大值。要求时间复杂度为 O(n)。
-例如输入的数组为 1, -2, 3, 10, -4, 7, 2, -5,和最大的子数组为 3, 10, -4, 7, 2, 因此输出为该子数组的和 18</strong></p>
-
-<h3>分析：</h3>
-
-<p>贪心算法能在此问题的任意一个子问题上找到最优解(最优子结构)，所以可以用贪心算法解决。</p>
-
-<!-- more -->
-
-
-<h3>程序：</h3>
-
-<pre><code># 1, -2, 3, 10, -4, 7, 2, -5, output the maximum summarized sub-list
-# greedy algorithm
-def greatestSumSubList(al):
-    mx = 0
-    sm = 0
-    for i in al:
-    sm += i
-    if sm &lt; 0:
-        sm = 0
-    if sm &gt; mx:
-        mx = sm
-    return mx
-
-print greatestSumSubList([1, -2, 3, 10, -4, 7, 2, -5])
-</code></pre>
-
-<p>输出： 18</p>
 ]]></content>
   </entry>
   

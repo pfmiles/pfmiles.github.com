@@ -9,8 +9,8 @@
   <meta name="author" content="pf_miles">
 
   
-  <meta name="description" content="最近工作中遇到一个诡异的问题：别人远程调用我们的系统暴露的服务，同步调用，底层使用hessian协议做序列化；
-调用方系统报空指针，反序列化失败： ">
+  <meta name="description" content="不过都是自然现象 闪电，台风还有天王星 闪电图片，木星大红斑图片, 天王星图片
+我想我可以把木星的大红斑叫做一个“台风”，只不过它有好几个地球那么大而已。 当然还有生命 他们才是今天的主角，因为我也是其中之一, 为此我存有私心。 螺狮与贝壳，还有螃蟹&#8230; http:// &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -92,6 +92,94 @@ MathJax.Hub.Config({
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/you-xi-gui-ze">游戏规则</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-30T10:00:00+08:00" pubdate data-updated="true">Aug 30<span>th</span>, 2013</time>
+        
+         | <a href="/blog/you-xi-gui-ze#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h1>不过都是自然现象</h1>
+
+<h2>闪电，台风还有天王星</h2>
+
+<p>闪电图片，木星大红斑图片, 天王星图片<br/>
+我想我可以把木星的大红斑叫做一个“台风”，只不过它有好几个地球那么大而已。</p>
+
+<h2>当然还有生命</h2>
+
+<p>他们才是今天的主角，因为我也是其中之一, 为此我存有私心。</p>
+
+<h3>螺狮与贝壳，还有螃蟹&#8230;</h3>
+
+<p><a href="http://songshuhui.net/archives/84404">http://songshuhui.net/archives/84404</a></p>
+
+<h3>猫们在做什么</h3>
+
+<h3>统治了地球，然后呢？</h3>
+
+<p>在种间竞争中占了绝对优势，然后去做一个优胜物种该做的事<br/>
+Eat what you like, and fuck with whom you want to.</p>
+
+<h4>为什么我们阅读而不是挥剑？</h4>
+
+<p>Why we read books rather than swing swords?</p>
+
+<ul>
+<li>无法逃避的种内竞争</li>
+<li>哺乳动物的死亡如此可怕？而其实它从未改变过
+
+<h4>杀人，打架与口诛笔伐</h4></li>
+<li>现代的秩序</li>
+<li>混乱与“逆袭”
+  混乱是阶梯，更是深渊
+  顺着说的正义与反过来说的邪恶
+  “逆袭”的美好与罪恶
+
+<h4>“不按常理出牌”</h4></li>
+<li>有必要讨论出一个定义</li>
+<li>赞扬与剿灭的天壤之别
+
+<h4>为什么和为什么不</h4></li>
+<li>为什么要帮助身边的人</li>
+<li>为什么要帮助残疾人</li>
+<li>为什么要帮助深山里的穷人</li>
+<li>为什么要帮助吃不起饭、上不起学的儿童
+
+<h4>和平之虚伪</h4></li>
+<li>我再说一遍：它从未改变过</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -611,57 +699,6 @@ There&#8217;s a detailed <em>Quick Start</em> guide on the project page, it coul
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/algo-class-week2-notes-master-method">Algo-class第二周小记: Master Method</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-04-03T11:40:00+08:00" pubdate data-updated="true">Apr 3<span>rd</span>, 2012</time>
-        
-         | <a href="/blog/algo-class-week2-notes-master-method#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>week2主要讲了master method，感觉从来没有听过如此清晰有条理的介绍master method的讲解，不得不佩服<a href="http://theory.stanford.edu/~tim/">Tim Roughgarden</a>教授的功力。<br/>
-从一些随课笔记总结起来，master method是用来预估divide and conquer算法的大O时间复杂度的公式；它要求divide的时候“所有sub-problems的规模都相等”才能适用。<br/>
-要使用master method, 首先要将算法的时间消耗函数写成递推公式形式：
-$$T(n) &lt;= aT(\frac{n}{b}) + O(n^d)$$
-其中T(n)是本层递归所消耗的时间，$T(\frac{n}{b})$自然就是下一层递归所消耗的时间了，b就是每次往“下层”递归调用时问题规模缩小的倍率，a就是代码中递归调用的个数；$O(n^d)$ 是将递归调用之外的其它代码的时间开销写成关于输入规模n的指数形式，d就是这个指数。<br/>
-基础情况： 当n足够小时，T(n) &lt;= 一个常数<br/>
-a,b,d与输入规模无关。<br/>
-那么，根据a,b,d的情况，T(n)可能被表示为三种情况：<br/>
-<img src="/images/masterMethod.png" title="Master Method" alt="Master Method" /></p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/algo-class-week2-notes-master-method">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -675,6 +712,10 @@ a,b,d与输入规模无关。<br/>
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/you-xi-gui-ze">游戏规则</a>
+      </li>
     
       <li class="post">
         <a href="/blog/recently-hessian-deserialize-problem-and-thread-pool-executor-experience">近期hessian反序列化问题总结与ThreadPoolExecutor使用心得</a>
@@ -692,19 +733,15 @@ a,b,d与输入规模无关。<br/>
         <a href="/blog/prime-numbers-less-than-n">Prime Numbers Less Than N</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/growing-a-full-featured-calculator-in-15-minutes-using-dropincc-dot-java">Growing a Full-Featured Calculator in 15 Minutes Using Dropincc.java</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Tag Cloud</h1>
-  <span id="tag-cloud"><a href='/blog/category/ai-class' style='font-size: 106.66666666666667%'>Ai-class(1)</a> <a href='/blog/category/algo-class' style='font-size: 113.33333333333333%'>Algo-class(2)</a> <a href='/blog/category/algorithm' style='font-size: 160.0%'>Algorithm(9)</a> <a href='/blog/category/comic' style='font-size: 106.66666666666667%'>Comic(1)</a> <a href='/blog/category/compiler' style='font-size: 133.33333333333334%'>Compiler(5)</a> <a href='/blog/category/computer' style='font-size: 106.66666666666667%'>Computer(1)</a> <a href='/blog/category/design' style='font-size: 106.66666666666667%'>Design(1)</a> <a href='/blog/category/dropincc' style='font-size: 153.33333333333334%'>Dropincc(8)</a> <a href='/blog/category/dsl' style='font-size: 120.0%'>Dsl(3)</a> <a href='/blog/category/interview' style='font-size: 126.66666666666667%'>Interview(4)</a> <a href='/blog/category/java' style='font-size: 106.66666666666667%'>Java(1)</a> <a href='/blog/category/life' style='font-size: 120.0%'>Life(3)</a> <a href='/blog/category/octopress' style='font-size: 106.66666666666667%'>Octopress(1)</a> <a href='/blog/category/performance' style='font-size: 106.66666666666667%'>Performance(1)</a> <a href='/blog/category/probability' style='font-size: 106.66666666666667%'>Probability(1)</a> <a href='/blog/category/programming' style='font-size: 113.33333333333333%'>Programming(2)</a> <a href='/blog/category/python' style='font-size: 106.66666666666667%'>Python(1)</a> <a href='/blog/category/translation' style='font-size: 106.66666666666667%'>Translation(1)</a> <a href='/blog/category/troubleshooting' style='font-size: 106.66666666666667%'>Troubleshooting(1)</a> </span>
+  <span id="tag-cloud"><a href='/blog/category/ai-class' style='font-size: 106.66666666666667%'>Ai-class(1)</a> <a href='/blog/category/algo-class' style='font-size: 113.33333333333333%'>Algo-class(2)</a> <a href='/blog/category/algorithm' style='font-size: 160.0%'>Algorithm(9)</a> <a href='/blog/category/comic' style='font-size: 106.66666666666667%'>Comic(1)</a> <a href='/blog/category/compiler' style='font-size: 133.33333333333334%'>Compiler(5)</a> <a href='/blog/category/computer' style='font-size: 106.66666666666667%'>Computer(1)</a> <a href='/blog/category/design' style='font-size: 106.66666666666667%'>Design(1)</a> <a href='/blog/category/dropincc' style='font-size: 153.33333333333334%'>Dropincc(8)</a> <a href='/blog/category/dsl' style='font-size: 120.0%'>Dsl(3)</a> <a href='/blog/category/interview' style='font-size: 126.66666666666667%'>Interview(4)</a> <a href='/blog/category/java' style='font-size: 106.66666666666667%'>Java(1)</a> <a href='/blog/category/life' style='font-size: 126.66666666666667%'>Life(4)</a> <a href='/blog/category/octopress' style='font-size: 106.66666666666667%'>Octopress(1)</a> <a href='/blog/category/performance' style='font-size: 106.66666666666667%'>Performance(1)</a> <a href='/blog/category/probability' style='font-size: 106.66666666666667%'>Probability(1)</a> <a href='/blog/category/programming' style='font-size: 113.33333333333333%'>Programming(2)</a> <a href='/blog/category/python' style='font-size: 106.66666666666667%'>Python(1)</a> <a href='/blog/category/translation' style='font-size: 106.66666666666667%'>Translation(1)</a> <a href='/blog/category/troubleshooting' style='font-size: 106.66666666666667%'>Troubleshooting(1)</a> </span>
 </section>
 <section>
   <h1>Categories</h1>
-    <ul id="category-list"><li><a href='/blog/category/ai-class'>Ai-class (1)</a></li><li><a href='/blog/category/algo-class'>Algo-class (2)</a></li><li><a href='/blog/category/algorithm'>Algorithm (9)</a></li><li><a href='/blog/category/comic'>Comic (1)</a></li><li><a href='/blog/category/compiler'>Compiler (5)</a></li><li><a href='/blog/category/computer'>Computer (1)</a></li><li><a href='/blog/category/design'>Design (1)</a></li><li><a href='/blog/category/dropincc'>Dropincc (8)</a></li><li><a href='/blog/category/dsl'>Dsl (3)</a></li><li><a href='/blog/category/interview'>Interview (4)</a></li><li><a href='/blog/category/java'>Java (1)</a></li><li><a href='/blog/category/life'>Life (3)</a></li><li><a href='/blog/category/octopress'>Octopress (1)</a></li><li><a href='/blog/category/performance'>Performance (1)</a></li><li><a href='/blog/category/probability'>Probability (1)</a></li><li><a href='/blog/category/programming'>Programming (2)</a></li><li><a href='/blog/category/python'>Python (1)</a></li><li><a href='/blog/category/translation'>Translation (1)</a></li><li><a href='/blog/category/troubleshooting'>Troubleshooting (1)</a></li></ul>
+    <ul id="category-list"><li><a href='/blog/category/ai-class'>Ai-class (1)</a></li><li><a href='/blog/category/algo-class'>Algo-class (2)</a></li><li><a href='/blog/category/algorithm'>Algorithm (9)</a></li><li><a href='/blog/category/comic'>Comic (1)</a></li><li><a href='/blog/category/compiler'>Compiler (5)</a></li><li><a href='/blog/category/computer'>Computer (1)</a></li><li><a href='/blog/category/design'>Design (1)</a></li><li><a href='/blog/category/dropincc'>Dropincc (8)</a></li><li><a href='/blog/category/dsl'>Dsl (3)</a></li><li><a href='/blog/category/interview'>Interview (4)</a></li><li><a href='/blog/category/java'>Java (1)</a></li><li><a href='/blog/category/life'>Life (4)</a></li><li><a href='/blog/category/octopress'>Octopress (1)</a></li><li><a href='/blog/category/performance'>Performance (1)</a></li><li><a href='/blog/category/probability'>Probability (1)</a></li><li><a href='/blog/category/programming'>Programming (2)</a></li><li><a href='/blog/category/python'>Python (1)</a></li><li><a href='/blog/category/translation'>Translation (1)</a></li><li><a href='/blog/category/troubleshooting'>Troubleshooting (1)</a></li></ul>
 </section>
 
 <section>

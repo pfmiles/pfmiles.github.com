@@ -4,7 +4,7 @@
   <title><![CDATA[Category: DSL | Meta-Interpretation]]></title>
   <link href="http://pfmiles.github.com/blog/category/dsl/atom.xml" rel="self"/>
   <link href="http://pfmiles.github.com/"/>
-  <updated>2013-08-29T19:05:32+08:00</updated>
+  <updated>2013-08-30T13:38:23+08:00</updated>
   <id>http://pfmiles.github.com/</id>
   <author>
     <name><![CDATA[pf_miles]]></name>
@@ -199,90 +199,7 @@ System.out.println(exe.eval("1 +2+3+(4 +5*6*7*(64/8/2/(2/1 )/1)*8  +9  )+   10")
 
 <p>It's quite simple isn't it? If you are already familiar with the API, 15 min is too much for defining such a calculator!<br/>
 And the follow is all the code in a gist, you could copy and try it in your own IDE:<br/>
-<div><script src='https://gist.github.com/3339604.js?file='></script>
-<noscript><pre><code>import com.github.pfmiles.dropincc.Action;
-import com.github.pfmiles.dropincc.CC;
-import com.github.pfmiles.dropincc.Exe;
-import com.github.pfmiles.dropincc.Grule;
-import com.github.pfmiles.dropincc.Lang;
-import com.github.pfmiles.dropincc.TokenDef;
-
-public class Calculator {
-    private static Exe exe = null;
-    /**
-     * &lt;pre&gt;
-     * calc ::= expr $
-     * expr ::= addend (('+'|'-') addend)*
-     * addend ::= factor (('\*'|'/') factor)*
-     * factor ::= '\d+(\.\d+)?'
-     *          | '(' expr ')'
-     * &lt;/pre&gt;
-     */
-    static {
-        // some elements' pre-definitions in order to call the methods
-        Lang calc = new Lang(&quot;Calc&quot;);
-        TokenDef a = calc.newToken(&quot;\\+&quot;);
-        TokenDef m = calc.newToken(&quot;\\*&quot;);
-        Grule expr = calc.newGrule();
-        Grule addend = calc.newGrule();
-        Grule factor = calc.newGrule();
-
-        // grammar definition starts here
-        calc.defineGrule(expr, CC.EOF).action(new Action&lt;Object[]&gt;() {
-            public Double act(Object[] ms) {
-                return (Double) ms[0];
-            }
-        });
-        expr.define(addend, CC.ks(a.or(&quot;\\-&quot;), addend)).action(new Action&lt;Object[]&gt;() {
-            public Double act(Object[] ms) {
-                Double a0 = (Double) ms[0];
-                Object[] others = (Object[]) ms[1];
-                for (Object other : others) {
-                    Object[] opAndFactor = (Object[]) other;
-                    if (&quot;+&quot;.equals(opAndFactor[0])) {
-                        a0 += (Double) opAndFactor[1];
-                    } else {
-                        a0 -= (Double) opAndFactor[1];
-                    }
-                }
-                return a0;
-            }
-        });
-        addend.define(factor, CC.ks(m.or(&quot;/&quot;), factor)).action(new Action&lt;Object[]&gt;() {
-            public Double act(Object[] ms) {
-                Double f0 = (Double) ms[0];
-                Object[] others = (Object[]) ms[1];
-                for (Object other : others) {
-                    Object[] opAndFactor = (Object[]) other;
-                    if (&quot;*&quot;.equals(opAndFactor[0])) {
-                        f0 *= (Double) opAndFactor[1];
-                    } else {
-                        f0 /= (Double) opAndFactor[1];
-                    }
-                }
-                return f0;
-            }
-        });
-        factor.define(&quot;\\d+(\\.\\d+)?&quot;).action(new Action&lt;String&gt;() {
-            public Double act(String matched) {
-                return Double.parseDouble(matched);
-            }
-        }).alt(&quot;\\(&quot;, expr, &quot;\\)&quot;).action(new Action&lt;Object[]&gt;() {
-            public Double act(Object[] ms) {
-                return (Double) ms[1];
-            }
-        });
-        // grammar definition end
-
-        exe = calc.compile();
-    }
-
-    public static void main(String... args) {
-        System.out.println(exe.eval(&quot;1 +2+3+(4 +5*6*7*(64/8/2/(2/1 )/1)*8  +9  )+   10&quot;));
-    }
-}
-</code></pre></noscript></div>
-</p>
+{% gist 3339604 %}</p>
 ]]></content>
   </entry>
   
@@ -489,66 +406,7 @@ After that, you can <code>compile</code> your grammar:</p>
 <p>Ok, we can now run the program again and could see it prints out the output: <code>aabc</code>, with all parentheses removed.</p>
 
 <p>The whole program in a gist:<br/>
-<div><script src='https://gist.github.com/3257023.js?file='></script>
-<noscript><pre><code>package test;
-
-import com.github.pfmiles.dropincc.Action;
-import com.github.pfmiles.dropincc.CC;
-import com.github.pfmiles.dropincc.Exe;
-import com.github.pfmiles.dropincc.Grule;
-import com.github.pfmiles.dropincc.Lang;
-import com.github.pfmiles.dropincc.TokenDef;
-
-public class Test {
-
-    /**
-     * &lt;pre&gt;
-     * S ::= L $
-     * L ::= Q*
-     * Q ::= 'a'
-     *     | 'bc'
-     *     | '(' Q ')'
-     * &lt;/pre&gt;
-     */
-    public static void main(String... args) throws Throwable {
-        Lang lang = new Lang(&quot;Dummy&quot;);
-        TokenDef a = lang.newToken(&quot;a&quot;);
-        TokenDef bc = lang.newToken(&quot;bc&quot;);
-        TokenDef lp = lang.newToken(&quot;\\(&quot;);
-        TokenDef rp = lang.newToken(&quot;\\)&quot;);
-        Grule L = lang.newGrule();
-        Grule Q = lang.newGrule();
-
-        lang.defineGrule(L, CC.EOF).action(new Action() {
-            public String act(Object matched) {
-                return (String) ((Object[]) matched)[0];
-            }
-        }); // S ::= L $
-        L.define(CC.ks(Q)).action(new Action() {
-            public String act(Object matched) {
-                Object[] ms = (Object[]) matched;
-                StringBuilder sb = new StringBuilder();
-                for (Object m : ms)
-                    sb.append(m);
-                return sb.toString();
-            }
-        });// L ::= Q*
-        /*
-         * Q ::= 'a' | 'bc' | '(' Q ')'
-         */
-        Q.define(a).alt(bc).alt(lp, Q, rp).action(new Action() {
-            public String act(Object matched) {
-                // returns the middle element matched, that's the returned value
-                // of the enclosing 'Q' rule
-                return (String) ((Object[]) matched)[1];
-            }
-        });
-
-        Exe exe = lang.compile();
-        System.out.println(exe.eval(&quot;a(a)((bc))&quot;));
-    }
-}</code></pre></noscript></div>
-
+{% gist 3257023 %}
 You can download and play around with it on your own.</p>
 
 <p>Dropincc.java is currently on its very initial stage. It has some major improvements to be done:</p>
