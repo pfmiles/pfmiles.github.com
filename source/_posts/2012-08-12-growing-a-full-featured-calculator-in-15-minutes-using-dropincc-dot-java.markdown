@@ -6,7 +6,7 @@ comments: true
 categories: [dropincc, DSL]
 keywords: "dropincc, java, calculator"
 ---
-First, let's create a empty java project in eclipse IDE, download newest playable dropincc.java jar file from [here](https://github.com/pfmiles/dropincc.java/downloads). Adding it to the build path of the project, like this(note: jdk1.6 or above required):  
+First, let's create a empty java project in eclipse IDE, download newest playable dropincc.java jar file from [here](https://github.com/pfmiles/dropincc.java/releases). Adding it to the build path of the project, like this(note: jdk1.6 or above required):  
 ![emptyProjWithJar](/images/dropincc/calc/emptyProjWithJar.png)  
 And then, create a new java source file to build our grammar, for example, `Calculator.java`.  
 We start by specifying the EBNF form of our expected calculator language. The calculator expression would do addition and subtraction operations and also multiplication and division operations which have a greater priority.  

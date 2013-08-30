@@ -24,7 +24,7 @@ There's a detailed *Quick Start* guide on the project page, it could guide you t
 
 ### A dummy language example.
 <!-- more -->
-Requires JDK 1.6 or above. Firstly, place the dropincc [jar file](https://github.com/downloads/pfmiles/dropincc.java/dropincc.java-0.1.0.jar) in your class path.  
+Requires JDK 1.6 or above. Firstly, place the dropincc [jar file](https://github.com/pfmiles/dropincc.java/releases) in your class path.  
 
 And then, crafting your language's [EBNF](http://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_Form) definition:  
 Let's define a language which accepts arbitrary numbers of quoted 'a' or 'bc'. For example: '(a)(bc)', '(bc)((a))' or '(((bc)))(bc)', the numbers of pairs of parentheses is unlimited.  
@@ -148,5 +148,3 @@ Dropincc.java is currently on its very initial stage. It has some major improvem
 * Due to some LL(\*) analysis issues, 'Non-LL regular' exceptions may be thrown when it encounters some special case of grammar rules. This must be fixed soon.
 
 There is a more practical **Hello World** example which implements a full-featured calculator in the quick start guide of dropincc.java. On its project [home page](https://github.com/pfmiles/dropincc.java). Go and check out there if you like.
-
-I created a [forum](http://dropincc-java.1068093.n5.nabble.com/) for dropincc.java, interested people could discuss about it in the forum. And you are welcomed to subscribe to the mailing list(there's a how to guide in the forum about subscribe to the mailing list).  
