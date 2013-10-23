@@ -1,24 +1,126 @@
-<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: java | Meta-Interpretation]]></title>
-  <link href="http://pfmiles.github.com/blog/category/java/atom.xml" rel="self"/>
-  <link href="http://pfmiles.github.com/"/>
-  <updated>2013-10-23T17:15:58+08:00</updated>
-  <id>http://pfmiles.github.com/</id>
-  <author>
-    <name><![CDATA[pf_miles]]></name>
-    <email><![CDATA[miles.wy.1@gmail.com]]></email>
-  </author>
-  <generator uri="http://octopress.org/">Octopress</generator>
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>动态的Java - 无废话JavaCompilerAPI中文指南 - Meta-Interpretation</title>
+  <meta name="author" content="pf_miles">
 
   
-  <entry>
-    <title type="html"><![CDATA[动态的Java - 无废话JavaCompilerAPI中文指南]]></title>
-    <link href="http://pfmiles.github.com/blog/dynamic-java"/>
-    <updated>2013-09-24T11:54:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/dynamic-java</id>
-    <content type="html"><![CDATA[<h1>JavaCompiler API</h1>
+  <meta name="description" content="JavaCompiler API 1.6之后JDK提供了一套compiler API，定义在JSR199中, 提供在运行期动态编译java代码为字节码的功能
+简单说来，这一套API就好比是在java程序中模拟javac程序，将java源文件编译为class文件； &hellip;">
+  <meta name="keywords" content="java, dynamic, 动态, compilerAPI, treeAPI, jsr199, eval, annotation">
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://pfmiles.github.com/blog/dynamic-java">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Meta-Interpretation" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-4513284-8']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Meta-Interpretation</a></h1>
+  
+    <h2>Code, better explained.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:pfmiles.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">动态的Java - 无废话JavaCompilerAPI中文指南</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-24T11:54:00+08:00" pubdate data-updated="true">Sep 24<span>th</span>, 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h1>JavaCompiler API</h1>
 
 <p>1.6之后JDK提供了一套compiler API，定义在<a href="http://jcp.org/en/jsr/detail?id=199">JSR199</a>中, 提供在运行期动态编译java代码为字节码的功能<br/>
 简单说来，这一套API就好比是在java程序中模拟javac程序，将java源文件编译为class文件；其提供的默认实现也正是在文件系统上进行查找、编译工作的，用起来感觉与javac基本一致;<br/>
@@ -222,7 +324,7 @@ return new CompilationResult(cls, loader);
 <p>下面想介绍的其实是另一个更进一步的话题：如何在动态编译的过程中分析被编译的源代码<br/>
 因为几乎所有打算用到java动态编译的应用场景，都会想要对被编译的代码做一些检查、review，以防编译运行了让人出乎意料的代码从而对系统造成破坏<br/>
 那么这个事情，除了人工review之外，一些简单的验证，完全可以在编译期自动地做到；而JavaCompiler Tree API就是用来做这个静态编译期检查的<br/>
-它的基本思路很简单，就是hook进编译的过程中，在java源码被parse成<a href="http://en.wikipedia.org/wiki/Abstract_syntax_tree">AST</a>的时候，使用visitor模式对该AST做遍历分析，以找出你需要定位的语法结构，这样来达到验证目的; 比如"如果发现assert语句就报错"或“不允许定义嵌套类”这样的检查都很容易做<br/>
+它的基本思路很简单，就是hook进编译的过程中，在java源码被parse成<a href="http://en.wikipedia.org/wiki/Abstract_syntax_tree">AST</a>的时候，使用visitor模式对该AST做遍历分析，以找出你需要定位的语法结构，这样来达到验证目的; 比如&#8221;如果发现assert语句就报错&#8221;或“不允许定义嵌套类”这样的检查都很容易做<br/>
 这之中的关键，当然是java的AST和其对应的visitor的实现了</p>
 
 <h2>Java的AST:</h2>
@@ -779,287 +881,254 @@ if (processors != null) task.setProcessors(processors);
 
 <p>有必要讨论下什么样的控制，适合用Tree API来做？<br/>
 总结起来应该是：静态的、简单的<br/>
-比如“不能定义内部类”、“不能写annotation”、"不能写assert语句"等<br/>
+比如“不能定义内部类”、“不能写annotation”、&#8221;不能写assert语句&#8221;等<br/>
 随着需求的复杂度增高，使用Tree API的编码成本也会增高，毕竟使用visitor来分析复杂的AST模式并非十分容易的事情<br/>
 比如上面的例子，“限制死循环”这种需求；如果说非常简单的死循环，比如<code>while(true)</code>，这种是非常好做的<br/>
-但如果稍微复杂一点, 比如<code>while(1&lt;2)</code>，那么这里势必会牵涉到一个"计算"过程，我们需要在分析过程中对<code>1&lt;2</code>这个表达式做出计算，从而知晓该循环语句是否死循环;虽然人眼对<code>1&lt;2</code>的结果一目了然，但这里靠程序来做的话，增加的复杂度还是相当可观的<br/>
+但如果稍微复杂一点, 比如<code>while(1&lt;2)</code>，那么这里势必会牵涉到一个&#8221;计算&#8221;过程，我们需要在分析过程中对<code>1&lt;2</code>这个表达式做出计算，从而知晓该循环语句是否死循环;虽然人眼对<code>1&lt;2</code>的结果一目了然，但这里靠程序来做的话，增加的复杂度还是相当可观的<br/>
 如果在继续复杂下去，可以想象，其开发成本会越来越高，且这个分析过程本身的“运行”成本也会越来越接近真正运行这段被分析的代码的成本，这个时候使用Tree API来做分析就不划算了  <br/>
 所以说，考虑到成本因素，Tree API并不适合做太复杂的分析<br/>
-其次就是"静态的"代码，才能在编译期做分析，如果是这样的代码:<code>while(x&lt;1)</code>，而<code>x</code>又是从方法参数中传入，那么<code>x</code>的值就完全在运行期才能确定，那么Tree API就无法判断该循环是否是死循环</p>
+其次就是&#8221;静态的&#8221;代码，才能在编译期做分析，如果是这样的代码:<code>while(x&lt;1)</code>，而<code>x</code>又是从方法参数中传入，那么<code>x</code>的值就完全在运行期才能确定，那么Tree API就无法判断该循环是否是死循环</p>
 
 <p>还有就是Tree API很容易让人联想到一个问题：可否在遍历AST的过程中改变AST的结构？<br/>
 这是个激动人心的话题，运行期改变源码的AST是一个想象空间很大的想法，就像在groovy和ruby中能办到的那样，这能成为一种强大的元编程机制<br/>
 不过，从java的Tree API规范上讲，是不能在遍历AST过程中修改AST的结构的，但目前有一个bug可以做到：<a href="http://scg.unibe.ch/archive/projects/Erni08b.pdf">Erni08b.pdf</a><br/>
 并且目前的<a href="http://projectlombok.org/">Project Lombok</a>就是基于此bug实现; 就未来的版本发展来讲，利用此bug来实现功能是不可靠的, Project Lombok的开发者对此也表示担心<br/>
 不过这个bug也不失为一种必要时的选择，毕竟通过它能实现的功能很酷</p>
-]]></content>
-  </entry>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
   
-  <entry>
-    <title type="html"><![CDATA[近期hessian反序列化问题总结与ThreadPoolExecutor使用心得]]></title>
-    <link href="http://pfmiles.github.com/blog/recently-hessian-deserialize-problem-and-thread-pool-executor-experience"/>
-    <updated>2013-05-05T14:53:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/recently-hessian-deserialize-problem-and-thread-pool-executor-experience</id>
-    <content type="html"><![CDATA[<p>最近工作中遇到一个诡异的问题：别人远程调用我们的系统暴露的服务，同步调用，底层使用hessian协议做序列化；<br/>
-调用方系统报空指针，反序列化失败：</p>
 
-<!-- more -->
+<span class="byline author vcard">Posted by <span class="fn">pf_miles</span></span>
+
+      
 
 
-<pre><code>2013-04-18 16:52:10,308 [AvatarRuleChargeService.java:74] [com.alibaba.itbu.billing.biz.adaptor.avatar.AvatarRuleChargeService] ERROR com.alibaba.itbu.billing.biz.adaptor.crm.ChargeProxy :: avatar charge sys error
-com.alibaba.dubbo.rpc.RpcException: Failed to invoke the method match in the service com.alibaba.china.ruleservice.RuleService. Tried 3 times of the providers [172.22.6.83:20980, 172.22.6.80:20980, 172.22.9.76:20980] (3/3) from the registry dubbo-reg1.hst.xyi.cn.alidc.net:9090 on the consumer 172.30.118.26 using the dubbo version 2.4.9. Last error is: Failed to invoke remote method: match, provider: dubbo://172.22.6.83:20980/com.alibaba.china.ruleservice.RuleService?anyhost=true&amp;application=billing&amp;check=false&amp;default.reference.filter=dragoon&amp;dubbo=2.4.9&amp;interface=com.alibaba.china.ruleservice.RuleService&amp;methods=match&amp;pid=18616&amp;revision=1.0-SNAPSHOT&amp;side=consumer&amp;timeout=5000&amp;timestamp=1366275108588&amp;version=1.0.0, cause: com.alibaba.com.caucho.hessian.io.HessianProtocolException: 'com.alibaba.china.ruleservice.RuleServiceImpl$DynamicPluginInvocationMatchedResult' could not be instantiated
-com.alibaba.com.caucho.hessian.io.HessianProtocolException: 'com.alibaba.china.ruleservice.RuleServiceImpl$DynamicPluginInvocationMatchedResult' could not be instantiated
-    at com.alibaba.com.caucho.hessian.io.JavaDeserializer.instantiate(JavaDeserializer.java:275)
-    at com.alibaba.com.caucho.hessian.io.JavaDeserializer.readObject(JavaDeserializer.java:155)
-    at com.alibaba.com.caucho.hessian.io.SerializerFactory.readObject(SerializerFactory.java:396)
-    at com.alibaba.com.caucho.hessian.io.Hessian2Input.readObjectInstance(Hessian2Input.java:2070)
-    at com.alibaba.com.caucho.hessian.io.Hessian2Input.readObject(Hessian2Input.java:2005)
-    at com.alibaba.com.caucho.hessian.io.Hessian2Input.readObject(Hessian2Input.java:1990)
-    at com.alibaba.com.caucho.hessian.io.Hessian2Input.readObject(Hessian2Input.java:1538)
-    at com.alibaba.dubbo.common.serialize.support.hessian.Hessian2ObjectInput.readObject(Hessian2ObjectInput.java:94)
-    at com.alibaba.dubbo.common.serialize.support.hessian.Hessian2ObjectInput.readObject(Hessian2ObjectInput.java:99)
-    at com.alibaba.dubbo.rpc.protocol.dubbo.DecodeableRpcResult.decode(DecodeableRpcResult.java:83)
-    at com.alibaba.dubbo.rpc.protocol.dubbo.DecodeableRpcResult.decode(DecodeableRpcResult.java:109)
-    at com.alibaba.dubbo.rpc.protocol.dubbo.DubboCodec.decodeBody(DubboCodec.java:97)
-    at com.alibaba.dubbo.remoting.exchange.codec.ExchangeCodec.decode(ExchangeCodec.java:128)
-    at com.alibaba.dubbo.remoting.exchange.codec.ExchangeCodec.decode(ExchangeCodec.java:87)
-    at com.alibaba.dubbo.rpc.protocol.dubbo.DubboCountCodec.decode(DubboCountCodec.java:49)
-    at com.alibaba.dubbo.remoting.transport.netty.NettyCodecAdapter$InternalDecoder.messageReceived(NettyCodecAdapter.java:135)
-    at org.jboss.netty.channel.SimpleChannelUpstreamHandler.handleUpstream(SimpleChannelUpstreamHandler.java:80)
-    at org.jboss.netty.channel.DefaultChannelPipeline.sendUpstream(DefaultChannelPipeline.java:564)
-    at org.jboss.netty.channel.DefaultChannelPipeline.sendUpstream(DefaultChannelPipeline.java:559)
-    at org.jboss.netty.channel.Channels.fireMessageReceived(Channels.java:274)
-    at org.jboss.netty.channel.Channels.fireMessageReceived(Channels.java:261)
-    at org.jboss.netty.channel.socket.nio.NioWorker.read(NioWorker.java:349)
-    at org.jboss.netty.channel.socket.nio.NioWorker.processSelectedKeys(NioWorker.java:280)
-    at org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:200)
-    at org.jboss.netty.util.ThreadRenamingRunnable.run(ThreadRenamingRunnable.java:108)
-    at org.jboss.netty.util.internal.DeadLockProofWorker$1.run(DeadLockProofWorker.java:44)
-    at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
-    at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
-    at java.lang.Thread.run(Thread.java:662)
-Caused by: java.lang.reflect.InvocationTargetException
-    at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
-    at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:39)
-    at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:27)
-    at java.lang.reflect.Constructor.newInstance(Constructor.java:513)
-    at com.alibaba.com.caucho.hessian.io.JavaDeserializer.instantiate(JavaDeserializer.java:271)
-    ... 28 more
-Caused by: java.lang.NullPointerException
-    at com.alibaba.china.ruleservice.RuleServiceImpl$DynamicPluginInvocationMatchedResult.&lt;init&gt;(RuleServiceImpl.java:163)
-    ... 33 more
 
-    at com.alibaba.dubbo.rpc.cluster.support.FailoverClusterInvoker.doInvoke(FailoverClusterInvoker.java:101)
-    at com.alibaba.dubbo.rpc.cluster.support.AbstractClusterInvoker.invoke(AbstractClusterInvoker.java:226)
-    at com.alibaba.dubbo.rpc.cluster.support.wrapper.MockClusterInvoker.invoke(MockClusterInvoker.java:72)
-    at com.alibaba.dubbo.rpc.proxy.InvokerInvocationHandler.invoke(InvokerInvocationHandler.java:52)
-    at com.alibaba.dubbo.common.bytecode.proxy1.match(proxy1.java)
-    at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-    at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
-    at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
-    at java.lang.reflect.Method.invoke(Method.java:597)
-    at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:307)
-    at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:182)
-    at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:149)
-    at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:88)
-    at com.alibaba.itbu.billing.framework.aop.OpenApiLogAspect.logExecuteTime(OpenApiLogAspect.java:38)
-    at sun.reflect.GeneratedMethodAccessor199.invoke(Unknown Source)
-    at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
-    at java.lang.reflect.Method.invoke(Method.java:597)
-    at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethodWithGivenArgs(AbstractAspectJAdvice.java:627)
-    at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethod(AbstractAspectJAdvice.java:616)
-    at org.springframework.aop.aspectj.AspectJAroundAdvice.invoke(AspectJAroundAdvice.java:64)
-    at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:171)
-    at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:89)
-    at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:171)
-    at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:204)
-    at $Proxy107.match(Unknown Source)
-    at com.alibaba.itbu.billing.biz.adaptor.avatar.AvatarRuleChargeService.chargeByFactor(AvatarRuleChargeService.java:72)
-    at com.alibaba.itbu.billing.biz.charge.times.RuleChargeByTimesProcessor.getChargeResult(RuleChargeByTimesProcessor.java:62)
-    at com.alibaba.itbu.billing.biz.charge.times.ChargeByTimesProcessor.charge(ChargeByTimesProcessor.java:117)
-    at com.alibaba.itbu.billing.biz.task.ChargeByIncInstantTimesTask.charge(ChargeByIncInstantTimesTask.java:174)
-    at com.alibaba.itbu.billing.biz.task.ChargeByIncInstantTimesTask$1.run(ChargeByIncInstantTimesTask.java:109)
-    at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
-    at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
-    at java.lang.Thread.run(Thread.java:662)
-Caused by: com.alibaba.dubbo.remoting.RemotingException: com.alibaba.com.caucho.hessian.io.HessianProtocolException: 'com.alibaba.china.ruleservice.RuleServiceImpl$DynamicPluginInvocationMatchedResult' could not be instantiated
-com.alibaba.com.caucho.hessian.io.HessianProtocolException: 'com.alibaba.china.ruleservice.RuleServiceImpl$DynamicPluginInvocationMatchedResult' could not be instantiated
-    at com.alibaba.com.caucho.hessian.io.JavaDeserializer.instantiate(JavaDeserializer.java:275)
-    at com.alibaba.com.caucho.hessian.io.JavaDeserializer.readObject(JavaDeserializer.java:155)
-    at com.alibaba.com.caucho.hessian.io.SerializerFactory.readObject(SerializerFactory.java:396)
-    at com.alibaba.com.caucho.hessian.io.Hessian2Input.readObjectInstance(Hessian2Input.java:2070)
-    at com.alibaba.com.caucho.hessian.io.Hessian2Input.readObject(Hessian2Input.java:2005)
-    at com.alibaba.com.caucho.hessian.io.Hessian2Input.readObject(Hessian2Input.java:1990)
-    at com.alibaba.com.caucho.hessian.io.Hessian2Input.readObject(Hessian2Input.java:1538)
-    at com.alibaba.dubbo.common.serialize.support.hessian.Hessian2ObjectInput.readObject(Hessian2ObjectInput.java:94)
-    at com.alibaba.dubbo.common.serialize.support.hessian.Hessian2ObjectInput.readObject(Hessian2ObjectInput.java:99)
-    at com.alibaba.dubbo.rpc.protocol.dubbo.DecodeableRpcResult.decode(DecodeableRpcResult.java:83)
-    at com.alibaba.dubbo.rpc.protocol.dubbo.DecodeableRpcResult.decode(DecodeableRpcResult.java:109)
-    at com.alibaba.dubbo.rpc.protocol.dubbo.DubboCodec.decodeBody(DubboCodec.java:97)
-    at com.alibaba.dubbo.remoting.exchange.codec.ExchangeCodec.decode(ExchangeCodec.java:128)
-    at com.alibaba.dubbo.remoting.exchange.codec.ExchangeCodec.decode(ExchangeCodec.java:87)
-    at com.alibaba.dubbo.rpc.protocol.dubbo.DubboCountCodec.decode(DubboCountCodec.java:49)
-    at com.alibaba.dubbo.remoting.transport.netty.NettyCodecAdapter$InternalDecoder.messageReceived(NettyCodecAdapter.java:135)
-    at org.jboss.netty.channel.SimpleChannelUpstreamHandler.handleUpstream(SimpleChannelUpstreamHandler.java:80)
-    at org.jboss.netty.channel.DefaultChannelPipeline.sendUpstream(DefaultChannelPipeline.java:564)
-    at org.jboss.netty.channel.DefaultChannelPipeline.sendUpstream(DefaultChannelPipeline.java:559)
-    at org.jboss.netty.channel.Channels.fireMessageReceived(Channels.java:274)
-    at org.jboss.netty.channel.Channels.fireMessageReceived(Channels.java:261)
-    at org.jboss.netty.channel.socket.nio.NioWorker.read(NioWorker.java:349)
-    at org.jboss.netty.channel.socket.nio.NioWorker.processSelectedKeys(NioWorker.java:280)
-    at org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:200)
-    at org.jboss.netty.util.ThreadRenamingRunnable.run(ThreadRenamingRunnable.java:108)
-    at org.jboss.netty.util.internal.DeadLockProofWorker$1.run(DeadLockProofWorker.java:44)
-    at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
-    at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
-    at java.lang.Thread.run(Thread.java:662)
-Caused by: java.lang.reflect.InvocationTargetException
-    at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
-    at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:39)
-    at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:27)
-    at java.lang.reflect.Constructor.newInstance(Constructor.java:513)
-    at com.alibaba.com.caucho.hessian.io.JavaDeserializer.instantiate(JavaDeserializer.java:271)
-    ... 28 more
-Caused by: java.lang.NullPointerException
-    at com.alibaba.china.ruleservice.RuleServiceImpl$DynamicPluginInvocationMatchedResult.&lt;init&gt;(RuleServiceImpl.java:163)
-    ... 33 more
 
-    at com.alibaba.dubbo.remoting.exchange.support.DefaultFuture.returnFromResponse(DefaultFuture.java:190)
-    at com.alibaba.dubbo.remoting.exchange.support.DefaultFuture.get(DefaultFuture.java:110)
-    at com.alibaba.dubbo.remoting.exchange.support.DefaultFuture.get(DefaultFuture.java:84)
-    at com.alibaba.dubbo.rpc.protocol.dubbo.DubboInvoker.doInvoke(DubboInvoker.java:96)
-    at com.alibaba.dubbo.rpc.protocol.AbstractInvoker.invoke(AbstractInvoker.java:144)
-    at com.alibaba.dubbo.rpc.listener.ListenerInvokerWrapper.invoke(ListenerInvokerWrapper.java:74)
-    at com.alibaba.dubbo.monitor.dragoon.filter.DragoonFilter.invoke0(DragoonFilter.java:82)
-    at com.alibaba.dubbo.monitor.dragoon.filter.DragoonFilter.invoke(DragoonFilter.java:34)
-    at com.alibaba.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:91)
-    at com.alibaba.dubbo.monitor.support.MonitorFilter.invoke(MonitorFilter.java:75)
-    at com.alibaba.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:91)
-    at com.alibaba.dubbo.rpc.protocol.dubbo.filter.FutureFilter.invoke(FutureFilter.java:53)
-    at com.alibaba.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:91)
-    at com.alibaba.dubbo.rpc.filter.ConsumerContextFilter.invoke(ConsumerContextFilter.java:48)
-    at com.alibaba.dubbo.rpc.protocol.ProtocolFilterWrapper$1.invoke(ProtocolFilterWrapper.java:91)
-    at com.alibaba.dubbo.rpc.protocol.InvokerWrapper.invoke(InvokerWrapper.java:53)
-    at com.alibaba.dubbo.rpc.cluster.support.FailoverClusterInvoker.doInvoke(FailoverClusterInvoker.java:77)
-    ... 32 more
-</code></pre>
 
-<p>看到这个日志第一反映是觉得<code>RuleServiceImpl.java:163</code>数据错误，抛空指针，但检查那块代码发现那个地方根本不可能抛空指针 —— 所有用到的变量都是<code>new</code>出来的；<br/>
-而且，依据调用方提供的错误日志的抛出时间，我在被调用方系统的所有机器的日志里查找了一遍，没有发现对应的服务端日志；照理说服务端抛空指针，服务端也会有对应日志，但没有任何线索...</p>
 
-<p>因此只好翻开了<code>JavaDeserializer.java:275</code>作检查，发现有这么一段：</p>
 
-<pre><code>  public JavaDeserializer(Class cl)
-  {
-    _type = cl;
-    _fieldMap = getFieldMap(cl);
 
-    _readResolve = getReadResolve(cl);
-
-    if (_readResolve != null) {
-      _readResolve.setAccessible(true);
-    }
-
-    Constructor []constructors = cl.getDeclaredConstructors();
-    long bestCost = Long.MAX_VALUE;
-
-    for (int i = 0; i &lt; constructors.length; i++) {
-      Class []param = constructors[i].getParameterTypes();
-      long cost = 0;
-
-      for (int j = 0; j &lt; param.length; j++) {
-    cost = 4 * cost;
-
-    if (Object.class.equals(param[j]))
-      cost += 1;
-    else if (String.class.equals(param[j]))
-      cost += 2;
-    else if (int.class.equals(param[j]))
-      cost += 3;
-    else if (long.class.equals(param[j]))
-      cost += 4;
-    else if (param[j].isPrimitive())
-      cost += 5;
-    else
-      cost += 6;
-      }
-
-      if (cost &lt; 0 || cost &gt; (1 &lt;&lt; 48))
-    cost = 1 &lt;&lt; 48;
-
-      cost += param.length &lt;&lt; 48;
-
-      if (cost &lt; bestCost) {
-        _constructor = constructors[i];
-        bestCost = cost;
-      }
-    }
-
-    if (_constructor != null) {
-      _constructor.setAccessible(true);
-      Class []params = _constructor.getParameterTypes();
-      _constructorArgs = new Object[params.length];
-      for (int i = 0; i &lt; params.length; i++) {
-        _constructorArgs[i] = getParamArg(params[i]);
-      }
-    }
-  }
-</code></pre>
-
-<p>看完这段后，再结合远程调用的返回结果类后恍然大悟：<br/>
-上面这段代码，是hessian在反序列化的时候，用于在被反序列化的类里面找一个“得分最低”的构造函数，反序列化时会加以调用;<br/>
-构造函数的“得分”规则大致是：参数越少得分越低；参数个数相同时，参数类型越接近JDK内置类得分越低<br/>
-而我们的调用返回的类只有一个构造函数，当然只有这个构造函数会被选中<br/>
-但是，hessian反序列化调用被选中的构造函数时，是这样来创造该构造函数需要的参数的：</p>
-
-<pre><code>protected static Object getParamArg(Class cl)
-  {
-    if (! cl.isPrimitive())
-      return null;
-    else if (boolean.class.equals(cl))
-      return Boolean.FALSE;
-    else if (byte.class.equals(cl))
-      return new Byte((byte) 0);
-    else if (short.class.equals(cl))
-      return new Short((short) 0);
-    else if (char.class.equals(cl))
-      return new Character((char) 0);
-    else if (int.class.equals(cl))
-      return new Integer(0);
-    else if (long.class.equals(cl))
-      return new Long(0);
-    else if (float.class.equals(cl))
-      return new Float(0);
-    else if (double.class.equals(cl))
-      return new Double(0);
-    else
-      throw new UnsupportedOperationException();
-  }
-</code></pre>
-
-<p>可以看到，如果参数不是<code>primitive</code>类型，会被<code>null</code>代替；但不巧的是我们的构造函数内部对该参数调用了一个方法，因此抛出了空指针...<br/>
-也就是说这个空指针是抛在客户端反序列化的时候而不是服务端内部，因此服务端当然找不到对应的错误日志了；<br/>
-解决的办法也很简单：可以新增一个无参构造函数(无参构造函数肯定“得分”最低一定会被选中)；或者修改代码保证任意参数为<code>null</code>的时候都不会出问题</p>
-
-<hr />
-
-<p>下面这个问题更有意思，说的是<code>ThreadPoolExecutor</code>的<code>RejectedExecutionHandler</code>的使用：</p>
-
-<pre><code>threadPool = new ThreadPoolExecutor(5, maxThreadNum, 5, TimeUnit.MINUTES, new SynchronousQueue&lt;Runnable&gt;(), tf,
-            new RejectedExecutionHandler() {
-                public void rejectedExecution(Runnable r, ThreadPoolExecutor e) {
-                    logger.error("Ep thread pool exhausted, epId: " + id + "!!");
-                    r.run();
-                }
-            });
-</code></pre>
-
-<p>这个代码是说，当我这个ThreadPool不够用，又不能再新增线程数的时候，由调用方线程自己来执行这个<code>Runnable</code>任务...<br/>
-本来这看上去没什么问题，问题出在这个<code>Runnable</code>本身的实现上 —— 它内部将执行它的线程block到了一个blocking queue上面，当调用方主线程亲自来执行它时，使得主线程再也回不去做它自己该做的事情了，因此会出大问题...<br/>
-所以这么看来，“当线程池不够用就让调用方线程自己来干”的这个策略在实际使用时要非常谨慎</p>
-
-<p>这个问题是通过一个方便的thread dump分析工具: <a href="https://java.net/projects/tda">tda</a>来查找的，因为出问题的这个应用是个多线程程序，有1600多个常驻线程，thread dump非常之大，肉眼直接看很不方便，但tda能将thread dump变得更友好易读，方便排查问题，在此推荐一下</p>
-]]></content>
-  </entry>
   
-</feed>
+
+
+<time datetime="2013-09-24T11:54:00+08:00" pubdate data-updated="true">Sep 24<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/category/java/'>java</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pfmiles.github.com/blog/dynamic-java" data-via="pf_miles" data-counturl="http://pfmiles.github.com/blog/dynamic-java" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/recently-hessian-deserialize-problem-and-thread-pool-executor-experience" title="Previous Post: 近期hessian反序列化问题总结与ThreadPoolExecutor使用心得">&laquo; 近期hessian反序列化问题总结与ThreadPoolExecutor使用心得</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div class="tex2jax_ignore">
+        <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+    </div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/dynamic-java">动态的Java - 无废话JavaCompilerAPI中文指南</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/recently-hessian-deserialize-problem-and-thread-pool-executor-experience">近期hessian反序列化问题总结与ThreadPoolExecutor使用心得</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/watch-mooc-videos-with-tsukuba-help-android-version">使用'Tsukuba Help'观看国外免费在线网络课程(android篇)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/what-does-a-template-engine-for-code-generation-look-like">用于代码生成的模板引擎应该是什么样子？</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/prime-numbers-less-than-n">Prime Numbers Less Than N</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Tag Cloud</h1>
+  <span id="tag-cloud"><a href='/blog/category/ai-class' style='font-size: 106.66666666666667%'>Ai-class(1)</a> <a href='/blog/category/algo-class' style='font-size: 113.33333333333333%'>Algo-class(2)</a> <a href='/blog/category/algorithm' style='font-size: 160.0%'>Algorithm(9)</a> <a href='/blog/category/comic' style='font-size: 106.66666666666667%'>Comic(1)</a> <a href='/blog/category/compiler' style='font-size: 133.33333333333334%'>Compiler(5)</a> <a href='/blog/category/computer' style='font-size: 106.66666666666667%'>Computer(1)</a> <a href='/blog/category/design' style='font-size: 106.66666666666667%'>Design(1)</a> <a href='/blog/category/dropincc' style='font-size: 153.33333333333334%'>Dropincc(8)</a> <a href='/blog/category/dsl' style='font-size: 120.0%'>Dsl(3)</a> <a href='/blog/category/interview' style='font-size: 126.66666666666667%'>Interview(4)</a> <a href='/blog/category/java' style='font-size: 113.33333333333333%'>Java(2)</a> <a href='/blog/category/life' style='font-size: 120.0%'>Life(3)</a> <a href='/blog/category/octopress' style='font-size: 106.66666666666667%'>Octopress(1)</a> <a href='/blog/category/performance' style='font-size: 106.66666666666667%'>Performance(1)</a> <a href='/blog/category/probability' style='font-size: 106.66666666666667%'>Probability(1)</a> <a href='/blog/category/programming' style='font-size: 113.33333333333333%'>Programming(2)</a> <a href='/blog/category/python' style='font-size: 106.66666666666667%'>Python(1)</a> <a href='/blog/category/translation' style='font-size: 106.66666666666667%'>Translation(1)</a> <a href='/blog/category/troubleshooting' style='font-size: 106.66666666666667%'>Troubleshooting(1)</a> </span>
+</section>
+<section>
+  <h1>Categories</h1>
+    <ul id="category-list"><li><a href='/blog/category/ai-class'>Ai-class (1)</a></li><li><a href='/blog/category/algo-class'>Algo-class (2)</a></li><li><a href='/blog/category/algorithm'>Algorithm (9)</a></li><li><a href='/blog/category/comic'>Comic (1)</a></li><li><a href='/blog/category/compiler'>Compiler (5)</a></li><li><a href='/blog/category/computer'>Computer (1)</a></li><li><a href='/blog/category/design'>Design (1)</a></li><li><a href='/blog/category/dropincc'>Dropincc (8)</a></li><li><a href='/blog/category/dsl'>Dsl (3)</a></li><li><a href='/blog/category/interview'>Interview (4)</a></li><li><a href='/blog/category/java'>Java (2)</a></li><li><a href='/blog/category/life'>Life (3)</a></li><li><a href='/blog/category/octopress'>Octopress (1)</a></li><li><a href='/blog/category/performance'>Performance (1)</a></li><li><a href='/blog/category/probability'>Probability (1)</a></li><li><a href='/blog/category/programming'>Programming (2)</a></li><li><a href='/blog/category/python'>Python (1)</a></li><li><a href='/blog/category/translation'>Translation (1)</a></li><li><a href='/blog/category/troubleshooting'>Troubleshooting (1)</a></li></ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/pfmiles">@pfmiles</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'pfmiles',
+            count: 3,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("pf_miles", 10, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/pf_miles" class="twitter-follow-button" data-show-count="false">Follow @pf_miles</a>
+  
+</section>
+
+
+<section>
+  <h1>On Delicious</h1>
+  <div id="delicious"></div>
+  <script type="text/javascript" src="http://feeds.delicious.com/v2/json/pf_miles?count=3&amp;sort=date&amp;callback=renderDeliciousLinks"></script>
+  <p><a href="http://delicious.com/pf_miles">My Delicious Bookmarks &raquo;</a></p>
+</section>
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/miles.wy.1@gmail.com?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - pf_miles -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'meta-interpretation';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://pfmiles.github.com/blog/dynamic-java';
+        var disqus_url = 'http://pfmiles.github.com/blog/dynamic-java';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
