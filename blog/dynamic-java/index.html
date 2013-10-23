@@ -301,7 +301,7 @@ return new CompilationResult(cls, loader);
 }
 </code></pre>
 
-<p>这样就算完成了一个基本的、不依赖实际的文件系统的动态编译过程</p>
+<p>之后只要调用方法<code>compile(className, source, null)</code>这样就算完成了一个基本的、不依赖实际的文件系统的动态编译过程</p>
 
 <h3>JavaFileManager的意义</h3>
 
@@ -331,7 +331,7 @@ return new CompilationResult(cls, loader);
 
 <p><a href="http://docs.oracle.com/javase/7/docs/jdk/api/javac/tree/com/sun/source/tree/package-summary.html">http://docs.oracle.com/javase/7/docs/jdk/api/javac/tree/com/sun/source/tree/package-summary.html</a><br/>
 上述链接给出了java的AST类结构，所有语法元素的节点都有<br/>
-而对应的visitor接口<code>TreeVisitor&lt;R,P&gt;</code>与AST形成标准的visitor模式<br/>
+而对应的visitor接口<code>TreeVisitor&lt;R,P&gt;</code>与AST形成了标准的visitor模式<br/>
 <code>TreeVisitor&lt;R,P&gt;</code>的默认实现及其用途:</p>
 
 <ol>
@@ -881,7 +881,7 @@ if (processors != null) task.setProcessors(processors);
 
 <p>有必要讨论下什么样的控制，适合用Tree API来做？<br/>
 总结起来应该是：静态的、简单的<br/>
-比如“不能定义内部类”、“不能写annotation”、&#8221;不能写assert语句&#8221;等<br/>
+比如“不能定义内部类”、“不能写annotation”、“不能写assert语句”等<br/>
 随着需求的复杂度增高，使用Tree API的编码成本也会增高，毕竟使用visitor来分析复杂的AST模式并非十分容易的事情<br/>
 比如上面的例子，“限制死循环”这种需求；如果说非常简单的死循环，比如<code>while(true)</code>，这种是非常好做的<br/>
 但如果稍微复杂一点, 比如<code>while(1&lt;2)</code>，那么这里势必会牵涉到一个&#8221;计算&#8221;过程，我们需要在分析过程中对<code>1&lt;2</code>这个表达式做出计算，从而知晓该循环语句是否死循环;虽然人眼对<code>1&lt;2</code>的结果一目了然，但这里靠程序来做的话，增加的复杂度还是相当可观的<br/>
