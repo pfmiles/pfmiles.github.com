@@ -6,7 +6,7 @@ comments: false
 sharing: true
 footer: true
 ---
-* I'm pf\_miles. A writer. I'm making contributions for all mankind.
+* I am pf\_miles. A writer. I'm making great contribution for all mankind.
     * Email: ![email](/images/email.png "email")
     * Twitter: [pf\_miles](https://twitter.com/pf_miles)
     * 新浪t: [pf\_miles](http://weibo.com/pfmiles)

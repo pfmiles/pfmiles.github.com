@@ -18,7 +18,7 @@ http://songshuhui.net/archives/84404
 ### 猫们在做什么
 ### 统治了地球，然后呢？
 在种间竞争中占了绝对优势，然后去做一个优胜物种该做的事  
-Eat what you like, and fuck with whom you want to.  
+Eat what you like, and fuck with whom you want to.(Ideally...)  
 #### 为什么我们阅读而不是挥剑？
 Why we read books rather than swing swords?  
 
