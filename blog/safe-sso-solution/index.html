@@ -5,14 +5,14 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>The Real World Tree - Meta-Interpretation</title>
+  <title>安全的免登方案 - Meta-Interpretation</title>
   <meta name="author" content="pf_miles">
 
   
-  <meta name="description" content="冈和金的约见，是在在世界之树的顶端, 这对奇特的父子，让无数人期待了15年&#8230; 以冈之见，这是世界最高的树(其实只是道听途说)&#8230; 然而金说： &#8230;真相是&#8230;它只是停止生长的一棵小树而已&#8230;
-因为..
-..营养不足&#8230;所以“ &hellip;">
-  <meta name="keywords" content="全职猎人, 世界之树, worldTree, HunterxHunter">
+  <meta name="description" content="免登 也就是用户在网站A已经登录，希望不必再重复登录过程，即可以登录状态访问网站B
+这其实是一种“信任交换”，即用户已经取得了网站A的信任，希望以一种安全的方式也取得网站B的信任
+从网站A免登到网站B的信任交换其实就是交换“登录cookie”, 很显然“交换登录cookie”只是“信任交换” &hellip;">
+  <meta name="keywords" content="免登, sso, 安全">
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -20,7 +20,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://pfmiles.github.com/blog/the-real-world-tree">
+  <link rel="canonical" href="http://pfmiles.github.com/blog/safe-sso-solution">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -96,7 +96,7 @@ MathJax.Hub.Config({
   
   <header>
     
-      <h1 class="entry-title">The Real World Tree</h1>
+      <h1 class="entry-title">安全的免登方案</h1>
     
     
       <p class="meta">
@@ -112,60 +112,65 @@ MathJax.Hub.Config({
   
 
 
-<time datetime="2012-07-21T23:50:00+08:00" pubdate data-updated="true">Jul 21<span>st</span>, 2012</time>
+<time datetime="2014-03-27T19:26:00+08:00" pubdate data-updated="true">Mar 27<span>th</span>, 2014</time>
+        
+         | <a href="#disqus_thread">Comments</a>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><h2>冈和金的约见，是在在世界之树的顶端, 这对奇特的父子，让无数人期待了15年&#8230;</h2>
+<div class="entry-content"><h2>免登</h2>
 
-<p><img src="/images/worldtree/tree1.png" alt="tree1" /></p>
+<ul>
+<li>也就是用户在网站A已经登录，希望不必再重复登录过程，即可以登录状态访问网站B</li>
+<li>这其实是一种“信任交换”，即用户已经取得了网站A的信任，希望以一种安全的方式也取得网站B的信任</li>
+<li>从网站A免登到网站B的信任交换其实就是交换“登录cookie”, 很显然“交换登录cookie”只是“信任交换”的一种情形；从普遍意义上讲，用户在系统A和系统B之间做“信任交换”，其实可以交换任意“信任凭证”，他们的原理都是大同小异的</li>
+</ul>
+
 
 <!-- more -->
 
 
-<h2>以冈之见，这是世界最高的树(其实只是道听途说)&#8230;</h2>
+<h2>面临的问题及解决方案</h2>
 
-<p><img src="/images/worldtree/tree2.png" alt="tree1" /></p>
+<p>想要安全地做“信任交换”，以从网站A免登到网站B举例，其实主要是要解决如下几个问题：</p>
 
-<h2>然而金说：</h2>
+<ol>
+<li>免登目标地址的合法性</li>
+<li>在任何一次跳转的过程中防止参数被篡改</li>
+<li>任何一次跳转链接都要具有短效性和一次性</li>
+<li>免登目标所接受的参数的合法性(如果有的话)</li>
+</ol>
 
-<blockquote><p>&#8230;真相是&#8230;它只是停止生长的一棵小树而已&#8230;<br/>
-因为..<br/>
-..营养不足&#8230;所以“只能成长到这地步”..</p></blockquote>
 
-<p><img src="/images/worldtree/tree3.png" alt="tree1" /></p>
+<p>第一个问题，“免登目标地址的合法性”，这是需要网站A解决的；建议网站A建立一个“合法的免登目标地址”列表，用以检测用户发起的免登请求的目标地址是否合法<br/>
+需要注意的是，一个“合法”的免登目标地址，不仅仅是域名合法就行了，也包括path部份；因为不排除会有人将用户骗至一个执行重要操作的目标url进行免登，比如&#8221;www.B.com/resetPassword.do&#8221;，这是应当避免的<br/>
+一般来讲，免登的目标地址应该是一个“无副作用”，无任何额外操作的类似于“主页”的地方，这样能杜绝上述情况发生</p>
 
-<h2>&#8220;真正的世界之树&#8230;&#8221;</h2>
+<p>第二个问题，“在任何一次跳转的过程中防止参数被篡改”，这显然是必要的；从http跳转这种行为本身来讲，每一次跳转，服务器端都失去一次对该请求行为的控制，客户端想要更改跳转请求的任何属性都轻而易举<br/>
+可以采用&#8221;数字签名&#8221;技术防止这种篡改；需要考虑的是，哪些数据需要被签名？这取决于该免登需求“在意”哪些数据被更改，一般来讲，都会对参数 + url进行签名，当然其它数据，如cookie也可以被包含在内<br/>
+由网站A负责加签，等请求经由客户端，在转发到网站B时，网站B会对请求进行验签; 这需要网站A和网站B事先约定好加签验签的密钥，一般来讲，对称的密钥串已经足够安全，只要密钥不被泄漏</p>
 
-<h2>&#8221;..扎根于山脉&#8230;&#8221;</h2>
+<p>第三个问题，“任何一次跳转链接都要具有短效性和一次性”，这也是显而易见的，否则客户端或搜索引擎只要将某个跳转中间阶段的url给搜录下来，那么就随时可以免登了；有不少实力雄厚的大网站都出过这样的问题<br/>
+这个问题可以通过“一次性令牌”方案简单解决，也就是说，跳转之前生成一个唯一的、一次性的、短期时效性的一个“令牌”，跳转到目标网站后在验证、作废该令牌<br/>
+至于是网站A还是网站B负责生成这个令牌，其实无所谓，只要保证令牌的生成过程是私密的就行了：</p>
 
-<h2>&#8220;&#8230;汲取岩浆..&#8221;</h2>
+<ul>
+<li>若网站A生成令牌，则直接将该令牌放入跳转请求中，客户端跳转到网站B后，由网站B调用网站A暴露的令牌验证接口(比如http形式的接口)验证并作废该令牌</li>
+<li>若网站B生成令牌，则跳转前网站A调用网站B的服务请求该令牌(注意该请求过程必须私密，一般不走http接口，若要走也需要有保密手段)，跳转后由网站B验证并作废该令牌</li>
+</ul>
 
-<h2>&#8220;穿破大气层尚能继续成长&#8230;&#8221;</h2>
 
-<p><img src="/images/worldtree/tree4.png" alt="tree1" /></p>
+<p>上述两种策略都可以，但看起来似乎由跳转发起方来做令牌的生成和提供验证接口比较好，这样省去远程调用令牌生成接口的麻烦</p>
 
-<h2>它就存在于这世界的<em>&#8220;外侧&#8221;</em>..</h2>
+<p>最后一个问题，“免登目标所接受的参数的合法性”；一般来讲，免登目标url是不建议带有参数的，但如果一定要带，那么是必需要网站B验证这些参数的合法性，以免恶意用户从一开始就传送一些非法参数过来</p>
 
-<p><img src="/images/worldtree/tree5.png" alt="tree1" /></p>
+<p>解决好了上述4个问题，也就是几次跳转，写好cookie，最终跳到目标页面上的事情了。</p>
 
-<h2>这才是学校不会教给你们的<strong>&#8220;真相&#8221;</strong>..金对自己的儿子说.</h2>
-
-<p><img src="/images/worldtree/tree6.png" alt="tree1" /><br/>
-<img src="/images/worldtree/tree7.png" alt="tree1" /><br/>
-<img src="/images/worldtree/tree8.png" alt="tree1" /></p>
-
-<h2>冈恍然：</h2>
-
-<p>原来我们熟知的“这个世界”，只是无比巨大的世界中的&#8230;<br/>
-<strong>“一小部分啊”</strong>&#8230;</p>
-
-<p><img src="/images/worldtree/tree9.png" alt="tree1" /></p>
-
-<h2>是的，它就在外面，outside .. of ..the world&#8230;</h2>
+<p>综上，一个典型的，由网站A免登到网站B，其跳转执行流程如下：<br/>
+<img src="/images/sso_seq.png" alt="免登流程" /></p>
 </div>
 
 
@@ -188,12 +193,12 @@ MathJax.Hub.Config({
   
 
 
-<time datetime="2012-07-21T23:50:00+08:00" pubdate data-updated="true">Jul 21<span>st</span>, 2012</time>
+<time datetime="2014-03-27T19:26:00+08:00" pubdate data-updated="true">Mar 27<span>th</span>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/category/comic/'>comic</a>, <a class='category' href='/blog/category/life/'>life</a>
+    <a class='category' href='/blog/category/design/'>design</a>
   
 </span>
 
@@ -202,7 +207,7 @@ MathJax.Hub.Config({
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pfmiles.github.com/blog/the-real-world-tree" data-via="pf_miles" data-counturl="http://pfmiles.github.com/blog/the-real-world-tree" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pfmiles.github.com/blog/safe-sso-solution" data-via="pf_miles" data-counturl="http://pfmiles.github.com/blog/safe-sso-solution" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -215,14 +220,20 @@ MathJax.Hub.Config({
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/concept-and-implementation-of-ll-star" title="Previous Post: LL(*)的概念与实现">&laquo; LL(*)的概念与实现</a>
+        <a class="basic-alignment left" href="/blog/dynamic-java" title="Previous Post: 动态的Java - 无废话JavaCompilerAPI中文指南">&laquo; 动态的Java - 无废话JavaCompilerAPI中文指南</a>
       
-      
-        <a class="basic-alignment right" href="/blog/dropincc-dot-java-the-ultimate-tool-to-create-dsls-in-java" title="Next Post: Dropincc.java, The Ultimate Tool to Create DSLs in Java">Dropincc.java, The Ultimate Tool to Create DSLs in Java &raquo;</a>
       
     </p>
   </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div class="tex2jax_ignore">
+        <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+    </div>
+  </section>
 
 </div>
 
@@ -342,6 +353,22 @@ MathJax.Hub.Config({
 
 </footer>
   
+
+<script type="text/javascript">
+      var disqus_shortname = 'meta-interpretation';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://pfmiles.github.com/blog/safe-sso-solution';
+        var disqus_url = 'http://pfmiles.github.com/blog/safe-sso-solution';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
 
 
 

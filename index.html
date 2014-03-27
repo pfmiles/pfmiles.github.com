@@ -9,8 +9,9 @@
   <meta name="author" content="pf_miles">
 
   
-  <meta name="description" content="JavaCompiler API 1.6之后JDK提供了一套compiler API，定义在JSR199中, 提供在运行期动态编译java代码为字节码的功能
-简单说来，这一套API就好比是在java程序中模拟javac程序，将java源文件编译为class文件； &hellip;">
+  <meta name="description" content="免登 也就是用户在网站A已经登录，希望不必再重复登录过程，即可以登录状态访问网站B
+这其实是一种“信任交换”，即用户已经取得了网站A的信任，希望以一种安全的方式也取得网站B的信任
+从网站A免登到网站B的信任交换其实就是交换“登录cookie”, 很显然“交换登录cookie”只是“信任交换” &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -92,6 +93,56 @@ MathJax.Hub.Config({
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/safe-sso-solution">安全的免登方案</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-27T19:26:00+08:00" pubdate data-updated="true">Mar 27<span>th</span>, 2014</time>
+        
+         | <a href="/blog/safe-sso-solution#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>免登</h2>
+
+<ul>
+<li>也就是用户在网站A已经登录，希望不必再重复登录过程，即可以登录状态访问网站B</li>
+<li>这其实是一种“信任交换”，即用户已经取得了网站A的信任，希望以一种安全的方式也取得网站B的信任</li>
+<li>从网站A免登到网站B的信任交换其实就是交换“登录cookie”, 很显然“交换登录cookie”只是“信任交换”的一种情形；从普遍意义上讲，用户在系统A和系统B之间做“信任交换”，其实可以交换任意“信任凭证”，他们的原理都是大同小异的</li>
+</ul>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/safe-sso-solution">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -589,77 +640,6 @@ There&#8217;s a detailed <em>Quick Start</em> guide on the project page, it coul
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/concept-and-implementation-of-ll-star">LL(*)的概念与实现</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-14T13:59:00+08:00" pubdate data-updated="true">Jul 14<span>th</span>, 2012</time>
-        
-         | <a href="/blog/concept-and-implementation-of-ll-star#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>概念和起源</h3>
-
-<p>LL(*)是由<a href="http://www.cs.usfca.edu/~parrt/">Terrence Parr</a>教授创造的，为使用<a href="http://en.wikipedia.org/wiki/LL_parsing">LL分析</a>的语法解析器做超前查看(look ahead)的一种算法。按照Parr教授的说法，这个算法从最初的想法至今的完善和调整已经历了15年。目前该算法的一个著名的实现在<a href="http://www.antlr.org/">antlr3</a>中。</p>
-
-<h3>特点，n言以蔽之&#8230;</h3>
-
-<ul>
-<li>对于语法产生式分支的预测判断，走LL分析路子的解析器，其能力完全取决于能超前查看多少个token。传统地讲，LL(1), LL(2)直至LL(k)，就是在讲该解析器能够在语法分析过程中超前查看1, 2, k&#8230;个token。</li>
-<li>而LL(*)的意思就是，它在语法解析的过程中，超前查看的token个数不是固定的，是可伸缩的，不过这一点LL(k)分析也能做到(在k范围之内&#8230;)；</li>
-<li>但是，LL(*)还能越过一些重复出现的token，“到达”这些重复出现的token之后的token来做分析，这一点LL(k)是无法办到的(LL(k)无法意识到有token在循环出现，不管情况如何，它都将在尝试k个token之后放弃)；</li>
-<li>如果将超前查看的决策逻辑画成DFA的话，就是这样的一种形式：<img src="/images/ll3.png" title="Look Ahead DFA" alt="Look Ahead DFA" />
-
-<ul>
-<li>这张图画的是这种语法规则的超前查看决策情况：<code>A ::= a b c | a b e</code>, 显然这是一个LL(3)语法；</li>
-<li>但是这样的语法: <code>A ::= a b* c | a b* e</code>是无法被LL(k)识别的，因为中间的<code>b*</code>代表“0个或多个b”(kleene闭包)，这并不是一个固定的重复次数，因此LL(k)无法识别，for any k&#8230;</li>
-<li>但是，LL(*)算法能够构造出这样的DFA来识别它：<img src="/images/llstar.png" title="LL(*) Look Ahead DFA" alt="LL(*) Look Ahead DFA" /></li>
-<li>也就是说，传统LL(k)的look ahead DFA是不带环的，而LL(*)算法能构造出带环的DFA来做判断，它能越过无穷多个存在于环上的token，从而“到达”环之后的token继续做判断。</li>
-</ul>
-</li>
-<li>上面的<code>A ::= a b* c | a b* e</code>语法使用了<a href="/blog/left-recursion-removal-using-kleene-closure/">&#8220;kleene闭包&#8221;表示法</a>来表示“0个或多个”，这种表示法在正则表达式中很常见；事实上，基于LL(*)算法实现的语法解析器生成器(比如antlr3)对Kleene闭包表示法特别友好，可以鼓励使用，还能顺便解决一些LL分析法所不允许的“<a href="http://en.wikipedia.org/wiki/Left_recursion">左递归</a>”。</li>
-<li>大多数情况来讲，LL(*)的识别能力弱于<a href="http://en.wikipedia.org/wiki/LR_parser">LR(k)</a>，但也有少数情况是LR(k)识别不了但LL(*)可以的，所以LL(*)与LR(k)之间并没有严格的强弱顺序。</li>
-<li>LL(*)本身对语法的识别能力也是有限的，比如它无法区分&#8221;具有相同的递归规则前缀&#8221;的多个分支，这种情况是要尽量避免的，大多数能够较容易地改写;</li>
-<li>对于LL(*)不能正确分析的情况，还能引入&#8221;Semantic Predicate&#8221;(语义断言)来辅助判断, Semantic Predicate可以是任何逻辑，只要返回一个bool值就行；有了Semantic Predicate的辅助，LL(*)甚至能够parse一些上下文相关的语法，实际上它能parse C++</li>
-</ul>
-
-
-<h3>主要算法及其实现(python)</h3>
-
-<p><strong> Parr教授在2011年发表的paper&#8221;LL(*): The Foundation of the ANTLR Parser Generator&#8221;中详细描述了这个算法，下面就是其主要过程，具体的代码实现(python)在工程<a href="https://github.com/pfmiles/llstar">llstar</a>中 </strong></p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/concept-and-implementation-of-ll-star">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -673,6 +653,10 @@ There&#8217;s a detailed <em>Quick Start</em> guide on the project page, it coul
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/safe-sso-solution">安全的免登方案</a>
+      </li>
     
       <li class="post">
         <a href="/blog/dynamic-java">动态的Java - 无废话JavaCompilerAPI中文指南</a>
@@ -690,19 +674,15 @@ There&#8217;s a detailed <em>Quick Start</em> guide on the project page, it coul
         <a href="/blog/what-does-a-template-engine-for-code-generation-look-like">用于代码生成的模板引擎应该是什么样子？</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/prime-numbers-less-than-n">Prime Numbers Less Than N</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Tag Cloud</h1>
-  <span id="tag-cloud"><a href='/blog/category/ai-class' style='font-size: 106.66666666666667%'>Ai-class(1)</a> <a href='/blog/category/algo-class' style='font-size: 113.33333333333333%'>Algo-class(2)</a> <a href='/blog/category/algorithm' style='font-size: 160.0%'>Algorithm(9)</a> <a href='/blog/category/comic' style='font-size: 106.66666666666667%'>Comic(1)</a> <a href='/blog/category/compiler' style='font-size: 133.33333333333334%'>Compiler(5)</a> <a href='/blog/category/computer' style='font-size: 106.66666666666667%'>Computer(1)</a> <a href='/blog/category/design' style='font-size: 106.66666666666667%'>Design(1)</a> <a href='/blog/category/dropincc' style='font-size: 153.33333333333334%'>Dropincc(8)</a> <a href='/blog/category/dsl' style='font-size: 120.0%'>Dsl(3)</a> <a href='/blog/category/interview' style='font-size: 126.66666666666667%'>Interview(4)</a> <a href='/blog/category/java' style='font-size: 113.33333333333333%'>Java(2)</a> <a href='/blog/category/life' style='font-size: 120.0%'>Life(3)</a> <a href='/blog/category/octopress' style='font-size: 106.66666666666667%'>Octopress(1)</a> <a href='/blog/category/performance' style='font-size: 106.66666666666667%'>Performance(1)</a> <a href='/blog/category/probability' style='font-size: 106.66666666666667%'>Probability(1)</a> <a href='/blog/category/programming' style='font-size: 113.33333333333333%'>Programming(2)</a> <a href='/blog/category/python' style='font-size: 106.66666666666667%'>Python(1)</a> <a href='/blog/category/translation' style='font-size: 106.66666666666667%'>Translation(1)</a> <a href='/blog/category/troubleshooting' style='font-size: 106.66666666666667%'>Troubleshooting(1)</a> </span>
+  <span id="tag-cloud"><a href='/blog/category/ai-class' style='font-size: 106.66666666666667%'>Ai-class(1)</a> <a href='/blog/category/algo-class' style='font-size: 113.33333333333333%'>Algo-class(2)</a> <a href='/blog/category/algorithm' style='font-size: 160.0%'>Algorithm(9)</a> <a href='/blog/category/comic' style='font-size: 106.66666666666667%'>Comic(1)</a> <a href='/blog/category/compiler' style='font-size: 133.33333333333334%'>Compiler(5)</a> <a href='/blog/category/computer' style='font-size: 106.66666666666667%'>Computer(1)</a> <a href='/blog/category/design' style='font-size: 113.33333333333333%'>Design(2)</a> <a href='/blog/category/dropincc' style='font-size: 153.33333333333334%'>Dropincc(8)</a> <a href='/blog/category/dsl' style='font-size: 120.0%'>Dsl(3)</a> <a href='/blog/category/interview' style='font-size: 126.66666666666667%'>Interview(4)</a> <a href='/blog/category/java' style='font-size: 113.33333333333333%'>Java(2)</a> <a href='/blog/category/life' style='font-size: 120.0%'>Life(3)</a> <a href='/blog/category/octopress' style='font-size: 106.66666666666667%'>Octopress(1)</a> <a href='/blog/category/performance' style='font-size: 106.66666666666667%'>Performance(1)</a> <a href='/blog/category/probability' style='font-size: 106.66666666666667%'>Probability(1)</a> <a href='/blog/category/programming' style='font-size: 113.33333333333333%'>Programming(2)</a> <a href='/blog/category/python' style='font-size: 106.66666666666667%'>Python(1)</a> <a href='/blog/category/translation' style='font-size: 106.66666666666667%'>Translation(1)</a> <a href='/blog/category/troubleshooting' style='font-size: 106.66666666666667%'>Troubleshooting(1)</a> </span>
 </section>
 <section>
   <h1>Categories</h1>
-    <ul id="category-list"><li><a href='/blog/category/ai-class'>Ai-class (1)</a></li><li><a href='/blog/category/algo-class'>Algo-class (2)</a></li><li><a href='/blog/category/algorithm'>Algorithm (9)</a></li><li><a href='/blog/category/comic'>Comic (1)</a></li><li><a href='/blog/category/compiler'>Compiler (5)</a></li><li><a href='/blog/category/computer'>Computer (1)</a></li><li><a href='/blog/category/design'>Design (1)</a></li><li><a href='/blog/category/dropincc'>Dropincc (8)</a></li><li><a href='/blog/category/dsl'>Dsl (3)</a></li><li><a href='/blog/category/interview'>Interview (4)</a></li><li><a href='/blog/category/java'>Java (2)</a></li><li><a href='/blog/category/life'>Life (3)</a></li><li><a href='/blog/category/octopress'>Octopress (1)</a></li><li><a href='/blog/category/performance'>Performance (1)</a></li><li><a href='/blog/category/probability'>Probability (1)</a></li><li><a href='/blog/category/programming'>Programming (2)</a></li><li><a href='/blog/category/python'>Python (1)</a></li><li><a href='/blog/category/translation'>Translation (1)</a></li><li><a href='/blog/category/troubleshooting'>Troubleshooting (1)</a></li></ul>
+    <ul id="category-list"><li><a href='/blog/category/ai-class'>Ai-class (1)</a></li><li><a href='/blog/category/algo-class'>Algo-class (2)</a></li><li><a href='/blog/category/algorithm'>Algorithm (9)</a></li><li><a href='/blog/category/comic'>Comic (1)</a></li><li><a href='/blog/category/compiler'>Compiler (5)</a></li><li><a href='/blog/category/computer'>Computer (1)</a></li><li><a href='/blog/category/design'>Design (2)</a></li><li><a href='/blog/category/dropincc'>Dropincc (8)</a></li><li><a href='/blog/category/dsl'>Dsl (3)</a></li><li><a href='/blog/category/interview'>Interview (4)</a></li><li><a href='/blog/category/java'>Java (2)</a></li><li><a href='/blog/category/life'>Life (3)</a></li><li><a href='/blog/category/octopress'>Octopress (1)</a></li><li><a href='/blog/category/performance'>Performance (1)</a></li><li><a href='/blog/category/probability'>Probability (1)</a></li><li><a href='/blog/category/programming'>Programming (2)</a></li><li><a href='/blog/category/python'>Python (1)</a></li><li><a href='/blog/category/translation'>Translation (1)</a></li><li><a href='/blog/category/troubleshooting'>Troubleshooting (1)</a></li></ul>
 </section>
 
 <section>
@@ -777,7 +757,7 @@ There&#8217;s a detailed <em>Quick Start</em> guide on the project page, it coul
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2013 - pf_miles -
+  Copyright &copy; 2014 - pf_miles -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
