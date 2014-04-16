@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: compiler | Meta-Interpretation]]></title>
-  <link href="http://pfmiles.github.com/blog/category/compiler/atom.xml" rel="self"/>
-  <link href="http://pfmiles.github.com/"/>
-  <updated>2014-03-28T10:28:01+08:00</updated>
-  <id>http://pfmiles.github.com/</id>
+  <link href="http://pfmiles.github.io/blog/category/compiler/atom.xml" rel="self"/>
+  <link href="http://pfmiles.github.io/"/>
+  <updated>2014-04-16T22:17:00+08:00</updated>
+  <id>http://pfmiles.github.io/</id>
   <author>
     <name><![CDATA[pf_miles]]></name>
     <email><![CDATA[miles.wy.1@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[用于代码生成的模板引擎应该是什么样子？]]></title>
-    <link href="http://pfmiles.github.com/blog/what-does-a-template-engine-for-code-generation-look-like"/>
+    <link href="http://pfmiles.github.io/blog/what-does-a-template-engine-for-code-generation-look-like"/>
     <updated>2012-09-13T15:27:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/what-does-a-template-engine-for-code-generation-look-like</id>
+    <id>http://pfmiles.github.io/blog/what-does-a-template-engine-for-code-generation-look-like</id>
     <content type="html"><![CDATA[<p>以前在做一个涉及代码生成的项目的时候，使用了velocity模板引擎来做这个代码生成；<br/>
 而事后发现，velocity有大部分的语法是我在代码生成过程中没有用到的；<br/>
 且velocity的引入，也导致引入了一些看起来很多余的jar包；<br/>
@@ -108,9 +108,9 @@ RANGE ::= '[' [0-9]+ '..' [0-9]+ ']'
   
   <entry>
     <title type="html"><![CDATA[Dropincc.java, The Ultimate Tool to Create DSLs in Java]]></title>
-    <link href="http://pfmiles.github.com/blog/dropincc-dot-java-the-ultimate-tool-to-create-dsls-in-java"/>
+    <link href="http://pfmiles.github.io/blog/dropincc-dot-java-the-ultimate-tool-to-create-dsls-in-java"/>
     <updated>2012-08-04T17:22:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/dropincc-dot-java-the-ultimate-tool-to-create-dsls-in-java</id>
+    <id>http://pfmiles.github.io/blog/dropincc-dot-java-the-ultimate-tool-to-create-dsls-in-java</id>
     <content type="html"><![CDATA[<h3>Initial version released.</h3>
 
 <p>Dropincc.java is a dynamic parser generator which allows you crafting your DSLs in pure java, using your favorite editor.<br/>
@@ -336,9 +336,9 @@ You can download and play around with it on your own.</p>
   
   <entry>
     <title type="html"><![CDATA[LL(*)的概念与实现]]></title>
-    <link href="http://pfmiles.github.com/blog/concept-and-implementation-of-ll-star"/>
+    <link href="http://pfmiles.github.io/blog/concept-and-implementation-of-ll-star"/>
     <updated>2012-07-14T13:59:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/concept-and-implementation-of-ll-star</id>
+    <id>http://pfmiles.github.io/blog/concept-and-implementation-of-ll-star</id>
     <content type="html"><![CDATA[<h3>概念和起源</h3>
 
 <p>LL(*)是由<a href="http://www.cs.usfca.edu/~parrt/">Terrence Parr</a>教授创造的，为使用<a href="http://en.wikipedia.org/wiki/LL_parsing">LL分析</a>的语法解析器做超前查看(look ahead)的一种算法。按照Parr教授的说法，这个算法从最初的想法至今的完善和调整已经历了15年。目前该算法的一个著名的实现在<a href="http://www.antlr.org/">antlr3</a>中。</p>
@@ -504,9 +504,9 @@ llstar工程是我花了不少时间实现并调试好的一块LL(*)算法的“
   
   <entry>
     <title type="html"><![CDATA[使用Kleene闭包语法糖消除语法中的左递归]]></title>
-    <link href="http://pfmiles.github.com/blog/left-recursion-removal-using-kleene-closure"/>
+    <link href="http://pfmiles.github.io/blog/left-recursion-removal-using-kleene-closure"/>
     <updated>2012-03-28T11:18:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/left-recursion-removal-using-kleene-closure</id>
+    <id>http://pfmiles.github.io/blog/left-recursion-removal-using-kleene-closure</id>
     <content type="html"><![CDATA[<p>一般来讲，如果使用的解析器生成器是基于LL分析法来解析文本的话(比如antlr)，我们就需要在编写语法规则的时候避免<a href="http://en.wikipedia.org/wiki/Left_recursion">左递归</a>。<br/>
 虽然有一套成熟的、公式化的方法来去除左递归，但它会影响原有文法的结合顺序、优先级，或者多出一些本不需要的、额外的产生式。<br/>
 例如，有左递归语法规则：</p>
@@ -553,9 +553,9 @@ llstar工程是我花了不少时间实现并调试好的一块LL(*)算法的“
   
   <entry>
     <title type="html"><![CDATA[Dropincc.java的概念与设计]]></title>
-    <link href="http://pfmiles.github.com/blog/the-main-ideas-and-concepts-of-dropincc-dot-java"/>
+    <link href="http://pfmiles.github.io/blog/the-main-ideas-and-concepts-of-dropincc-dot-java"/>
     <updated>2012-03-17T17:40:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/the-main-ideas-and-concepts-of-dropincc-dot-java</id>
+    <id>http://pfmiles.github.io/blog/the-main-ideas-and-concepts-of-dropincc-dot-java</id>
     <content type="html"><![CDATA[<h3>做这么个小lib的动机？</h3>
 
 <p>其实由于java语言先天缺陷的元编程能力，在java的圈子里很少有人提到“DSL”的概念，就算有也是说说而已。与之相比，一些其它语言ruby, python, lisp等等，得益于其强大的元编程能力，直接利用自身语法特性，取一块语法子集，利用一些对象、类生命周期切入函数或者宏系统两三下就DSL 'on-the-fly'了，这种便利性可能由java的设计目标来看，恐怕永远也无法达到了。<br/>

@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: dropincc | Meta-Interpretation]]></title>
-  <link href="http://pfmiles.github.com/blog/category/dropincc/atom.xml" rel="self"/>
-  <link href="http://pfmiles.github.com/"/>
-  <updated>2014-03-28T10:28:01+08:00</updated>
-  <id>http://pfmiles.github.com/</id>
+  <link href="http://pfmiles.github.io/blog/category/dropincc/atom.xml" rel="self"/>
+  <link href="http://pfmiles.github.io/"/>
+  <updated>2014-04-16T22:17:00+08:00</updated>
+  <id>http://pfmiles.github.io/</id>
   <author>
     <name><![CDATA[pf_miles]]></name>
     <email><![CDATA[miles.wy.1@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[用于代码生成的模板引擎应该是什么样子？]]></title>
-    <link href="http://pfmiles.github.com/blog/what-does-a-template-engine-for-code-generation-look-like"/>
+    <link href="http://pfmiles.github.io/blog/what-does-a-template-engine-for-code-generation-look-like"/>
     <updated>2012-09-13T15:27:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/what-does-a-template-engine-for-code-generation-look-like</id>
+    <id>http://pfmiles.github.io/blog/what-does-a-template-engine-for-code-generation-look-like</id>
     <content type="html"><![CDATA[<p>以前在做一个涉及代码生成的项目的时候，使用了velocity模板引擎来做这个代码生成；<br/>
 而事后发现，velocity有大部分的语法是我在代码生成过程中没有用到的；<br/>
 且velocity的引入，也导致引入了一些看起来很多余的jar包；<br/>
@@ -108,9 +108,9 @@ RANGE ::= '[' [0-9]+ '..' [0-9]+ ']'
   
   <entry>
     <title type="html"><![CDATA[Growing a Full-Featured Calculator in 15 Minutes Using Dropincc.java]]></title>
-    <link href="http://pfmiles.github.com/blog/growing-a-full-featured-calculator-in-15-minutes-using-dropincc-dot-java"/>
+    <link href="http://pfmiles.github.io/blog/growing-a-full-featured-calculator-in-15-minutes-using-dropincc-dot-java"/>
     <updated>2012-08-12T15:58:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/growing-a-full-featured-calculator-in-15-minutes-using-dropincc-dot-java</id>
+    <id>http://pfmiles.github.io/blog/growing-a-full-featured-calculator-in-15-minutes-using-dropincc-dot-java</id>
     <content type="html"><![CDATA[<p>First, let's create a empty java project in eclipse IDE, download newest playable dropincc.java jar file from <a href="https://github.com/pfmiles/dropincc.java/releases">here</a>. Adding it to the build path of the project, like this(note: jdk1.6 or above required):<br/>
 <img src="/images/dropincc/calc/emptyProjWithJar.png" alt="emptyProjWithJar" /><br/>
 And then, create a new java source file to build our grammar, for example, <code>Calculator.java</code>.<br/>
@@ -381,9 +381,9 @@ public class Calculator {
   
   <entry>
     <title type="html"><![CDATA[Ideas and Concepts behind Dropincc.java]]></title>
-    <link href="http://pfmiles.github.com/blog/ideas-and-concepts-behind-dropincc-dot-java"/>
+    <link href="http://pfmiles.github.io/blog/ideas-and-concepts-behind-dropincc-dot-java"/>
     <updated>2012-08-10T00:40:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/ideas-and-concepts-behind-dropincc-dot-java</id>
+    <id>http://pfmiles.github.io/blog/ideas-and-concepts-behind-dropincc-dot-java</id>
     <content type="html"><![CDATA[<h3>DSLs in java is hard.</h3>
 
 <p>DSLs are rarely discussed in java community. Or, at least comparing to other dynamic languages' world, DSLs in java is much harder to create.</p>
@@ -430,9 +430,9 @@ After you have done writing your grammar, they usually requires you to run a spe
   
   <entry>
     <title type="html"><![CDATA[Dropincc.java, The Ultimate Tool to Create DSLs in Java]]></title>
-    <link href="http://pfmiles.github.com/blog/dropincc-dot-java-the-ultimate-tool-to-create-dsls-in-java"/>
+    <link href="http://pfmiles.github.io/blog/dropincc-dot-java-the-ultimate-tool-to-create-dsls-in-java"/>
     <updated>2012-08-04T17:22:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/dropincc-dot-java-the-ultimate-tool-to-create-dsls-in-java</id>
+    <id>http://pfmiles.github.io/blog/dropincc-dot-java-the-ultimate-tool-to-create-dsls-in-java</id>
     <content type="html"><![CDATA[<h3>Initial version released.</h3>
 
 <p>Dropincc.java is a dynamic parser generator which allows you crafting your DSLs in pure java, using your favorite editor.<br/>
@@ -658,9 +658,9 @@ You can download and play around with it on your own.</p>
   
   <entry>
     <title type="html"><![CDATA[LL(*)的概念与实现]]></title>
-    <link href="http://pfmiles.github.com/blog/concept-and-implementation-of-ll-star"/>
+    <link href="http://pfmiles.github.io/blog/concept-and-implementation-of-ll-star"/>
     <updated>2012-07-14T13:59:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/concept-and-implementation-of-ll-star</id>
+    <id>http://pfmiles.github.io/blog/concept-and-implementation-of-ll-star</id>
     <content type="html"><![CDATA[<h3>概念和起源</h3>
 
 <p>LL(*)是由<a href="http://www.cs.usfca.edu/~parrt/">Terrence Parr</a>教授创造的，为使用<a href="http://en.wikipedia.org/wiki/LL_parsing">LL分析</a>的语法解析器做超前查看(look ahead)的一种算法。按照Parr教授的说法，这个算法从最初的想法至今的完善和调整已经历了15年。目前该算法的一个著名的实现在<a href="http://www.antlr.org/">antlr3</a>中。</p>

@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: algo-class | Meta-Interpretation]]></title>
-  <link href="http://pfmiles.github.com/blog/category/algo-class/atom.xml" rel="self"/>
-  <link href="http://pfmiles.github.com/"/>
-  <updated>2014-03-28T10:28:01+08:00</updated>
-  <id>http://pfmiles.github.com/</id>
+  <link href="http://pfmiles.github.io/blog/category/algo-class/atom.xml" rel="self"/>
+  <link href="http://pfmiles.github.io/"/>
+  <updated>2014-04-16T22:17:00+08:00</updated>
+  <id>http://pfmiles.github.io/</id>
   <author>
     <name><![CDATA[pf_miles]]></name>
     <email><![CDATA[miles.wy.1@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Algo-class第二周小记: Master Method]]></title>
-    <link href="http://pfmiles.github.com/blog/algo-class-week2-notes-master-method"/>
+    <link href="http://pfmiles.github.io/blog/algo-class-week2-notes-master-method"/>
     <updated>2012-04-03T11:40:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/algo-class-week2-notes-master-method</id>
+    <id>http://pfmiles.github.io/blog/algo-class-week2-notes-master-method</id>
     <content type="html"><![CDATA[<p>week2主要讲了master method，感觉从来没有听过如此清晰有条理的介绍master method的讲解，不得不佩服<a href="http://theory.stanford.edu/~tim/">Tim Roughgarden</a>教授的功力。<br/>
 从一些随课笔记总结起来，master method是用来预估divide and conquer算法的大O时间复杂度的公式；它要求divide的时候“所有sub-problems的规模都相等”才能适用。<br/>
 要使用master method, 首先要将算法的时间消耗函数写成递推公式形式：
@@ -69,9 +69,9 @@ Week2作业是快排...写个快排倒是简单，可是作业要求要count快�
   
   <entry>
     <title type="html"><![CDATA[[algo-class]第一周作业——Count Inversions]]></title>
-    <link href="http://pfmiles.github.com/blog/algo-class-week-one-assignment-counting-inversions"/>
+    <link href="http://pfmiles.github.io/blog/algo-class-week-one-assignment-counting-inversions"/>
     <updated>2012-03-25T15:41:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/algo-class-week-one-assignment-counting-inversions</id>
+    <id>http://pfmiles.github.io/blog/algo-class-week-one-assignment-counting-inversions</id>
     <content type="html"><![CDATA[<p><a href="http://algo-class.org">algo-class</a>还是挺有意思的，一上来就讲merge sort；介绍了分治法以及"piggyback"的思路...当作是复习吧：</p>
 
 <h3>分治法(divide and conquer)</h3>

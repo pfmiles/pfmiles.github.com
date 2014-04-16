@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: translation | Meta-Interpretation]]></title>
-  <link href="http://pfmiles.github.com/blog/category/translation/atom.xml" rel="self"/>
-  <link href="http://pfmiles.github.com/"/>
-  <updated>2014-03-28T10:28:01+08:00</updated>
-  <id>http://pfmiles.github.com/</id>
+  <link href="http://pfmiles.github.io/blog/category/translation/atom.xml" rel="self"/>
+  <link href="http://pfmiles.github.io/"/>
+  <updated>2014-04-16T22:17:00+08:00</updated>
+  <id>http://pfmiles.github.io/</id>
   <author>
     <name><![CDATA[pf_miles]]></name>
     <email><![CDATA[miles.wy.1@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[[翻译]Python性能诀窍]]></title>
-    <link href="http://pfmiles.github.com/blog/python-speed-performance-tips"/>
+    <link href="http://pfmiles.github.io/blog/python-speed-performance-tips"/>
     <updated>2012-02-05T18:45:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/python-speed-performance-tips</id>
+    <id>http://pfmiles.github.io/blog/python-speed-performance-tips</id>
     <content type="html"><![CDATA[<p><strong>以下文字译自<a href="http://wiki.python.org/moin/PythonSpeed/PerformanceTips">http://wiki.python.org/moin/PythonSpeed/PerformanceTips</a></strong></p>
 
 <p>这个页面提供了一些帮助改善你的python程序性能的一些点子或小技巧。<br/>

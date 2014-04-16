@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: design | Meta-Interpretation]]></title>
-  <link href="http://pfmiles.github.com/blog/category/design/atom.xml" rel="self"/>
-  <link href="http://pfmiles.github.com/"/>
-  <updated>2014-03-28T10:28:01+08:00</updated>
-  <id>http://pfmiles.github.com/</id>
+  <link href="http://pfmiles.github.io/blog/category/design/atom.xml" rel="self"/>
+  <link href="http://pfmiles.github.io/"/>
+  <updated>2014-04-16T22:17:00+08:00</updated>
+  <id>http://pfmiles.github.io/</id>
   <author>
     <name><![CDATA[pf_miles]]></name>
     <email><![CDATA[miles.wy.1@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[安全的免登方案]]></title>
-    <link href="http://pfmiles.github.com/blog/safe-sso-solution"/>
+    <link href="http://pfmiles.github.io/blog/safe-sso-solution"/>
     <updated>2014-03-27T19:26:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/safe-sso-solution</id>
+    <id>http://pfmiles.github.io/blog/safe-sso-solution</id>
     <content type="html"><![CDATA[<h2>免登</h2>
 
 <ul>
@@ -48,7 +48,8 @@
 
 <p>第二个问题，“在任何一次跳转的过程中防止参数被篡改”，这显然是必要的；从http跳转这种行为本身来讲，每一次跳转，服务器端都失去一次对该请求行为的控制，客户端想要更改跳转请求的任何属性都轻而易举<br/>
 可以采用"数字签名"技术防止这种篡改；需要考虑的是，哪些数据需要被签名？这取决于该免登需求“在意”哪些数据被更改，一般来讲，都会对请求参数进行签名，当然其它数据，如path也可以被包含在内，如果path带有业务信息的话<br/>
-由网站A负责加签，等请求经由客户端，在转发到网站B时，网站B会对请求进行验签; 这需要网站A和网站B事先约定好加签验签的密钥，一般来讲，对称的密钥串已经足够安全，只要密钥不被泄漏</p>
+由网站A负责加签，等请求经由客户端，在转发到网站B时，网站B会对请求进行验签; 这需要网站A和网站B事先约定好加签验签的密钥，一般来讲，对称的密钥串已经足够安全，只要密钥不被泄漏<br/>
+另外，如果需要确保每次跳转后，访问服务器的仍是同一个客户端，那么这个签名步骤也可将客户端的ip地址或“设备指纹”等数据一并加签，以便验证请求在跳转过程中是否被劫持;不过这么做的风险是，并不仅仅只有被劫持的情况才会在跳转过程中改变客户端的ip，也可能是其它正常情况，比如A、B网站之间不同的网络架构造成的获取客户端ip地址误差等等，需三思而后行</p>
 
 <p>第三个问题，“任何一次跳转链接都要具有短效性和一次性”，这也是显而易见的，否则客户端或搜索引擎只要将某个跳转中间阶段的url给收录下来，那么就随时可以免登了；有不少实力雄厚的大网站都出过这样的问题<br/>
 这个问题可以通过“一次性令牌”方案简单解决，也就是说，跳转之前生成一个唯一的、一次性的、短期时效性的一个“令牌”，跳转到目标网站后在验证、作废该令牌<br/>
@@ -74,9 +75,9 @@
   
   <entry>
     <title type="html"><![CDATA[dropincc.java API design]]></title>
-    <link href="http://pfmiles.github.com/blog/dropincc-dot-java-api-design"/>
+    <link href="http://pfmiles.github.io/blog/dropincc-dot-java-api-design"/>
     <updated>2012-03-18T16:29:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/dropincc-dot-java-api-design</id>
+    <id>http://pfmiles.github.io/blog/dropincc-dot-java-api-design</id>
     <content type="html"><![CDATA[<p><a href="https://github.com/pfmiles/dropincc.java">dropincc.java</a>为了使得用户能够在java语言中直接定义新语言的词法、语法规则，API设计采用了串接与组合(cascading &amp; composition)风格的<a href="http://martinfowler.com/bliki/FluentInterface.html">FluentInterface</a>形式。</p>
 
 <p>这种形式能够使得这一套API看起来更具有“业务语义”，而不需要像antlr等其它工具一样强迫用户去学习全新的另外一种含有业务语义的DSL。<br/>

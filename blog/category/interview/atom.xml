@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: interview | Meta-Interpretation]]></title>
-  <link href="http://pfmiles.github.com/blog/category/interview/atom.xml" rel="self"/>
-  <link href="http://pfmiles.github.com/"/>
-  <updated>2014-03-28T10:28:01+08:00</updated>
-  <id>http://pfmiles.github.com/</id>
+  <link href="http://pfmiles.github.io/blog/category/interview/atom.xml" rel="self"/>
+  <link href="http://pfmiles.github.io/"/>
+  <updated>2014-04-16T22:17:00+08:00</updated>
+  <id>http://pfmiles.github.io/</id>
   <author>
     <name><![CDATA[pf_miles]]></name>
     <email><![CDATA[miles.wy.1@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[[面试中的算法]编程判断两个链表是否相交]]></title>
-    <link href="http://pfmiles.github.com/blog/algorithms-in-job-interview-test-if-two-linked-lists-intersected"/>
+    <link href="http://pfmiles.github.io/blog/algorithms-in-job-interview-test-if-two-linked-lists-intersected"/>
     <updated>2012-03-06T23:30:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/algorithms-in-job-interview-test-if-two-linked-lists-intersected</id>
+    <id>http://pfmiles.github.io/blog/algorithms-in-job-interview-test-if-two-linked-lists-intersected</id>
     <content type="html"><![CDATA[<p>这是一道广为流传的题目: <a href="http://bop1.wikispaces.com/%E7%AC%AC%E4%B8%89%E7%AB%A0+%E7%BB%93%E6%9E%84%E4%B9%8B%E6%B3%95#x-%E7%AC%AC3%E7%AB%A0%20%E7%BB%93%E6%9E%84%E4%B9%8B%E6%B3%95%E2%80%94%E2%80%94%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8F%8A%E9%93%BE%E8%A1%A8%E7%9A%84%E6%8E%A2%E7%B4%A2-3.6%E7%BC%96%E7%A8%8B%E5%88%A4%E6%96%AD%E4%B8%A4%E4%B8%AA%E9%93%BE%E8%A1%A8%E6%98%AF%E5%90%A6%E7%9B%B8%E4%BA%A4">编程判断两个链表是否相交</a>;原题假设“不带环”，所以只要想通了之后很简单；但是，若要考虑带环的情况，那么要注意的点就很多了。
 其实可以把无环和有环的情况全都包括在一个方法实现内解决。</p>
 
@@ -182,9 +182,9 @@ Node* has_circle(Node* head) {
   
   <entry>
     <title type="html"><![CDATA[[面试中的算法]求子数组的最大和]]></title>
-    <link href="http://pfmiles.github.com/blog/algorithms-in-job-interview-max-sum-sub-list"/>
+    <link href="http://pfmiles.github.io/blog/algorithms-in-job-interview-max-sum-sub-list"/>
     <updated>2012-02-28T22:48:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/algorithms-in-job-interview-max-sum-sub-list</id>
+    <id>http://pfmiles.github.io/blog/algorithms-in-job-interview-max-sum-sub-list</id>
     <content type="html"><![CDATA[<p>此问题由<a href="http://blog.csdn.net/v_JULY_v/article/details/6050133">v_JULY_v</a>整理发布并发表于<a href="http://blog.csdn.net/v_JULY_v">blog</a>上, 版权归原作者所有。</p>
 
 <p><strong>输入一个整形数组,数组里有正数也有负数。
@@ -223,9 +223,9 @@ print greatestSumSubList([1, -2, 3, 10, -4, 7, 2, -5])
   
   <entry>
     <title type="html"><![CDATA[[面试中的算法]设计包含min函数的栈]]></title>
-    <link href="http://pfmiles.github.com/blog/algorithms-in-job-interview-design-a-stack-with-min-function"/>
+    <link href="http://pfmiles.github.io/blog/algorithms-in-job-interview-design-a-stack-with-min-function"/>
     <updated>2012-02-28T00:14:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/algorithms-in-job-interview-design-a-stack-with-min-function</id>
+    <id>http://pfmiles.github.io/blog/algorithms-in-job-interview-design-a-stack-with-min-function</id>
     <content type="html"><![CDATA[<p>此问题由<a href="http://blog.csdn.net/v_JULY_v/article/details/6050133">v_JULY_v</a>整理发布并发表于<a href="http://blog.csdn.net/v_JULY_v">blog</a>上, 版权归原作者所有。</p>
 
 <p><strong>问题描述：定义栈的数据结构,要求添加一个 min 函数,能够得到栈的最小元素, 要求函数 min、push 以及 pop 的时间复杂度都是 O(1)</strong></p>
@@ -274,9 +274,9 @@ print stack.pop() # 9 expected
   
   <entry>
     <title type="html"><![CDATA[[面试中的算法]把二元查找树转变成排序的双向链表]]></title>
-    <link href="http://pfmiles.github.com/blog/algorithms-in-job-interview-turn-binary-search-tree-to-doubly-linked-list"/>
+    <link href="http://pfmiles.github.io/blog/algorithms-in-job-interview-turn-binary-search-tree-to-doubly-linked-list"/>
     <updated>2012-02-27T23:26:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/algorithms-in-job-interview-turn-binary-search-tree-to-doubly-linked-list</id>
+    <id>http://pfmiles.github.io/blog/algorithms-in-job-interview-turn-binary-search-tree-to-doubly-linked-list</id>
     <content type="html"><![CDATA[<p>此问题由<a href="http://blog.csdn.net/v_JULY_v/article/details/6050133">v_JULY_v</a>整理发布并发表于<a href="http://blog.csdn.net/v_JULY_v">blog</a>上, 版权归原作者所有。</p>
 
 <p><strong>问题描述：输入一棵二元查找树,将该二元查找树转换成一个排序的双向链表。要求不能创建任何新的结点,只调整指针的指向</strong></p>

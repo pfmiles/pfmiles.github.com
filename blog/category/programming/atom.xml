@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: programming | Meta-Interpretation]]></title>
-  <link href="http://pfmiles.github.com/blog/category/programming/atom.xml" rel="self"/>
-  <link href="http://pfmiles.github.com/"/>
-  <updated>2014-03-28T10:28:01+08:00</updated>
-  <id>http://pfmiles.github.com/</id>
+  <link href="http://pfmiles.github.io/blog/category/programming/atom.xml" rel="self"/>
+  <link href="http://pfmiles.github.io/"/>
+  <updated>2014-04-16T22:17:00+08:00</updated>
+  <id>http://pfmiles.github.io/</id>
   <author>
     <name><![CDATA[pf_miles]]></name>
     <email><![CDATA[miles.wy.1@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[[编程之美]寻找最大的k个数]]></title>
-    <link href="http://pfmiles.github.com/blog/find-the-max-k-numbers"/>
+    <link href="http://pfmiles.github.io/blog/find-the-max-k-numbers"/>
     <updated>2012-03-02T13:37:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/find-the-max-k-numbers</id>
+    <id>http://pfmiles.github.io/blog/find-the-max-k-numbers</id>
     <content type="html"><![CDATA[<p>《编程之美》上的一道题： <a href="http://bop1.wikispaces.com/%E7%AC%AC%E4%BA%8C%E7%AB%A0+%E6%95%B0%E5%AD%97%E4%B9%8B%E9%AD%85#x-2.5%20%E5%AF%BB%E6%89%BE%E6%9C%80%E5%A4%A7%E7%9A%84K%E4%B8%AA%E6%95%B0%20%E2%98%85%E2%98%85%E2%98%85">wiki链接</a>;
 其实在<a href="http://blog.csdn.net/v_JULY_v/article/details/6370650">July的文章里有更加深刻的分析</a>，我这里只是用最小堆的方式实现一遍，体会和总结一下。</p>
 
@@ -125,9 +125,9 @@ int main(int args, char** argv) {
   
   <entry>
     <title type="html"><![CDATA[跟踪递归函数路径的方法]]></title>
-    <link href="http://pfmiles.github.com/blog/trace-the-path-of-recursive-function"/>
+    <link href="http://pfmiles.github.io/blog/trace-the-path-of-recursive-function"/>
     <updated>2012-02-29T00:04:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/trace-the-path-of-recursive-function</id>
+    <id>http://pfmiles.github.io/blog/trace-the-path-of-recursive-function</id>
     <content type="html"><![CDATA[<p>有些时候，需要追踪递归函数的路径；比如：递归地遍历一棵树，当找到符合要求的节点时，打印出从根节点到此节点的路径。</p>
 
 <p>这种时候，若子节点不持有到父节点的指针，则需要对路径进行随时地记录，以便需要时能够获取；</p>

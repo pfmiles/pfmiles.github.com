@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: octopress | Meta-Interpretation]]></title>
-  <link href="http://pfmiles.github.com/blog/category/octopress/atom.xml" rel="self"/>
-  <link href="http://pfmiles.github.com/"/>
-  <updated>2014-03-28T10:28:01+08:00</updated>
-  <id>http://pfmiles.github.com/</id>
+  <link href="http://pfmiles.github.io/blog/category/octopress/atom.xml" rel="self"/>
+  <link href="http://pfmiles.github.io/"/>
+  <updated>2014-04-16T22:17:00+08:00</updated>
+  <id>http://pfmiles.github.io/</id>
   <author>
     <name><![CDATA[pf_miles]]></name>
     <email><![CDATA[miles.wy.1@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Liquid Error about regexp match when using octopress-tagcloud]]></title>
-    <link href="http://pfmiles.github.com/blog/liquid-error-about-regexp-match-when-using-octopress-tagcloud"/>
+    <link href="http://pfmiles.github.io/blog/liquid-error-about-regexp-match-when-using-octopress-tagcloud"/>
     <updated>2012-03-14T19:33:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/liquid-error-about-regexp-match-when-using-octopress-tagcloud</id>
+    <id>http://pfmiles.github.io/blog/liquid-error-about-regexp-match-when-using-octopress-tagcloud</id>
     <content type="html"><![CDATA[<p>Octopress插件：<a href="https://github.com/tokkonopapa/octopress-tagcloud">octopress-tagcloud</a>相当nice，不过在使用的时候，若是blog整体采用了非ascii码的编码格式(比如utf-8)就会出现类似这样的错误：</p>
 
 <pre><code>Liquid error: incompatible encoding regexp match (ascii-8bit regexp with utf-8 string)

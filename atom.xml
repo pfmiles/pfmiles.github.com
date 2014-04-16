@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Meta-Interpretation]]></title>
-  <link href="http://pfmiles.github.com/atom.xml" rel="self"/>
-  <link href="http://pfmiles.github.com/"/>
-  <updated>2014-03-28T10:28:01+08:00</updated>
-  <id>http://pfmiles.github.com/</id>
+  <link href="http://pfmiles.github.io/atom.xml" rel="self"/>
+  <link href="http://pfmiles.github.io/"/>
+  <updated>2014-04-16T22:17:00+08:00</updated>
+  <id>http://pfmiles.github.io/</id>
   <author>
     <name><![CDATA[pf_miles]]></name>
     <email><![CDATA[miles.wy.1@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[安全的免登方案]]></title>
-    <link href="http://pfmiles.github.com/blog/safe-sso-solution"/>
+    <link href="http://pfmiles.github.io/blog/safe-sso-solution"/>
     <updated>2014-03-27T19:26:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/safe-sso-solution</id>
+    <id>http://pfmiles.github.io/blog/safe-sso-solution</id>
     <content type="html"><![CDATA[<h2>免登</h2>
 
 <ul>
@@ -48,7 +48,8 @@
 
 <p>第二个问题，“在任何一次跳转的过程中防止参数被篡改”，这显然是必要的；从http跳转这种行为本身来讲，每一次跳转，服务器端都失去一次对该请求行为的控制，客户端想要更改跳转请求的任何属性都轻而易举<br/>
 可以采用&#8221;数字签名&#8221;技术防止这种篡改；需要考虑的是，哪些数据需要被签名？这取决于该免登需求“在意”哪些数据被更改，一般来讲，都会对请求参数进行签名，当然其它数据，如path也可以被包含在内，如果path带有业务信息的话<br/>
-由网站A负责加签，等请求经由客户端，在转发到网站B时，网站B会对请求进行验签; 这需要网站A和网站B事先约定好加签验签的密钥，一般来讲，对称的密钥串已经足够安全，只要密钥不被泄漏</p>
+由网站A负责加签，等请求经由客户端，在转发到网站B时，网站B会对请求进行验签; 这需要网站A和网站B事先约定好加签验签的密钥，一般来讲，对称的密钥串已经足够安全，只要密钥不被泄漏<br/>
+另外，如果需要确保每次跳转后，访问服务器的仍是同一个客户端，那么这个签名步骤也可将客户端的ip地址或“设备指纹”等数据一并加签，以便验证请求在跳转过程中是否被劫持;不过这么做的风险是，并不仅仅只有被劫持的情况才会在跳转过程中改变客户端的ip，也可能是其它正常情况，比如A、B网站之间不同的网络架构造成的获取客户端ip地址误差等等，需三思而后行</p>
 
 <p>第三个问题，“任何一次跳转链接都要具有短效性和一次性”，这也是显而易见的，否则客户端或搜索引擎只要将某个跳转中间阶段的url给收录下来，那么就随时可以免登了；有不少实力雄厚的大网站都出过这样的问题<br/>
 这个问题可以通过“一次性令牌”方案简单解决，也就是说，跳转之前生成一个唯一的、一次性的、短期时效性的一个“令牌”，跳转到目标网站后在验证、作废该令牌<br/>
@@ -68,15 +69,15 @@
 <p>解决好了上述4个问题，也就是几次跳转，写好cookie，最终跳到目标页面上的事情了。</p>
 
 <p>综上，一个典型的，由网站A免登到网站B，其跳转执行流程如下：<br/>
-<img src="http://pfmiles.github.com/images/sso_seq.png" alt="免登流程" /></p>
+<img src="http://pfmiles.github.io/images/sso_seq.png" alt="免登流程" /></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[动态的Java - 无废话JavaCompilerAPI中文指南]]></title>
-    <link href="http://pfmiles.github.com/blog/dynamic-java"/>
+    <link href="http://pfmiles.github.io/blog/dynamic-java"/>
     <updated>2013-09-24T11:54:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/dynamic-java</id>
+    <id>http://pfmiles.github.io/blog/dynamic-java</id>
     <content type="html"><![CDATA[<h1>JavaCompiler API</h1>
 
 <p>1.6之后JDK提供了一套compiler API，定义在<a href="http://jcp.org/en/jsr/detail?id=199">JSR199</a>中, 提供在运行期动态编译java代码为字节码的功能<br/>
@@ -856,9 +857,9 @@ if (processors != null) task.setProcessors(processors);
   
   <entry>
     <title type="html"><![CDATA[近期hessian反序列化问题总结与ThreadPoolExecutor使用心得]]></title>
-    <link href="http://pfmiles.github.com/blog/recently-hessian-deserialize-problem-and-thread-pool-executor-experience"/>
+    <link href="http://pfmiles.github.io/blog/recently-hessian-deserialize-problem-and-thread-pool-executor-experience"/>
     <updated>2013-05-05T14:53:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/recently-hessian-deserialize-problem-and-thread-pool-executor-experience</id>
+    <id>http://pfmiles.github.io/blog/recently-hessian-deserialize-problem-and-thread-pool-executor-experience</id>
     <content type="html"><![CDATA[<p>最近工作中遇到一个诡异的问题：别人远程调用我们的系统暴露的服务，同步调用，底层使用hessian协议做序列化；<br/>
 调用方系统报空指针，反序列化失败：</p>
 
@@ -1123,9 +1124,9 @@ Caused by: java.lang.NullPointerException
   
   <entry>
     <title type="html"><![CDATA[使用'Tsukuba Help'观看国外免费在线网络课程(android篇)]]></title>
-    <link href="http://pfmiles.github.com/blog/watch-mooc-videos-with-tsukuba-help-android-version"/>
+    <link href="http://pfmiles.github.io/blog/watch-mooc-videos-with-tsukuba-help-android-version"/>
     <updated>2013-03-17T11:56:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/watch-mooc-videos-with-tsukuba-help-android-version</id>
+    <id>http://pfmiles.github.io/blog/watch-mooc-videos-with-tsukuba-help-android-version</id>
     <content type="html"><![CDATA[<p>目前在<a href="https://www.coursera.org/">Coursera.org</a>, <a href="https://www.udacity.com/">udacity.com</a>, <a href="https://www.edx.org/">edx.org</a>等网站都提供有丰富的、高质量的在线视频课程可学习；<br/>
 虽然国内也有网易公开课等视频课程项目(其课程来源仍是上述国外网站)，但数量相对较少且翻译也跟不上，而且，更重要的是，这些在线课程往往随堂提供有课后作业，如果你想同一时间与来自世界各地的同学一起交作业、一起讨论的话，用网易公开课平台是无法达到的；<br/>
 (当然我没有说网易公开课不好，在这里我要向网易致敬！)<br/>
@@ -1137,29 +1138,29 @@ Caused by: java.lang.NullPointerException
 <p>以目前的android街机三星Galaxy Note2为例(Android 4.1)：</p>
 
 <ol>
-<li>打开浏览器，访问如图所示的网页: <img src="http://pfmiles.github.com/images/tsukuba/android_tsukuba1.png" alt="android 1" /><br/>
+<li>打开浏览器，访问如图所示的网页: <img src="http://pfmiles.github.io/images/tsukuba/android_tsukuba1.png" alt="android 1" /><br/>
 这个页面上面有许多ip地址等信息，并且每过2小时会刷新&#8230;而且越靠上的ip地址其服务质量越好&#8230;</li>
-<li>对于android，要使用L2TP/IPSEC方式连接，因此我们找到&#8221;Support L2TP/IPSEC&#8221;这一列： <img src="http://pfmiles.github.com/images/tsukuba/android_tsukuba2.png" alt="android 2" /><br/>
+<li>对于android，要使用L2TP/IPSEC方式连接，因此我们找到&#8221;Support L2TP/IPSEC&#8221;这一列： <img src="http://pfmiles.github.io/images/tsukuba/android_tsukuba2.png" alt="android 2" /><br/>
 注意这一列中标有&#8221;yes&#8221;字样的行，就是你的目标！</li>
-<li>将刚才看到的&#8221;Support L2TP/IPSEC&#8221;这一列为“yes”的这一行的ip地址拷下来: <img src="http://pfmiles.github.com/images/tsukuba/android_tsukuba3.png" alt="android 2" /></li>
-<li>打开“设定”， 点击“更多设置”: <img src="http://pfmiles.github.com/images/tsukuba/android_tsukuba4.png" alt="android 2" /></li>
-<li>点开如图所示的选项后进去“新建”: <img src="http://pfmiles.github.com/images/tsukuba/android_tsukuba5.png" alt="android 2" /></li>
+<li>将刚才看到的&#8221;Support L2TP/IPSEC&#8221;这一列为“yes”的这一行的ip地址拷下来: <img src="http://pfmiles.github.io/images/tsukuba/android_tsukuba3.png" alt="android 2" /></li>
+<li>打开“设定”， 点击“更多设置”: <img src="http://pfmiles.github.io/images/tsukuba/android_tsukuba4.png" alt="android 2" /></li>
+<li>点开如图所示的选项后进去“新建”: <img src="http://pfmiles.github.io/images/tsukuba/android_tsukuba5.png" alt="android 2" /></li>
 <li>如下图般设置：<br/>
-<img src="http://pfmiles.github.com/images/tsukuba/android_tsukuba6.png" alt="android 2" /><br/>
+<img src="http://pfmiles.github.io/images/tsukuba/android_tsukuba6.png" alt="android 2" /><br/>
 &#8220;名称&#8221;随便起一个；<br/>
 “类型”选“L2TP/IPSec PSK”;<br/>
 &#8220;服务器地址&#8221;就粘帖你上一步复制的ip地址;<br/>
 屏幕继续滑动往下走(要点开“高级选项”)：</li>
-<li><img src="http://pfmiles.github.com/images/tsukuba/android_tsukuba7.png" alt="android 2" /><br/>
-“IPsec预共享密钥”填：<img src="http://pfmiles.github.com/images/tsukuba/v.png" alt="android 2" />, 全小写;<br/>
+<li><img src="http://pfmiles.github.io/images/tsukuba/android_tsukuba7.png" alt="android 2" /><br/>
+“IPsec预共享密钥”填：<img src="http://pfmiles.github.io/images/tsukuba/v.png" alt="android 2" />, 全小写;<br/>
 “转发路由”填上图所示的值;<br/>
 然后其它不用管，保存吧！</li>
-<li>点击连接你刚才建立的网络，若要求输入用户名密码，则均填: <img src="http://pfmiles.github.com/images/tsukuba/v.png" alt="android 2" />, 全小写：<br/>
-<img src="http://pfmiles.github.com/images/tsukuba/android_tsukuba8.png" alt="android 2" /></li>
+<li>点击连接你刚才建立的网络，若要求输入用户名密码，则均填: <img src="http://pfmiles.github.io/images/tsukuba/v.png" alt="android 2" />, 全小写：<br/>
+<img src="http://pfmiles.github.io/images/tsukuba/android_tsukuba8.png" alt="android 2" /></li>
 <li>连接成功后，左上角会有一个小钥匙的图标，这时候就已经成功了！<br/>
-<img src="http://pfmiles.github.com/images/tsukuba/android_tsukuba9.png" alt="android 2" /></li>
+<img src="http://pfmiles.github.io/images/tsukuba/android_tsukuba9.png" alt="android 2" /></li>
 <li>打开浏览器试试吧：<br/>
-<img src="http://pfmiles.github.com/images/tsukuba/android_tsukuba10.png" alt="android 2" /></li>
+<img src="http://pfmiles.github.io/images/tsukuba/android_tsukuba10.png" alt="android 2" /></li>
 </ol>
 
 
@@ -1195,16 +1196,16 @@ Caused by: java.lang.NullPointerException
 
 <p>&#8230;&#8230;</p>
 
-<p>有任何问题可发邮件至： <img src="http://pfmiles.github.com/images/email.png" alt="email" />, 不定期可能会回复(当我心血来潮查看垃圾箱时)<br/>
+<p>有任何问题可发邮件至： <img src="http://pfmiles.github.io/images/email.png" alt="email" />, 不定期可能会回复(当我心血来潮查看垃圾箱时)<br/>
 若有与服务器列表页面相关的任何问题，可到此<a href="https://gitcafe.com/tsukubahelp/tsukubahelp/tickets">页面</a>提交问题记录，会有人处理&#8230;</p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[用于代码生成的模板引擎应该是什么样子？]]></title>
-    <link href="http://pfmiles.github.com/blog/what-does-a-template-engine-for-code-generation-look-like"/>
+    <link href="http://pfmiles.github.io/blog/what-does-a-template-engine-for-code-generation-look-like"/>
     <updated>2012-09-13T15:27:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/what-does-a-template-engine-for-code-generation-look-like</id>
+    <id>http://pfmiles.github.io/blog/what-does-a-template-engine-for-code-generation-look-like</id>
     <content type="html"><![CDATA[<p>以前在做一个涉及代码生成的项目的时候，使用了velocity模板引擎来做这个代码生成；<br/>
 而事后发现，velocity有大部分的语法是我在代码生成过程中没有用到的；<br/>
 且velocity的引入，也导致引入了一些看起来很多余的jar包；<br/>
@@ -1295,9 +1296,9 @@ RANGE ::= '[' [0-9]+ '..' [0-9]+ ']'
   
   <entry>
     <title type="html"><![CDATA[Prime Numbers Less Than N]]></title>
-    <link href="http://pfmiles.github.com/blog/prime-numbers-less-than-n"/>
+    <link href="http://pfmiles.github.io/blog/prime-numbers-less-than-n"/>
     <updated>2012-09-03T13:57:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/prime-numbers-less-than-n</id>
+    <id>http://pfmiles.github.io/blog/prime-numbers-less-than-n</id>
     <content type="html"><![CDATA[<ul>
 <li>Sieve方法: <a href="http://en.wikipedia.org/wiki/Sieve_of_Eratosthenes">http://en.wikipedia.org/wiki/Sieve_of_Eratosthenes</a></li>
 <li>优化1：初始化list时，预先排除2,3,5,7的倍数, 得到一个初始化list</li>
@@ -1317,11 +1318,11 @@ RANGE ::= '[' [0-9]+ '..' [0-9]+ ']'
   
   <entry>
     <title type="html"><![CDATA[Growing a Full-Featured Calculator in 15 Minutes Using Dropincc.java]]></title>
-    <link href="http://pfmiles.github.com/blog/growing-a-full-featured-calculator-in-15-minutes-using-dropincc-dot-java"/>
+    <link href="http://pfmiles.github.io/blog/growing-a-full-featured-calculator-in-15-minutes-using-dropincc-dot-java"/>
     <updated>2012-08-12T15:58:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/growing-a-full-featured-calculator-in-15-minutes-using-dropincc-dot-java</id>
+    <id>http://pfmiles.github.io/blog/growing-a-full-featured-calculator-in-15-minutes-using-dropincc-dot-java</id>
     <content type="html"><![CDATA[<p>First, let&#8217;s create a empty java project in eclipse IDE, download newest playable dropincc.java jar file from <a href="https://github.com/pfmiles/dropincc.java/releases">here</a>. Adding it to the build path of the project, like this(note: jdk1.6 or above required):<br/>
-<img src="http://pfmiles.github.com/images/dropincc/calc/emptyProjWithJar.png" alt="emptyProjWithJar" /><br/>
+<img src="http://pfmiles.github.io/images/dropincc/calc/emptyProjWithJar.png" alt="emptyProjWithJar" /><br/>
 And then, create a new java source file to build our grammar, for example, <code>Calculator.java</code>.<br/>
 We start by specifying the EBNF form of our expected calculator language. The calculator expression would do addition and subtraction operations and also multiplication and division operations which have a greater priority.<br/>
 Also, we expect the calculator could handle parentheses to do priority adjustment.<br/>
@@ -1593,9 +1594,9 @@ public class Calculator {
   
   <entry>
     <title type="html"><![CDATA[Ideas and Concepts behind Dropincc.java]]></title>
-    <link href="http://pfmiles.github.com/blog/ideas-and-concepts-behind-dropincc-dot-java"/>
+    <link href="http://pfmiles.github.io/blog/ideas-and-concepts-behind-dropincc-dot-java"/>
     <updated>2012-08-10T00:40:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/ideas-and-concepts-behind-dropincc-dot-java</id>
+    <id>http://pfmiles.github.io/blog/ideas-and-concepts-behind-dropincc-dot-java</id>
     <content type="html"><![CDATA[<h3>DSLs in java is hard.</h3>
 
 <p>DSLs are rarely discussed in java community. Or, at least comparing to other dynamic languages&#8217; world, DSLs in java is much harder to create.</p>
@@ -1636,15 +1637,15 @@ After you have done writing your grammar, they usually requires you to run a spe
 
 <p>And, all in all, in summary&#8230; dropincc.java ends up such a tool with those missions. I hope this small lib could help a lot in building external DSLs.</p>
 
-<p>For a starter dummy example, please refer to <a href="http://pfmiles.github.com/blog/dropincc-dot-java-the-ultimate-tool-to-create-dsls-in-java/">this post</a>.</p>
+<p>For a starter dummy example, please refer to <a href="http://pfmiles.github.io/blog/dropincc-dot-java-the-ultimate-tool-to-create-dsls-in-java/">this post</a>.</p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[Dropincc.java, The Ultimate Tool to Create DSLs in Java]]></title>
-    <link href="http://pfmiles.github.com/blog/dropincc-dot-java-the-ultimate-tool-to-create-dsls-in-java"/>
+    <link href="http://pfmiles.github.io/blog/dropincc-dot-java-the-ultimate-tool-to-create-dsls-in-java"/>
     <updated>2012-08-04T17:22:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/dropincc-dot-java-the-ultimate-tool-to-create-dsls-in-java</id>
+    <id>http://pfmiles.github.io/blog/dropincc-dot-java-the-ultimate-tool-to-create-dsls-in-java</id>
     <content type="html"><![CDATA[<h3>Initial version released.</h3>
 
 <p>Dropincc.java is a dynamic parser generator which allows you crafting your DSLs in pure java, using your favorite editor.<br/>
@@ -1728,7 +1729,7 @@ After that, you can <code>compile</code> your grammar:</p>
 </code></pre>
 
 <p>This would print the output: <code>[Ljava.lang.Object;@67a5a19</code>. It&#8217;s an object array which holds the whole parse tree:<br/>
-<img src="http://pfmiles.github.com/images/dropincc/dummy.png" alt="Dummy lang parse tree" /></p>
+<img src="http://pfmiles.github.io/images/dropincc/dummy.png" alt="Dummy lang parse tree" /></p>
 
 <p>But it&#8217;s useless just getting the parse tree. We should do something to manipulate the parse tree and produce some &#8216;results&#8217; of this parsing.</p>
 
@@ -1872,19 +1873,19 @@ public class Test {
   
   <entry>
     <title type="html"><![CDATA[The Real World Tree]]></title>
-    <link href="http://pfmiles.github.com/blog/the-real-world-tree"/>
+    <link href="http://pfmiles.github.io/blog/the-real-world-tree"/>
     <updated>2012-07-21T23:50:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/the-real-world-tree</id>
+    <id>http://pfmiles.github.io/blog/the-real-world-tree</id>
     <content type="html"><![CDATA[<h2>冈和金的约见，是在在世界之树的顶端, 这对奇特的父子，让无数人期待了15年&#8230;</h2>
 
-<p><img src="http://pfmiles.github.com/images/worldtree/tree1.png" alt="tree1" /></p>
+<p><img src="http://pfmiles.github.io/images/worldtree/tree1.png" alt="tree1" /></p>
 
 <!-- more -->
 
 
 <h2>以冈之见，这是世界最高的树(其实只是道听途说)&#8230;</h2>
 
-<p><img src="http://pfmiles.github.com/images/worldtree/tree2.png" alt="tree1" /></p>
+<p><img src="http://pfmiles.github.io/images/worldtree/tree2.png" alt="tree1" /></p>
 
 <h2>然而金说：</h2>
 
@@ -1892,7 +1893,7 @@ public class Test {
 因为..<br/>
 ..营养不足&#8230;所以“只能成长到这地步”..</p></blockquote>
 
-<p><img src="http://pfmiles.github.com/images/worldtree/tree3.png" alt="tree1" /></p>
+<p><img src="http://pfmiles.github.io/images/worldtree/tree3.png" alt="tree1" /></p>
 
 <h2>&#8220;真正的世界之树&#8230;&#8221;</h2>
 
@@ -1902,24 +1903,24 @@ public class Test {
 
 <h2>&#8220;穿破大气层尚能继续成长&#8230;&#8221;</h2>
 
-<p><img src="http://pfmiles.github.com/images/worldtree/tree4.png" alt="tree1" /></p>
+<p><img src="http://pfmiles.github.io/images/worldtree/tree4.png" alt="tree1" /></p>
 
 <h2>它就存在于这世界的<em>&#8220;外侧&#8221;</em>..</h2>
 
-<p><img src="http://pfmiles.github.com/images/worldtree/tree5.png" alt="tree1" /></p>
+<p><img src="http://pfmiles.github.io/images/worldtree/tree5.png" alt="tree1" /></p>
 
 <h2>这才是学校不会教给你们的<strong>&#8220;真相&#8221;</strong>..金对自己的儿子说.</h2>
 
-<p><img src="http://pfmiles.github.com/images/worldtree/tree6.png" alt="tree1" /><br/>
-<img src="http://pfmiles.github.com/images/worldtree/tree7.png" alt="tree1" /><br/>
-<img src="http://pfmiles.github.com/images/worldtree/tree8.png" alt="tree1" /></p>
+<p><img src="http://pfmiles.github.io/images/worldtree/tree6.png" alt="tree1" /><br/>
+<img src="http://pfmiles.github.io/images/worldtree/tree7.png" alt="tree1" /><br/>
+<img src="http://pfmiles.github.io/images/worldtree/tree8.png" alt="tree1" /></p>
 
 <h2>冈恍然：</h2>
 
 <p>原来我们熟知的“这个世界”，只是无比巨大的世界中的&#8230;<br/>
 <strong>“一小部分啊”</strong>&#8230;</p>
 
-<p><img src="http://pfmiles.github.com/images/worldtree/tree9.png" alt="tree1" /></p>
+<p><img src="http://pfmiles.github.io/images/worldtree/tree9.png" alt="tree1" /></p>
 
 <h2>是的，它就在外面，outside .. of ..the world&#8230;</h2>
 ]]></content>
@@ -1927,9 +1928,9 @@ public class Test {
   
   <entry>
     <title type="html"><![CDATA[LL(*)的概念与实现]]></title>
-    <link href="http://pfmiles.github.com/blog/concept-and-implementation-of-ll-star"/>
+    <link href="http://pfmiles.github.io/blog/concept-and-implementation-of-ll-star"/>
     <updated>2012-07-14T13:59:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/concept-and-implementation-of-ll-star</id>
+    <id>http://pfmiles.github.io/blog/concept-and-implementation-of-ll-star</id>
     <content type="html"><![CDATA[<h3>概念和起源</h3>
 
 <p>LL(*)是由<a href="http://www.cs.usfca.edu/~parrt/">Terrence Parr</a>教授创造的，为使用<a href="http://en.wikipedia.org/wiki/LL_parsing">LL分析</a>的语法解析器做超前查看(look ahead)的一种算法。按照Parr教授的说法，这个算法从最初的想法至今的完善和调整已经历了15年。目前该算法的一个著名的实现在<a href="http://www.antlr.org/">antlr3</a>中。</p>
@@ -1940,16 +1941,16 @@ public class Test {
 <li>对于语法产生式分支的预测判断，走LL分析路子的解析器，其能力完全取决于能超前查看多少个token。传统地讲，LL(1), LL(2)直至LL(k)，就是在讲该解析器能够在语法分析过程中超前查看1, 2, k&#8230;个token。</li>
 <li>而LL(*)的意思就是，它在语法解析的过程中，超前查看的token个数不是固定的，是可伸缩的，不过这一点LL(k)分析也能做到(在k范围之内&#8230;)；</li>
 <li>但是，LL(*)还能越过一些重复出现的token，“到达”这些重复出现的token之后的token来做分析，这一点LL(k)是无法办到的(LL(k)无法意识到有token在循环出现，不管情况如何，它都将在尝试k个token之后放弃)；</li>
-<li>如果将超前查看的决策逻辑画成DFA的话，就是这样的一种形式：<img src="http://pfmiles.github.com/images/ll3.png" title="Look Ahead DFA" alt="Look Ahead DFA" />
+<li>如果将超前查看的决策逻辑画成DFA的话，就是这样的一种形式：<img src="http://pfmiles.github.io/images/ll3.png" title="Look Ahead DFA" alt="Look Ahead DFA" />
 
 <ul>
 <li>这张图画的是这种语法规则的超前查看决策情况：<code>A ::= a b c | a b e</code>, 显然这是一个LL(3)语法；</li>
 <li>但是这样的语法: <code>A ::= a b* c | a b* e</code>是无法被LL(k)识别的，因为中间的<code>b*</code>代表“0个或多个b”(kleene闭包)，这并不是一个固定的重复次数，因此LL(k)无法识别，for any k&#8230;</li>
-<li>但是，LL(*)算法能够构造出这样的DFA来识别它：<img src="http://pfmiles.github.com/images/llstar.png" title="LL(*) Look Ahead DFA" alt="LL(*) Look Ahead DFA" /></li>
+<li>但是，LL(*)算法能够构造出这样的DFA来识别它：<img src="http://pfmiles.github.io/images/llstar.png" title="LL(*) Look Ahead DFA" alt="LL(*) Look Ahead DFA" /></li>
 <li>也就是说，传统LL(k)的look ahead DFA是不带环的，而LL(*)算法能构造出带环的DFA来做判断，它能越过无穷多个存在于环上的token，从而“到达”环之后的token继续做判断。</li>
 </ul>
 </li>
-<li>上面的<code>A ::= a b* c | a b* e</code>语法使用了<a href="http://pfmiles.github.com/blog/left-recursion-removal-using-kleene-closure/">&#8220;kleene闭包&#8221;表示法</a>来表示“0个或多个”，这种表示法在正则表达式中很常见；事实上，基于LL(*)算法实现的语法解析器生成器(比如antlr3)对Kleene闭包表示法特别友好，可以鼓励使用，还能顺便解决一些LL分析法所不允许的“<a href="http://en.wikipedia.org/wiki/Left_recursion">左递归</a>”。</li>
+<li>上面的<code>A ::= a b* c | a b* e</code>语法使用了<a href="http://pfmiles.github.io/blog/left-recursion-removal-using-kleene-closure/">&#8220;kleene闭包&#8221;表示法</a>来表示“0个或多个”，这种表示法在正则表达式中很常见；事实上，基于LL(*)算法实现的语法解析器生成器(比如antlr3)对Kleene闭包表示法特别友好，可以鼓励使用，还能顺便解决一些LL分析法所不允许的“<a href="http://en.wikipedia.org/wiki/Left_recursion">左递归</a>”。</li>
 <li>大多数情况来讲，LL(*)的识别能力弱于<a href="http://en.wikipedia.org/wiki/LR_parser">LR(k)</a>，但也有少数情况是LR(k)识别不了但LL(*)可以的，所以LL(*)与LR(k)之间并没有严格的强弱顺序。</li>
 <li>LL(*)本身对语法的识别能力也是有限的，比如它无法区分&#8221;具有相同的递归规则前缀&#8221;的多个分支，这种情况是要尽量避免的，大多数能够较容易地改写;</li>
 <li>对于LL(*)不能正确分析的情况，还能引入&#8221;Semantic Predicate&#8221;(语义断言)来辅助判断, Semantic Predicate可以是任何逻辑，只要返回一个bool值就行；有了Semantic Predicate的辅助，LL(*)甚至能够parse一些上下文相关的语法，实际上它能parse C++</li>
@@ -1971,12 +1972,12 @@ A ::= a c*
 </code></pre>
 
 <ul>
-<li>针对此语法规则，构造Augmented Transition Network(ATN)，其实也就是一个NFA，NFA的边就是terminal或non-terminal或者Semantic predicate：<img src="http://pfmiles.github.com/images/atn.png" alt="ATN network" />, 代码在llstar工程的<code>atn_creation.py</code>的<code>rule.merge_to_atn</code>方法中。</li>
+<li>针对此语法规则，构造Augmented Transition Network(ATN)，其实也就是一个NFA，NFA的边就是terminal或non-terminal或者Semantic predicate：<img src="http://pfmiles.github.io/images/atn.png" alt="ATN network" />, 代码在llstar工程的<code>atn_creation.py</code>的<code>rule.merge_to_atn</code>方法中。</li>
 <li>接下来将要对这个ATN实施的算法其实就是经典的<a href="http://en.wikipedia.org/wiki/Powerset_construction">Subset Construction算法</a> —— 的改造版本：在“空边闭包运算(closure)”中加入了压栈、出栈功能，用于处理运算过程中<code>closure</code>函数经过non-terminal边时对其所对应的ATN的调用和返回。<br/>
 这个算法的具体描述是比较复杂，在Parr教授的paper中已有精确描述。不过真的要用代码实现起来，某些细节还需稍微修饰，才能正确地实现。<br/>
 最后的结果，其实就是使用更改后的版本的Subset Construction算法，将上述ATN(NFA)转化为一个个DFA，每条语法规则都对应一个DFA作为其look ahead DFA。<br/>
-例如上面的<code>S</code>规则最后的DFA为：<img src="http://pfmiles.github.com/images/sdfa.png" alt="S DFA" />, well, 就一个终结态，没任何状态转换 —— 这是当然的，S规则只有一个alternative production&#8230; <br/>
-而<code>A</code>规则的DFA为：<img src="http://pfmiles.github.com/images/adfa.png" alt="A DFA" />, 意思就是，如果第一个token为<code>a</code>，就选择第一个分支，若是<code>b</code>，就选择第二个分支，这是一个LL(1)的语法。<br/>
+例如上面的<code>S</code>规则最后的DFA为：<img src="http://pfmiles.github.io/images/sdfa.png" alt="S DFA" />, well, 就一个终结态，没任何状态转换 —— 这是当然的，S规则只有一个alternative production&#8230; <br/>
+而<code>A</code>规则的DFA为：<img src="http://pfmiles.github.io/images/adfa.png" alt="A DFA" />, 意思就是，如果第一个token为<code>a</code>，就选择第一个分支，若是<code>b</code>，就选择第二个分支，这是一个LL(1)的语法。<br/>
 简单来说就是这样，具体可以参考llstar的代码&#8230;这花了我不少时间调试出来的代码，还是直接看代码了解最直接:)</li>
 </ul>
 
@@ -2001,11 +2002,11 @@ D ::= i j k l
     | i j k m
 </code></pre>
 
-<p>这个语法是固定的LL(3)，没有什么特别，不过分支比较多, 它的ATN：<img src="http://pfmiles.github.com/images/ll3atn.png" alt="LL(3) ATN" /><br/>
-规则<code>A</code>的DFA: <img src="http://pfmiles.github.com/images/llstar/ll3adfa.png" alt="LL(3) Rule A DFA" /><br/>
-规则<code>B</code>的DFA: <img src="http://pfmiles.github.com/images/llstar/ll3bdfa.png" alt="LL(3) Rule B DFA" /><br/>
-规则<code>C</code>的DFA: <img src="http://pfmiles.github.com/images/llstar/ll3cdfa.png" alt="LL(3) Rule C DFA" /><br/>
-规则<code>D</code>的DFA: <img src="http://pfmiles.github.com/images/llstar/ll3ddfa.png" alt="LL(3) Rule D DFA" /></p>
+<p>这个语法是固定的LL(3)，没有什么特别，不过分支比较多, 它的ATN：<img src="http://pfmiles.github.io/images/ll3atn.png" alt="LL(3) ATN" /><br/>
+规则<code>A</code>的DFA: <img src="http://pfmiles.github.io/images/llstar/ll3adfa.png" alt="LL(3) Rule A DFA" /><br/>
+规则<code>B</code>的DFA: <img src="http://pfmiles.github.io/images/llstar/ll3bdfa.png" alt="LL(3) Rule B DFA" /><br/>
+规则<code>C</code>的DFA: <img src="http://pfmiles.github.io/images/llstar/ll3cdfa.png" alt="LL(3) Rule C DFA" /><br/>
+规则<code>D</code>的DFA: <img src="http://pfmiles.github.io/images/llstar/ll3ddfa.png" alt="LL(3) Rule D DFA" /></p>
 
 <p>上面这个语法，LL(4)分析也能搞定，而真正体现出LL(*)特点的是下面这样的语法(对应llstar工程中<code>over_kleene.py</code>)：</p>
 
@@ -2014,8 +2015,8 @@ A ::= a* b
     | a+ c
 </code></pre>
 
-<p>其中，规则<code>A</code>的2条分支拥有共同的kleene闭包前缀，LL(k)是无法识别的，它的ATN:<img src="http://pfmiles.github.com/images/llstar/overkleeneatn.png" alt="Over Kleene ATN" /><br/>
-而LL(*)能够为<code>A</code>生成这样的DFA：<img src="http://pfmiles.github.com/images/llstar/overkleeneadfa.png" alt="Over Kleene Rule A DFA" /><br/>
+<p>其中，规则<code>A</code>的2条分支拥有共同的kleene闭包前缀，LL(k)是无法识别的，它的ATN:<img src="http://pfmiles.github.io/images/llstar/overkleeneatn.png" alt="Over Kleene ATN" /><br/>
+而LL(*)能够为<code>A</code>生成这样的DFA：<img src="http://pfmiles.github.io/images/llstar/overkleeneadfa.png" alt="Over Kleene Rule A DFA" /><br/>
 这个DFA能够越过terminal<code>a</code>的任意重复，从而考虑到后面的terminal<code>b</code>和<code>c</code>来做判断<br/>
 而下面这个更加&#8221;恶劣&#8221;的列子则更能说明LL(*)的这个特征(对应llstar工程中<code>over_non_recurse_rule.py</code>)：</p>
 
@@ -2029,7 +2030,7 @@ C ::= a d
 </code></pre>
 
 <p>这个例子中，<code>B</code>和<code>C</code>完全相同，并分别被包含在规则<code>A</code>的2条分支的kleene闭包中，<br/>
-最终生成的<code>A</code>的DFA: <img src="http://pfmiles.github.com/images/llstar/nonrecursiveradfa.png" alt="Non-recursive Rule A DFA" /></p>
+最终生成的<code>A</code>的DFA: <img src="http://pfmiles.github.io/images/llstar/nonrecursiveradfa.png" alt="Non-recursive Rule A DFA" /></p>
 
 <p>上面提到过，LL(*)也有不能解决的情况，比如2条分支拥有&#8221;共同的、递归的规则作为前缀&#8221;，比如这样：</p>
 
@@ -2061,7 +2062,7 @@ B ::= b
     | b
 </code></pre>
 
-<p>最终<code>A</code>的DFA：<img src="http://pfmiles.github.com/images/llstar/confresolvedwithpredsadfa.png" alt="Conflict Resolved With Preds A DFA" /><br/>
+<p>最终<code>A</code>的DFA：<img src="http://pfmiles.github.io/images/llstar/confresolvedwithpredsadfa.png" alt="Conflict Resolved With Preds A DFA" /><br/>
 实际开发中，写出这样的规则是坑到爷的&#8230;不过LL(*)还算能很好解决&#8230;其实这里就算没有Semantic Predicate, LL(*)也能按照convention，“选择较早定义的语法分支”来解决。</p>
 
 <p>还有就是在分析的过程中会导致分析栈溢出(不是程序语言的callstack的overflow, 而是LL(*)的closure操作维护的一个规则调用栈溢出)的时候，LL(*)也会使用Semantic Predicate来辅助判断, 比如规则(对应llstar中<code>overflow_with_preds.py</code>):</p>
@@ -2074,7 +2075,7 @@ B ::= b+ B
 </code></pre>
 
 <p>规则<code>A</code>的三条分支全部存在严重冲突(都拥有能识别无穷个&#8217;b&#8217;的前缀)并且其中一个是另一条递归规则<code>B</code>，这种形式会导致LL(*)的分析栈溢出，不过仍然没关系，这样的情况能在溢出发生时，调用<code>pred1</code>、<code>pred2</code>和<code>pred3</code>来解决(这三个pred就是Semantic Precicate，是能包含任何逻辑但最终返回bool值的表达式)<br/>
-生成的规则<code>A</code>的DFA: <img src="http://pfmiles.github.com/images/llstar/overflowadfa.png" alt="Overflow A DFA" /><br/>
+生成的规则<code>A</code>的DFA: <img src="http://pfmiles.github.io/images/llstar/overflowadfa.png" alt="Overflow A DFA" /><br/>
 这里设定的最大分析递归层数为<code>10</code>，因此，DFA在接受了第10个&#8217;b&#8217;之后达到了溢出状态<code>d14</code>，这时调用了各个alternative附带的几个predicate来解决冲突&#8230;</p>
 
 <blockquote><p>(2012-09-03 注： 实际上上述规则是不正确的，<code>B ::= b+ B</code>是有问题的规则，因为<code>b+</code>会贪婪地match掉所有的连续的<code>'b'</code>，导致后面的<code>B</code>只可能抛错; 所以这个例子也只能用来演示分析栈溢出的情况，实际应用中是不可能写出这样的规则的)</p></blockquote>
@@ -2095,9 +2096,9 @@ llstar工程是我花了不少时间实现并调试好的一块LL(*)算法的“
   
   <entry>
     <title type="html"><![CDATA[Algo-class第二周小记: Master Method]]></title>
-    <link href="http://pfmiles.github.com/blog/algo-class-week2-notes-master-method"/>
+    <link href="http://pfmiles.github.io/blog/algo-class-week2-notes-master-method"/>
     <updated>2012-04-03T11:40:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/algo-class-week2-notes-master-method</id>
+    <id>http://pfmiles.github.io/blog/algo-class-week2-notes-master-method</id>
     <content type="html"><![CDATA[<p>week2主要讲了master method，感觉从来没有听过如此清晰有条理的介绍master method的讲解，不得不佩服<a href="http://theory.stanford.edu/~tim/">Tim Roughgarden</a>教授的功力。<br/>
 从一些随课笔记总结起来，master method是用来预估divide and conquer算法的大O时间复杂度的公式；它要求divide的时候“所有sub-problems的规模都相等”才能适用。<br/>
 要使用master method, 首先要将算法的时间消耗函数写成递推公式形式：
@@ -2106,7 +2107,7 @@ $$T(n) &lt;= aT(\frac{n}{b}) + O(n^d)$$
 基础情况： 当n足够小时，T(n) &lt;= 一个常数<br/>
 a,b,d与输入规模无关。<br/>
 那么，根据a,b,d的情况，T(n)可能被表示为三种情况：<br/>
-<img src="http://pfmiles.github.com/images/masterMethod.png" title="Master Method" alt="Master Method" /></p>
+<img src="http://pfmiles.github.io/images/masterMethod.png" title="Master Method" alt="Master Method" /></p>
 
 <!-- more -->
 
@@ -2149,9 +2150,9 @@ Week2作业是快排&#8230;写个快排倒是简单，可是作业要求要count
   
   <entry>
     <title type="html"><![CDATA[使用Kleene闭包语法糖消除语法中的左递归]]></title>
-    <link href="http://pfmiles.github.com/blog/left-recursion-removal-using-kleene-closure"/>
+    <link href="http://pfmiles.github.io/blog/left-recursion-removal-using-kleene-closure"/>
     <updated>2012-03-28T11:18:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/left-recursion-removal-using-kleene-closure</id>
+    <id>http://pfmiles.github.io/blog/left-recursion-removal-using-kleene-closure</id>
     <content type="html"><![CDATA[<p>一般来讲，如果使用的解析器生成器是基于LL分析法来解析文本的话(比如antlr)，我们就需要在编写语法规则的时候避免<a href="http://en.wikipedia.org/wiki/Left_recursion">左递归</a>。<br/>
 虽然有一套成熟的、公式化的方法来去除左递归，但它会影响原有文法的结合顺序、优先级，或者多出一些本不需要的、额外的产生式。<br/>
 例如，有左递归语法规则：</p>
@@ -2198,9 +2199,9 @@ Week2作业是快排&#8230;写个快排倒是简单，可是作业要求要count
   
   <entry>
     <title type="html"><![CDATA[[algo-class]第一周作业——Count Inversions]]></title>
-    <link href="http://pfmiles.github.com/blog/algo-class-week-one-assignment-counting-inversions"/>
+    <link href="http://pfmiles.github.io/blog/algo-class-week-one-assignment-counting-inversions"/>
     <updated>2012-03-25T15:41:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/algo-class-week-one-assignment-counting-inversions</id>
+    <id>http://pfmiles.github.io/blog/algo-class-week-one-assignment-counting-inversions</id>
     <content type="html"><![CDATA[<p><a href="http://algo-class.org">algo-class</a>还是挺有意思的，一上来就讲merge sort；介绍了分治法以及&#8221;piggyback&#8221;的思路&#8230;当作是复习吧：</p>
 
 <h3>分治法(divide and conquer)</h3>
@@ -2264,9 +2265,9 @@ print countInversions(numbers)[0]
   
   <entry>
     <title type="html"><![CDATA[dropincc.java API design]]></title>
-    <link href="http://pfmiles.github.com/blog/dropincc-dot-java-api-design"/>
+    <link href="http://pfmiles.github.io/blog/dropincc-dot-java-api-design"/>
     <updated>2012-03-18T16:29:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/dropincc-dot-java-api-design</id>
+    <id>http://pfmiles.github.io/blog/dropincc-dot-java-api-design</id>
     <content type="html"><![CDATA[<p><a href="https://github.com/pfmiles/dropincc.java">dropincc.java</a>为了使得用户能够在java语言中直接定义新语言的词法、语法规则，API设计采用了串接与组合(cascading &amp; composition)风格的<a href="http://martinfowler.com/bliki/FluentInterface.html">FluentInterface</a>形式。</p>
 
 <p>这种形式能够使得这一套API看起来更具有“业务语义”，而不需要像antlr等其它工具一样强迫用户去学习全新的另外一种含有业务语义的DSL。<br/>
@@ -2422,9 +2423,9 @@ System.out.println(calculator.exe("1+2+3+(4+5*6*7*(64/8/2/(2/1)/1)*8+9)+10"));
   
   <entry>
     <title type="html"><![CDATA[Dropincc.java的概念与设计]]></title>
-    <link href="http://pfmiles.github.com/blog/the-main-ideas-and-concepts-of-dropincc-dot-java"/>
+    <link href="http://pfmiles.github.io/blog/the-main-ideas-and-concepts-of-dropincc-dot-java"/>
     <updated>2012-03-17T17:40:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/the-main-ideas-and-concepts-of-dropincc-dot-java</id>
+    <id>http://pfmiles.github.io/blog/the-main-ideas-and-concepts-of-dropincc-dot-java</id>
     <content type="html"><![CDATA[<h3>做这么个小lib的动机？</h3>
 
 <p>其实由于java语言先天缺陷的元编程能力，在java的圈子里很少有人提到“DSL”的概念，就算有也是说说而已。与之相比，一些其它语言ruby, python, lisp等等，得益于其强大的元编程能力，直接利用自身语法特性，取一块语法子集，利用一些对象、类生命周期切入函数或者宏系统两三下就DSL &#8216;on-the-fly&#8217;了，这种便利性可能由java的设计目标来看，恐怕永远也无法达到了。<br/>
@@ -2533,9 +2534,9 @@ lang.exe("1+2+3*4/(5*6*7+8)");
   
   <entry>
     <title type="html"><![CDATA[Liquid Error about regexp match when using octopress-tagcloud]]></title>
-    <link href="http://pfmiles.github.com/blog/liquid-error-about-regexp-match-when-using-octopress-tagcloud"/>
+    <link href="http://pfmiles.github.io/blog/liquid-error-about-regexp-match-when-using-octopress-tagcloud"/>
     <updated>2012-03-14T19:33:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/liquid-error-about-regexp-match-when-using-octopress-tagcloud</id>
+    <id>http://pfmiles.github.io/blog/liquid-error-about-regexp-match-when-using-octopress-tagcloud</id>
     <content type="html"><![CDATA[<p>Octopress插件：<a href="https://github.com/tokkonopapa/octopress-tagcloud">octopress-tagcloud</a>相当nice，不过在使用的时候，若是blog整体采用了非ascii码的编码格式(比如utf-8)就会出现类似这样的错误：</p>
 
 <pre><code>Liquid error: incompatible encoding regexp match (ascii-8bit regexp with utf-8 string)
@@ -2684,9 +2685,9 @@ Liquid::Template.register_tag('category_list', Jekyll::CategoryList)</code></pre
   
   <entry>
     <title type="html"><![CDATA[帮表妹和姑姑攒的台式机]]></title>
-    <link href="http://pfmiles.github.com/blog/pc-assembled-for-my-cousin-and-aunt"/>
+    <link href="http://pfmiles.github.io/blog/pc-assembled-for-my-cousin-and-aunt"/>
     <updated>2012-03-10T20:18:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/pc-assembled-for-my-cousin-and-aunt</id>
+    <id>http://pfmiles.github.io/blog/pc-assembled-for-my-cousin-and-aunt</id>
     <content type="html"><![CDATA[<p>其实早就看好的，不过一直没仔细上淘宝询问和调查；<br/>
 现在在网上买电脑其实也还不错的；<br/>
 她们平时也就拿电脑来偷偷菜，看看电影，玩玩小游戏逛逛taobao，这样的电脑跑到“电脑城”一问，人家跟他说要4k+才能拿下&#8230;我说这不坑爹么？行了，网上搞一套吧，拿回来自己装，心理预期价格2k左右 —— 反正不用买显示器。<br/>
@@ -2715,9 +2716,9 @@ Liquid::Template.register_tag('category_list', Jekyll::CategoryList)</code></pre
   
   <entry>
     <title type="html"><![CDATA[[面试中的算法]编程判断两个链表是否相交]]></title>
-    <link href="http://pfmiles.github.com/blog/algorithms-in-job-interview-test-if-two-linked-lists-intersected"/>
+    <link href="http://pfmiles.github.io/blog/algorithms-in-job-interview-test-if-two-linked-lists-intersected"/>
     <updated>2012-03-06T23:30:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/algorithms-in-job-interview-test-if-two-linked-lists-intersected</id>
+    <id>http://pfmiles.github.io/blog/algorithms-in-job-interview-test-if-two-linked-lists-intersected</id>
     <content type="html"><![CDATA[<p>这是一道广为流传的题目: <a href="http://bop1.wikispaces.com/%E7%AC%AC%E4%B8%89%E7%AB%A0+%E7%BB%93%E6%9E%84%E4%B9%8B%E6%B3%95#x-%E7%AC%AC3%E7%AB%A0%20%E7%BB%93%E6%9E%84%E4%B9%8B%E6%B3%95%E2%80%94%E2%80%94%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8F%8A%E9%93%BE%E8%A1%A8%E7%9A%84%E6%8E%A2%E7%B4%A2-3.6%E7%BC%96%E7%A8%8B%E5%88%A4%E6%96%AD%E4%B8%A4%E4%B8%AA%E9%93%BE%E8%A1%A8%E6%98%AF%E5%90%A6%E7%9B%B8%E4%BA%A4">编程判断两个链表是否相交</a>;原题假设“不带环”，所以只要想通了之后很简单；但是，若要考虑带环的情况，那么要注意的点就很多了。
 其实可以把无环和有环的情况全都包括在一个方法实现内解决。</p>
 
@@ -2730,7 +2731,7 @@ Liquid::Template.register_tag('category_list', Jekyll::CategoryList)</code></pre
 <li>无环链表和有环链表是不可能相交的;</li>
 <li>两个有环链表若相交，其“整个环上”的所有node一定都重合;</li>
 <li>有环链表的相交，情况只有2种：相交于&#8221;环上&#8221;或相交于&#8221;不是环的部分&#8221;,即下图所示;两种情况都需要使用“两个指针的追逐”方法来判断两个链表的环部分是否相交;
-<img src="http://pfmiles.github.com/images/circledLinkedListsIntersections.png" title="带环单向链表相交只有2种情况" alt="带环单向链表相交只有2种情况" /></li>
+<img src="http://pfmiles.github.io/images/circledLinkedListsIntersections.png" title="带环单向链表相交只有2种情况" alt="带环单向链表相交只有2种情况" /></li>
 <li>有关链表追逐的考虑: 相对速度、距离、时间要算好，否则很容易漏掉几种边界情况;</li>
 </ol>
 
@@ -2882,9 +2883,9 @@ Node* has_circle(Node* head) {
   
   <entry>
     <title type="html"><![CDATA[[编程之美]寻找最大的k个数]]></title>
-    <link href="http://pfmiles.github.com/blog/find-the-max-k-numbers"/>
+    <link href="http://pfmiles.github.io/blog/find-the-max-k-numbers"/>
     <updated>2012-03-02T13:37:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/find-the-max-k-numbers</id>
+    <id>http://pfmiles.github.io/blog/find-the-max-k-numbers</id>
     <content type="html"><![CDATA[<p>《编程之美》上的一道题： <a href="http://bop1.wikispaces.com/%E7%AC%AC%E4%BA%8C%E7%AB%A0+%E6%95%B0%E5%AD%97%E4%B9%8B%E9%AD%85#x-2.5%20%E5%AF%BB%E6%89%BE%E6%9C%80%E5%A4%A7%E7%9A%84K%E4%B8%AA%E6%95%B0%20%E2%98%85%E2%98%85%E2%98%85">wiki链接</a>;
 其实在<a href="http://blog.csdn.net/v_JULY_v/article/details/6370650">July的文章里有更加深刻的分析</a>，我这里只是用最小堆的方式实现一遍，体会和总结一下。</p>
 

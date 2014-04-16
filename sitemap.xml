@@ -1,139 +1,143 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
-        <loc>http://pfmiles.github.com/blog/theory-of-probability-required-in-ai-class</loc>
+        <loc>http://pfmiles.github.io/blog/theory-of-probability-required-in-ai-class</loc>
         <lastmod>2013-08-29T17:53:48+08:00</lastmod>
     </url>
     <url>
-        <loc>http://pfmiles.github.com/blog/python-speed-performance-tips</loc>
+        <loc>http://pfmiles.github.io/blog/python-speed-performance-tips</loc>
         <lastmod>2013-08-29T17:53:48+08:00</lastmod>
     </url>
     <url>
         <loc>
-            http://pfmiles.github.com/blog/algorithms-in-job-interview-turn-binary-search-tree-to-doubly-linked-list
+            http://pfmiles.github.io/blog/algorithms-in-job-interview-turn-binary-search-tree-to-doubly-linked-list
         </loc>
         <lastmod>2013-08-29T17:53:48+08:00</lastmod>
     </url>
     <url>
         <loc>
-            http://pfmiles.github.com/blog/algorithms-in-job-interview-design-a-stack-with-min-function
+            http://pfmiles.github.io/blog/algorithms-in-job-interview-design-a-stack-with-min-function
         </loc>
         <lastmod>2013-08-29T17:53:48+08:00</lastmod>
     </url>
     <url>
-        <loc>http://pfmiles.github.com/blog/algorithms-in-job-interview-max-sum-sub-list</loc>
+        <loc>http://pfmiles.github.io/blog/algorithms-in-job-interview-max-sum-sub-list</loc>
         <lastmod>2013-08-29T17:53:48+08:00</lastmod>
     </url>
     <url>
-        <loc>http://pfmiles.github.com/blog/trace-the-path-of-recursive-function</loc>
+        <loc>http://pfmiles.github.io/blog/trace-the-path-of-recursive-function</loc>
         <lastmod>2013-08-29T17:53:48+08:00</lastmod>
     </url>
     <url>
-        <loc>http://pfmiles.github.com/blog/find-the-max-k-numbers</loc>
+        <loc>http://pfmiles.github.io/blog/find-the-max-k-numbers</loc>
         <lastmod>2013-08-29T17:53:48+08:00</lastmod>
     </url>
     <url>
         <loc>
-            http://pfmiles.github.com/blog/algorithms-in-job-interview-test-if-two-linked-lists-intersected
+            http://pfmiles.github.io/blog/algorithms-in-job-interview-test-if-two-linked-lists-intersected
         </loc>
         <lastmod>2013-08-29T17:53:48+08:00</lastmod>
     </url>
     <url>
-        <loc>http://pfmiles.github.com/blog/pc-assembled-for-my-cousin-and-aunt</loc>
+        <loc>http://pfmiles.github.io/blog/pc-assembled-for-my-cousin-and-aunt</loc>
         <lastmod>2013-08-29T17:53:48+08:00</lastmod>
     </url>
     <url>
         <loc>
-            http://pfmiles.github.com/blog/liquid-error-about-regexp-match-when-using-octopress-tagcloud
+            http://pfmiles.github.io/blog/liquid-error-about-regexp-match-when-using-octopress-tagcloud
         </loc>
         <lastmod>2013-08-29T17:53:48+08:00</lastmod>
     </url>
     <url>
-        <loc>http://pfmiles.github.com/blog/the-main-ideas-and-concepts-of-dropincc-dot-java</loc>
+        <loc>http://pfmiles.github.io/blog/the-main-ideas-and-concepts-of-dropincc-dot-java</loc>
         <lastmod>2013-08-29T17:53:48+08:00</lastmod>
     </url>
     <url>
-        <loc>http://pfmiles.github.com/blog/dropincc-dot-java-api-design</loc>
+        <loc>http://pfmiles.github.io/blog/dropincc-dot-java-api-design</loc>
         <lastmod>2013-08-29T17:53:48+08:00</lastmod>
     </url>
     <url>
         <loc>
-            http://pfmiles.github.com/blog/algo-class-week-one-assignment-counting-inversions
+            http://pfmiles.github.io/blog/algo-class-week-one-assignment-counting-inversions
         </loc>
         <lastmod>2013-08-29T17:53:48+08:00</lastmod>
     </url>
     <url>
-        <loc>http://pfmiles.github.com/blog/left-recursion-removal-using-kleene-closure</loc>
+        <loc>http://pfmiles.github.io/blog/left-recursion-removal-using-kleene-closure</loc>
         <lastmod>2013-08-29T17:53:48+08:00</lastmod>
     </url>
     <url>
-        <loc>http://pfmiles.github.com/blog/algo-class-week2-notes-master-method</loc>
+        <loc>http://pfmiles.github.io/blog/algo-class-week2-notes-master-method</loc>
         <lastmod>2013-08-29T17:53:48+08:00</lastmod>
     </url>
     <url>
-        <loc>http://pfmiles.github.com/blog/concept-and-implementation-of-ll-star</loc>
+        <loc>http://pfmiles.github.io/blog/concept-and-implementation-of-ll-star</loc>
         <lastmod>2013-08-29T17:53:48+08:00</lastmod>
     </url>
     <url>
-        <loc>http://pfmiles.github.com/blog/the-real-world-tree</loc>
+        <loc>http://pfmiles.github.io/blog/the-real-world-tree</loc>
         <lastmod>2013-08-29T17:53:48+08:00</lastmod>
     </url>
     <url>
         <loc>
-            http://pfmiles.github.com/blog/dropincc-dot-java-the-ultimate-tool-to-create-dsls-in-java
+            http://pfmiles.github.io/blog/dropincc-dot-java-the-ultimate-tool-to-create-dsls-in-java
         </loc>
         <lastmod>2013-08-30T14:07:27+08:00</lastmod>
     </url>
     <url>
-        <loc>http://pfmiles.github.com/blog/ideas-and-concepts-behind-dropincc-dot-java</loc>
+        <loc>http://pfmiles.github.io/blog/ideas-and-concepts-behind-dropincc-dot-java</loc>
         <lastmod>2013-08-29T17:53:48+08:00</lastmod>
     </url>
     <url>
         <loc>
-            http://pfmiles.github.com/blog/growing-a-full-featured-calculator-in-15-minutes-using-dropincc-dot-java
+            http://pfmiles.github.io/blog/growing-a-full-featured-calculator-in-15-minutes-using-dropincc-dot-java
         </loc>
         <lastmod>2013-08-30T14:05:31+08:00</lastmod>
     </url>
     <url>
-        <loc>http://pfmiles.github.com/blog/prime-numbers-less-than-n</loc>
+        <loc>http://pfmiles.github.io/blog/prime-numbers-less-than-n</loc>
         <lastmod>2013-08-29T17:53:48+08:00</lastmod>
     </url>
     <url>
         <loc>
-            http://pfmiles.github.com/blog/what-does-a-template-engine-for-code-generation-look-like
+            http://pfmiles.github.io/blog/what-does-a-template-engine-for-code-generation-look-like
         </loc>
         <lastmod>2013-08-29T17:53:48+08:00</lastmod>
     </url>
     <url>
         <loc>
-            http://pfmiles.github.com/blog/watch-mooc-videos-with-tsukuba-help-android-version
+            http://pfmiles.github.io/blog/watch-mooc-videos-with-tsukuba-help-android-version
         </loc>
         <lastmod>2013-08-29T19:04:51+08:00</lastmod>
     </url>
     <url>
         <loc>
-            http://pfmiles.github.com/blog/recently-hessian-deserialize-problem-and-thread-pool-executor-experience
+            http://pfmiles.github.io/blog/recently-hessian-deserialize-problem-and-thread-pool-executor-experience
         </loc>
         <lastmod>2013-08-29T19:05:02+08:00</lastmod>
     </url>
     <url>
-        <loc>http://pfmiles.github.com/blog/dynamic-java</loc>
+        <loc>http://pfmiles.github.io/blog/dynamic-java</loc>
         <lastmod>2013-10-23T17:23:37+08:00</lastmod>
     </url>
     <url>
-        <loc>http://pfmiles.github.com/blog/safe-sso-solution</loc>
-        <lastmod>2014-03-28T10:24:35+08:00</lastmod>
+        <loc>http://pfmiles.github.io/blog/safe-sso-solution</loc>
+        <lastmod>2014-04-03T18:18:25+08:00</lastmod>
     </url>
     <url>
-        <loc>http://pfmiles.github.com/</loc>
-        <lastmod>2014-03-28T10:24:35+08:00</lastmod>
+        <loc>http://pfmiles.github.io/</loc>
+        <lastmod>2014-04-03T18:18:25+08:00</lastmod>
     </url>
     <url>
-        <loc>http://pfmiles.github.com/blog/archives/</loc>
-        <lastmod>2014-03-28T10:24:35+08:00</lastmod>
+        <loc>http://pfmiles.github.io/mygists/</loc>
+        <lastmod>2014-04-16T22:08:53+08:00</lastmod>
     </url>
     <url>
-        <loc>http://pfmiles.github.com/about/</loc>
+        <loc>http://pfmiles.github.io/blog/archives/</loc>
+        <lastmod>2014-04-03T18:18:25+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://pfmiles.github.io/about/</loc>
         <lastmod>2013-09-02T16:41:27+08:00</lastmod>
     </url>
 </urlset>

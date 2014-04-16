@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: comic | Meta-Interpretation]]></title>
-  <link href="http://pfmiles.github.com/blog/category/comic/atom.xml" rel="self"/>
-  <link href="http://pfmiles.github.com/"/>
-  <updated>2014-03-28T10:28:01+08:00</updated>
-  <id>http://pfmiles.github.com/</id>
+  <link href="http://pfmiles.github.io/blog/category/comic/atom.xml" rel="self"/>
+  <link href="http://pfmiles.github.io/"/>
+  <updated>2014-04-16T22:17:00+08:00</updated>
+  <id>http://pfmiles.github.io/</id>
   <author>
     <name><![CDATA[pf_miles]]></name>
     <email><![CDATA[miles.wy.1@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[The Real World Tree]]></title>
-    <link href="http://pfmiles.github.com/blog/the-real-world-tree"/>
+    <link href="http://pfmiles.github.io/blog/the-real-world-tree"/>
     <updated>2012-07-21T23:50:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/the-real-world-tree</id>
+    <id>http://pfmiles.github.io/blog/the-real-world-tree</id>
     <content type="html"><![CDATA[<h2>冈和金的约见，是在在世界之树的顶端, 这对奇特的父子，让无数人期待了15年...</h2>
 
 <p><img src="/images/worldtree/tree1.png" alt="tree1" /></p>

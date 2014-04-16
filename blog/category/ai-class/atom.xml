@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: ai-class | Meta-Interpretation]]></title>
-  <link href="http://pfmiles.github.com/blog/category/ai-class/atom.xml" rel="self"/>
-  <link href="http://pfmiles.github.com/"/>
-  <updated>2014-03-28T10:28:01+08:00</updated>
-  <id>http://pfmiles.github.com/</id>
+  <link href="http://pfmiles.github.io/blog/category/ai-class/atom.xml" rel="self"/>
+  <link href="http://pfmiles.github.io/"/>
+  <updated>2014-04-16T22:17:00+08:00</updated>
+  <id>http://pfmiles.github.io/</id>
   <author>
     <name><![CDATA[pf_miles]]></name>
     <email><![CDATA[miles.wy.1@gmail.com]]></email>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[[翻译]"AI-class"中的概率论必备知识]]></title>
-    <link href="http://pfmiles.github.com/blog/theory-of-probability-required-in-ai-class"/>
+    <link href="http://pfmiles.github.io/blog/theory-of-probability-required-in-ai-class"/>
     <updated>2011-11-01T13:35:00+08:00</updated>
-    <id>http://pfmiles.github.com/blog/theory-of-probability-required-in-ai-class</id>
+    <id>http://pfmiles.github.io/blog/theory-of-probability-required-in-ai-class</id>
     <content type="html"><![CDATA[<p><strong>在2011年末的ai-class中出现许多关于概率论的问题，其实这里有一篇神帖非常精彩：<a href="http://www.reddit.com/r/aiclass/comments/lpw21/a_challenge_to_the_over_achievers_who_really/">A challenge to the Over achievers who really understand Probability</a> 精华在于评论</strong></p>
 
 <p>总结起来，ai-class中所用到的概率论，可以总结为下面几条：</p>
