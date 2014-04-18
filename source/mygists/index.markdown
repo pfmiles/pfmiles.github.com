@@ -18,7 +18,7 @@ $.ajax({
                 var ctt = "";
                 for(index in data){
                     var gist = data[index];
-                    ctt += '<a href="'+ gist.url +'">' + gist.description + '</a><br/><br/>';
+                    ctt += '<a href="'+ gist.html_url +'">' + gist.description + '</a><br/><br/>';
                 }
                 $("p#gists").html(ctt);
              }
