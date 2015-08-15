@@ -7,7 +7,7 @@ title: Meta-Interpretation
 subtitle: Code, better explained.
 author: pf_miles
 simple_search: http://google.com/search
-description: pf_miles' technical blog.
+description: pf_miles' weblog.
 
 # Default date format is "ordinal" (resulting in "July 22nd 2007")
 # You can customize the format as defined in
@@ -69,7 +69,7 @@ twitter_user: pf_miles
 twitter_tweet_count: 10
 twitter_show_replies: false
 twitter_follow_button: true
-twitter_show_follower_count: false
+twitter_show_follower_count: true
 twitter_tweet_button: true
 
 # Google +1
@@ -86,7 +86,7 @@ pinboard_user:
 pinboard_count: 3
 
 # Delicious
-delicious_user: pf_miles
+delicious_user: 
 delicious_count: 3
 
 # Disqus Comments
@@ -98,3 +98,6 @@ google_analytics_tracking_id: UA-4513284-8
    
 # Facebook Like
 facebook_like: true   
+
+# weibo share
+weibo_share: true
