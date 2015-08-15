@@ -5,6 +5,9 @@
   {% if site.weibo_share %}
   <wb:share-button appkey="2691936790" addition="number" type="button" ralateUid="1926480632"></wb:share-button>
   {% endif %}
+  {% if site.qzone_share %}
+  <a version="1.0" class="qzOpenerDiv" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url={{site.url}}{{page.url}}&showcount=1&title={{page.title}}&site={{site.title}}&style='102'&width=145&height=30" target="_blank">分享</a>
+  {% endif %}
   {% if site.google_plus_one %}
   <div class="g-plusone" data-size="{{ site.google_plus_one_size }}"></div>
   {% endif %}

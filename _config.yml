@@ -101,3 +101,6 @@ facebook_like: true
 
 # weibo share
 weibo_share: true
+
+# qzone share
+qzone_share: true
